@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      #note-list {
+        margin-bottom: 20px;
+      }
+      .note-item {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="note-list"></div>
+    <button id="refresh-button">刷新</button>
+
+    <script>
+      const noteList = document.getElementById("note-list");
+      const refreshButton = document.getElementById("refresh-button");
+
+      async function fetchNote(id) {
+        try {
+          const response = await fetch(`/note/${id}`);
+          return await response.json();
+        } catch (error) {
+          return null;
+        }
+      }
+
+      async function fetchAllNotes() {
+        const noteIds = Array.from({ length: 10 }, (_, i) => i + 1);
+        const notes = await Promise.all(noteIds.map(fetchNote));
+        return notes.filter((note) => note !== null);
+      }
+
+      function renderList(notes) {
+        noteList.innerHTML = "";
+        const fragment = document.createDocumentFragment();
+        notes.forEach((note) => {
+          const noteElement = document.createElement("div");
+          noteElement.classList.add("note-item");
+          noteElement.innerHTML = `
+                    <div>${note.title}</div>
+                    <p>最后修改时间: ${note.updateTime}</p>
+                `;
+          fragment.appendChild(noteElement);
+        });
+        noteList.appendChild(fragment);
+      }
+
+      async function refres() {
+        const notes = await fetchAllNotes();
+        notes.sort((a, b) => new Date(b.updateTime) - new Date(a.updateTime));
+        renderList(notes);
+      }
+
+      refreshButton.addEventListener("click", refres);
+
+      refres();
+    </script>
+  </body>
+</html>
