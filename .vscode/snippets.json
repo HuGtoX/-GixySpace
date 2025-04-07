@@ -1,0 +1,7 @@
+{
+  "console log": {
+    "prefix": "cls",
+    "body": ["console.log('--- $1${CLIPBOARD} ---', ${CLIPBOARD})"],
+    "description": "Log output to console"
+  }
+}
