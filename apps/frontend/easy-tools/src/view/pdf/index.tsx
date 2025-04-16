@@ -9,7 +9,6 @@ const PdfMerger = () => {
 
   // 处理文件上传
   const handleUpload = (info: any) => {
-    console.log("-- [ info ] --", info);
     setFileList((prev) => [
       ...prev,
       {
@@ -28,9 +27,7 @@ const PdfMerger = () => {
   };
 
   // 处理拖拽排序
-  const handleDragEnd = (e: any) => {
-    console.log("-- [ e ] --", e);
-  };
+  const handleDragEnd = (e: any) => {};
 
   // 合并PDF逻辑（示例，需连接后端）
   const handleMerge = async () => {
@@ -101,7 +98,7 @@ const PdfMerger = () => {
       <List
         itemLayout="horizontal"
         dataSource={fileList}
-        renderItem={(item, index) => (
+        renderItem={(item) => (
           <List.Item
             key={item.uid}
             draggable

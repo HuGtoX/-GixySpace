@@ -1,12 +1,15 @@
 .layout {
+  display: flex;
+  flex-direction: column;
+
   &__header--home {
     cursor: pointer;
     color: white;
   }
-  &__content {
-    display: flex;
-    flex-direction: column;
+  .ant-layout &__content {
     flex: 1;
-    padding: 0 48px;
+    margin: 16px 20px;
+    padding: 24px 0;
+    overflow: auto;
   }
 }
