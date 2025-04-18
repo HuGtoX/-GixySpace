@@ -2,6 +2,30 @@
   "console log": {
     "prefix": "cls",
     "body": ["console.log('--- $1${CLIPBOARD} ---', ${CLIPBOARD})"],
-    "description": "Log output to console"
+    "description": "1Log output to console"
+  },
+  "react function": {
+    "prefix": "rfc",
+    "body": [
+      "/**",
+      "* @file ${2:$TM_FILENAME_BASE}",
+      "* @auth Gixy",
+      "* @date $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE",
+      "*/",
+      "",
+      "import type { FC, ReactNode } from 'react'",
+      "",
+      " interface ${1:ComponentName}Props {",
+      "  children?: ReactNode",
+      "}",
+      "const ${1:ComponentName}:FC<${1:ComponentName}Props> = () => {",
+      " return <div></div>;",
+      "};",
+      "",
+      "",
+      "export default ${1:ComponentName};",
+      ""
+    ],
+    "description": "react functional component"
   }
 }

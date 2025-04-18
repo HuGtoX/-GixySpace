@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Upload, List, Button, message, Space, Typography } from "antd";
+import { Upload, List, Button, message, Space } from "antd";
 import { DragOutlined, DeleteOutlined } from "@ant-design/icons";
 import { PDFDocument } from "pdf-lib";
+import { Header } from "./components";
 
 const PdfMerger = () => {
   const [fileList, setFileList] = useState<any[]>([]);
@@ -29,7 +30,7 @@ const PdfMerger = () => {
   // 处理拖拽排序
   const handleDragEnd = (e: any) => {};
 
-  // 合并PDF逻辑（示例，需连接后端）
+  // 合并PDF逻辑
   const handleMerge = async () => {
     if (fileList.length < 2) {
       return message.warning("请至少上传2个PDF文件");
@@ -71,10 +72,8 @@ const PdfMerger = () => {
   };
 
   return (
-    <div style={{ padding: 32, maxWidth: 800, margin: "0 auto" }}>
-      <Typography.Title level={3} style={{ marginBottom: 24 }}>
-        PDF 合并工具 📄
-      </Typography.Title>
+    <div style={{ padding: 32 }}>
+      <Header title="合并" />
 
       <Upload
         name="pdf"
@@ -131,7 +130,7 @@ const PdfMerger = () => {
         locale={{
           emptyText: (
             <div style={{ padding: 24, textAlign: "center" }}>
-              拖拽文件到这里开始合并，支持最多10个PDF
+              上传文件开始合并，支持最多10个PDF
             </div>
           ),
         }}

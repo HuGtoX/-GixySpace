@@ -1,5 +1,5 @@
-import { Layout, Button, InputNumber, Avatar, Badge } from "antd";
-
+import { Layout, Button, InputNumber } from "antd";
+import { Header as GixyHeader, Toolbar } from "./components";
 const { Header, Content } = Layout;
 
 const SplitDocumentInterface = () => {
@@ -19,43 +19,13 @@ const SplitDocumentInterface = () => {
     console.log("完成操作");
   };
 
-  const handleBack = () => {
-    console.log("返回操作");
-  };
-
   return (
     <div>
       {/* 顶部工具栏 */}
-      <Header
-        style={{
-          backgroundColor: "white",
-          height: 56,
-          display: "flex",
-          alignItems: "center",
-          padding: "0 15px",
-          borderBottom: "1px solid #eaeaea",
-        }}>
-        <Button
-          icon={<span>⬅️</span>}
-          onClick={handleBack}
-          style={{ marginRight: 10 }}
-        />
-        <div style={{ fontSize: 18, fontWeight: "bold", marginRight: "auto" }}>
-          拆分
-        </div>
+      <GixyHeader title="拆分" />
 
-        <Avatar src="https://picsum.photos/48/48" />
-      </Header>
       {/* 操作工具栏 */}
-      <Header
-        style={{
-          backgroundColor: "white",
-          height: 48,
-          display: "flex",
-          alignItems: "center",
-          padding: "0 15px",
-          borderBottom: "1px solid #eaeaea",
-        }}>
+      <Toolbar>
         <Button
           icon={<span>➕</span>}
           onClick={handleAdd}
@@ -91,7 +61,7 @@ const SplitDocumentInterface = () => {
             完成 →
           </Button>
         </div>
-      </Header>
+      </Toolbar>
       {/* 文档区域 */}
       <Content
         style={{
