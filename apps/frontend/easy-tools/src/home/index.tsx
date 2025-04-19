@@ -1,5 +1,6 @@
 import "./ToolMenuPage.css";
 import { useNavigate } from "react-router-dom";
+import Banner from "./banner";
 
 const ToolMenuPage = () => {
   const navigate = useNavigate();
@@ -34,6 +35,7 @@ const ToolMenuPage = () => {
         <h1>工具菜单</h1>
         <p>该网站主要是提供一些日常需要用到的实用工具。</p>
       </header>
+      <Banner />
       {/* 工具选项区域 */}
       <div className="tool-options">
         {tools.map((tool) => (
