@@ -2,11 +2,16 @@ import { useState } from "react";
 import { Upload, List, Button, message, Space } from "antd";
 import { DragOutlined, DeleteOutlined } from "@ant-design/icons";
 import { PDFDocument } from "pdf-lib";
-import { Header } from "./components";
+import { Header } from "../components";
+import style from "./style.module.scss";
+
+const { Dragger } = Upload;
 
 const PdfMerger = () => {
   const [fileList, setFileList] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  const [messageApi, contextHolder] = message.useMessage();
 
   // 处理文件上传
   const handleUpload = (info: any) => {
@@ -16,8 +21,8 @@ const PdfMerger = () => {
         uid: info.file.uid,
         name: info.file.name,
         size: `${(info.file.size / 1024).toFixed(2)}KB`,
-        url: URL.createObjectURL(info.file.originFileObj),
-        file: info.file.originFileObj,
+        url: URL.createObjectURL(info.file),
+        file: info.file,
       },
     ]);
   };
@@ -33,7 +38,7 @@ const PdfMerger = () => {
   // 合并PDF逻辑
   const handleMerge = async () => {
     if (fileList.length < 2) {
-      return message.warning("请至少上传2个PDF文件");
+      return messageApi.warning("请至少上传2个PDF文件");
     }
     setIsLoading(true);
     try {
@@ -64,7 +69,6 @@ const PdfMerger = () => {
       message.success("PDF合并成功！");
       setFileList([]);
     } catch (error) {
-      console.error("合并PDF时出错:", error);
       message.error("合并失败，请检查文件");
     } finally {
       setIsLoading(false);
@@ -74,25 +78,32 @@ const PdfMerger = () => {
   return (
     <div style={{ padding: 32 }}>
       <Header title="合并" />
-
-      <Upload
+      {contextHolder}
+      <Dragger
         name="pdf"
         multiple
-        accept=".pdf"
         listType="picture-card"
         showUploadList={false}
         maxCount={10}
         fileList={fileList}
-        onChange={handleUpload}
-        customRequest={() => {}}
-        style={{ width: "100%", marginBottom: 24 }}>
-        {fileList.length >= 10 ? null : (
-          <div style={{ padding: 16 }}>
-            <DragOutlined style={{ fontSize: 24 }} />
-            <div style={{ marginTop: 8 }}>拖拽或点击上传PDF</div>
-          </div>
-        )}
-      </Upload>
+        beforeUpload={async (file) => {
+          console.log("-- [ file ] --", file);
+          if (file.type !== "application/pdf") {
+            messageApi.error("请上传PDF格式的文件");
+            return false;
+          }
+          return file;
+        }}
+        customRequest={handleUpload}>
+        <p className="ant-upload-drag-icon">
+          <DragOutlined style={{ fontSize: 24 }} />
+        </p>
+        <p className="ant-upload-text">拖拽或点击上传PDF</p>
+        <p className="ant-upload-hint">
+          Support for a single or bulk upload. Strictly prohibited from
+          uploading company data or other banned files.
+        </p>
+      </Dragger>
 
       <List
         itemLayout="horizontal"
@@ -102,13 +113,7 @@ const PdfMerger = () => {
             key={item.uid}
             draggable
             onDragEnd={(e) => handleDragEnd(e)}
-            style={{
-              marginBottom: 16,
-              padding: 16,
-              borderRadius: 8,
-              boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-              transition: "all 0.3s ease",
-            }}>
+            className={style.list__item}>
             <List.Item.Meta
               avatar={
                 <img src="https://placehold.co/64x64?text=PDF" alt="pdf" />

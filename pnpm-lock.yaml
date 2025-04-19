@@ -35,6 +35,9 @@ importers:
       antd:
         specifier: ^5.24.6
         version: 5.24.6(date-fns@4.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      dayjs:
+        specifier: ^1.11.13
+        version: 1.11.13
       pdf-lib:
         specifier: ^1.17.1
         version: 1.17.1

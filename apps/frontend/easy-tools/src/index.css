@@ -122,3 +122,7 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
+/* 消除img底部多出的高度问题 */
+img {
+  vertical-align: bottom; /* 或者 top、middle */
+}

@@ -16,6 +16,7 @@
     "@mui/icons-material": "^7.0.1",
     "@mui/material": "^7.0.1",
     "antd": "^5.24.6",
+    "dayjs": "^1.11.13",
     "pdf-lib": "^1.17.1",
     "pdfjs-dist": "^5.1.91",
     "react": "^19.0.0",
