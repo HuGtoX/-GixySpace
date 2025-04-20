@@ -126,3 +126,7 @@ table {
 img {
   vertical-align: bottom; /* 或者 top、middle */
 }
+
+* {
+  box-sizing: border-box;
+}

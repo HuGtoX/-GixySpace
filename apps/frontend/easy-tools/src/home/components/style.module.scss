@@ -1,0 +1,71 @@
+/* 信息栏整体样式 */
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #333;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: center;
+}
+
+/* 网站标题容器样式 */
+.title__wrapper {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-bottom: 10px;
+}
+
+/* 网站标题样式 */
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #fff;
+  margin: 0;
+}
+
+/* 描述容器样式 */
+.description__container {
+  max-width: 600px;
+}
+
+/* 网站描述样式 */
+.description {
+  font-size: 1rem;
+  color: #c1c7cf;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.banner {
+  position: relative;
+  height: 360px;
+  overflow: hidden;
+}
+
+.banner__item,
+.banner__item__inner {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.banner__item {
+  width: 900px;
+  left: 50%;
+  transform: translateX(-450px);
+  background-repeat: no-repeat;
+  background-size: 100% 100%; /*适应容器*/
+  z-index: 99;
+}
+
+.banner__item__inner {
+  background-repeat: no-repeat;
+  background-size: 100% 100%; /*适应容器*/
+  transform: scale(1.5);
+  filter: blur(20px);
+  z-index: 1;
+}
