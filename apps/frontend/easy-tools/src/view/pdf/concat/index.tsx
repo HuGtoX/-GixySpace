@@ -1,27 +1,35 @@
 import { useState } from "react";
-import { Upload, List, Button, message, Space } from "antd";
-import { DragOutlined, DeleteOutlined } from "@ant-design/icons";
+import { Upload, Button, message } from "antd";
+import { DragOutlined } from "@ant-design/icons";
 import { PDFDocument } from "pdf-lib";
-import { Header } from "../components";
-import style from "./style.module.scss";
+import { Container } from "../components";
+import type { UploadFile } from "antd";
+import DragList from "./DragList";
 
 const { Dragger } = Upload;
 
-const PdfMerger = () => {
-  const [fileList, setFileList] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+type RcFileType = File & { uid?: string };
+export interface CustomUploadFile extends UploadFile {
+  file: RcFileType;
+}
 
+const PdfMerger = () => {
+  const [fileList, setFileList] = useState<CustomUploadFile[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
 
   // 处理文件上传
-  const handleUpload = (info: any) => {
+  const handleUpload = (info: { file: RcFileType } & any) => {
+    const {
+      file: { uid, name, size },
+    } = info;
+
     setFileList((prev) => [
       ...prev,
       {
-        uid: info.file.uid,
-        name: info.file.name,
-        size: `${(info.file.size / 1024).toFixed(2)}KB`,
-        url: URL.createObjectURL(info.file),
+        uid,
+        name,
+        size,
         file: info.file,
       },
     ]);
@@ -29,11 +37,8 @@ const PdfMerger = () => {
 
   // 处理文件删除
   const handleDelete = (uid: string) => {
-    setFileList((prev) => prev.filter((file) => file.uid !== uid));
+    setFileList((prev) => prev.filter((file) => uid !== file.uid));
   };
-
-  // 处理拖拽排序
-  const handleDragEnd = (e: any) => {};
 
   // 合并PDF逻辑
   const handleMerge = async () => {
@@ -76,8 +81,19 @@ const PdfMerger = () => {
   };
 
   return (
-    <div style={{ padding: 32 }}>
-      <Header title="合并" />
+    <Container
+      title="合并"
+      footer={
+        <Button
+          block
+          type="primary"
+          onClick={handleMerge}
+          loading={isLoading}
+          disabled={fileList.length < 2}
+          style={{ height: 46, fontSize: 16 }}>
+          开始合并 PDF 🚀
+        </Button>
+      }>
       {contextHolder}
       <Dragger
         name="pdf"
@@ -85,9 +101,7 @@ const PdfMerger = () => {
         listType="picture-card"
         showUploadList={false}
         maxCount={10}
-        fileList={fileList}
         beforeUpload={async (file) => {
-          console.log("-- [ file ] --", file);
           if (file.type !== "application/pdf") {
             messageApi.error("请上传PDF格式的文件");
             return false;
@@ -105,52 +119,12 @@ const PdfMerger = () => {
         </p>
       </Dragger>
 
-      <List
-        itemLayout="horizontal"
-        dataSource={fileList}
-        renderItem={(item) => (
-          <List.Item
-            key={item.uid}
-            draggable
-            onDragEnd={(e) => handleDragEnd(e)}
-            className={style.list__item}>
-            <List.Item.Meta
-              avatar={
-                <img src="https://placehold.co/64x64?text=PDF" alt="pdf" />
-              }
-              title={<span>{item.name}</span>}
-              description={<span>大小: {item.size}</span>}
-            />
-            <Space>
-              <Button
-                icon={<DeleteOutlined />}
-                onClick={() => handleDelete(item.uid)}
-                type="link"
-                style={{ color: "#ff4d4f" }}>
-                删除
-              </Button>
-            </Space>
-          </List.Item>
-        )}
-        locale={{
-          emptyText: (
-            <div style={{ padding: 24, textAlign: "center" }}>
-              上传文件开始合并，支持最多10个PDF
-            </div>
-          ),
-        }}
+      <DragList
+        handleDelete={handleDelete}
+        items={fileList}
+        onChange={setFileList}
       />
-
-      <Button
-        type="primary"
-        block
-        onClick={handleMerge}
-        loading={isLoading}
-        disabled={fileList.length < 2}
-        style={{ height: 52, marginTop: 32, fontSize: 16 }}>
-        开始合并 PDF 🚀
-      </Button>
-    </div>
+    </Container>
   );
 };
 

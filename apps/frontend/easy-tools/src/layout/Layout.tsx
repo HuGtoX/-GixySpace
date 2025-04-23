@@ -1,5 +1,5 @@
 import React from "react";
-import { Layout, Menu, theme } from "antd";
+import { Layout, Menu, theme, Avatar } from "antd";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { menu } from "./menu";
 import "./index.scss";
@@ -15,11 +15,13 @@ const App: React.FC = () => {
   } = theme.useToken();
 
   return (
-    <Layout className="layout" style={{ minHeight: "100vh" }}>
+    <Layout className="layout" style={{ height: "100vh" }}>
       <Header style={{ display: "flex", alignItems: "center" }}>
-        <div className="demo-logo" />
-        <div className="layout__header--home" onClick={() => navigate("/")}>
-          返回主页
+        <div className="layout__header--logo" onClick={() => navigate("/")}>
+          <img width={160} height={44} src="/logo-text.png" alt="BitCraft" />
+        </div>
+        <div className="layout__header--right">
+          <Avatar size={38} src="https://picsum.photos/38/38" />
         </div>
       </Header>
       <Layout

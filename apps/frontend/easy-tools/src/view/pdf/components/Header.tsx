@@ -1,4 +1,4 @@
-import { Layout, Button, Avatar } from "antd";
+import { Layout, Button } from "antd";
 
 const { Header: AntHeader } = Layout;
 
@@ -22,8 +22,6 @@ function Header({ title }: HeaderProps) {
       <div style={{ fontSize: 18, fontWeight: "bold", marginRight: "auto" }}>
         {title}
       </div>
-
-      <Avatar src="https://picsum.photos/48/48" />
     </AntHeader>
   );
 }

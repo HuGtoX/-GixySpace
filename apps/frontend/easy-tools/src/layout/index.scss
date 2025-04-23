@@ -6,6 +6,19 @@
     cursor: pointer;
     color: white;
   }
+
+  &__header--logo {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+
+  &__header--right {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+  }
+
   .ant-layout &__content {
     flex: 1;
     margin: 16px 20px;

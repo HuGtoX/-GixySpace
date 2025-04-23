@@ -4,7 +4,7 @@ import Layout from "../layout/Layout";
 import React from "react";
 
 const PdfComponent = React.lazy(() => import("../view/pdf/concat"));
-const PdfSplitPage = React.lazy(() => import("../view/pdf/Split"));
+const PdfSplitPage = React.lazy(() => import("../view/pdf/split"));
 
 export const router = createBrowserRouter([
   {
@@ -18,9 +18,5 @@ export const router = createBrowserRouter([
       { path: "concat", element: <PdfComponent /> },
       { path: "split", element: <PdfSplitPage /> },
     ],
-  },
-  {
-    path: "/split",
-    element: <PdfSplitPage />,
   },
 ]);

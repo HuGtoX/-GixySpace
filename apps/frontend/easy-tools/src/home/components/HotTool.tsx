@@ -39,6 +39,7 @@ const HotTools = () => {
           <Col key={tool.name} xs={24} sm={6}>
             <a
               href={tool.link}
+              target="_blank"
               className="ant-card ant-card-hoverable"
               style={{ padding: 16, borderRadius: 12 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 12 }}>

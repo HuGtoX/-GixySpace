@@ -1,6 +1,6 @@
-import { Layout, Button, InputNumber } from "antd";
-import { Header as GixyHeader, Toolbar } from "./components";
-const { Header, Content } = Layout;
+import { Layout } from "antd";
+import { Container, Toolbar } from "../components";
+const { Content } = Layout;
 
 const SplitDocumentInterface = () => {
   const handleAdd = () => {
@@ -20,52 +20,18 @@ const SplitDocumentInterface = () => {
   };
 
   return (
-    <div>
-      {/* 顶部工具栏 */}
-      <GixyHeader title="拆分" />
-
-      {/* 操作工具栏 */}
-      <Toolbar>
-        <Button
-          icon={<span>➕</span>}
-          onClick={handleAdd}
-          style={{ marginRight: 10 }}>
-          添加
-        </Button>
-        <Button
-          icon={<span>↩️</span>}
-          onClick={handleRotateLeft}
-          style={{ marginRight: 10 }}>
-          向左旋转
-        </Button>
-        <Button
-          icon={<span style={{ transform: "scaleX(-1)" }}>↩️</span>}
-          onClick={handleRotateRight}
-          style={{ marginRight: 10 }}>
-          向右旋转
-        </Button>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            marginLeft: "auto",
-          }}>
-          <span style={{ fontSize: 14, marginRight: 10 }}>拆分，每隔</span>
-          <InputNumber
-            min={1}
-            defaultValue={1}
-            style={{ width: 40, marginRight: 10 }}
-          />
-          <span style={{ fontSize: 14, marginRight: 10 }}>页面</span>
-          <Button type="primary" onClick={handleComplete}>
-            完成 →
-          </Button>
-        </div>
-      </Toolbar>
-      {/* 文档区域 */}
+    <Container
+      title="拆分"
+      header={
+        <Toolbar
+          handleAdd={handleAdd}
+          handleRotateRight={handleRotateRight}
+          handleRotateLeft={handleRotateLeft}
+          handleComplete={handleComplete}
+        />
+      }>
       <Content
         style={{
-          backgroundColor: "#f5f8fe",
           padding: 20,
           overflowY: "auto",
           display: "grid",
@@ -158,7 +124,7 @@ const SplitDocumentInterface = () => {
           </div>
         </div>
       </Content>
-    </div>
+    </Container>
   );
 };
 

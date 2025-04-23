@@ -1,5 +1,5 @@
 {
-  "name": "gixy_work",
+  "name": "@gixy/types",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,9 +9,5 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "eslint": "^9.24.0",
-    "typescript": "^5.8.3",
-    "typescript-plugin-css-modules": "^5.1.0"
-  }
+  "packageManager": "pnpm@10.7.1"
 }
