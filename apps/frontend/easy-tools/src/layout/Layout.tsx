@@ -8,7 +8,7 @@ const { Header, Content, Sider } = Layout;
 
 const App: React.FC = () => {
   const navigate = useNavigate();
-  let { pathname } = useLocation();
+  const { pathname } = useLocation();
 
   const {
     token: { colorBgContainer, borderRadiusLG },

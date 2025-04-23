@@ -74,7 +74,7 @@ const PdfMerger = () => {
       message.success("PDF合并成功！");
       setFileList([]);
     } catch (error) {
-      message.error("合并失败，请检查文件");
+      message.error("合并失败，请检查文件", error);
     } finally {
       setIsLoading(false);
     }

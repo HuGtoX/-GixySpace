@@ -1,0 +1,12 @@
+node_modules
+dist
+
+_.sh
+_.md
+_.woff
+_.ttf
+.vscode
+.idea
+.husky
+
+/faas
