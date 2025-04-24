@@ -8,5 +8,8 @@ dist
 .vscode
 .idea
 .husky
+.local
 
-/faas
+/docs
+/bin
+Dockerfile

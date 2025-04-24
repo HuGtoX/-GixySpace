@@ -1,16 +1,17 @@
 {
-  "explorer.fileNesting.enabled": true,
-  "explorer.fileNesting.expand": false,
-  "eslint.validate": ["typescript", "typescriptreact"],
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true,
-  "explorer.fileNesting.patterns": {
-    "*.ts": "$(capture).test.ts, $(capture).test.tsx",
-    "*.tsx": "$(capture).test.ts, $(capture).test.tsx",
-    "CHANGELOG.md": "CHANGELOG*",
-    ".env.dev": ".env.dev,.env.prod,.env.test",
-    "project.config.json": "postcss.config.js,project.tt.json,jest.config.ts,babel.config.js,.stylelintrc.js,.eslintrc.js,tailwind.config.js,.prettierrc,.prettierignore,openapi.config.ts",
-    "package.json": "pnpm-lock.yaml,pnpm-workspace.yaml,LICENSE,.gitattributes,.gitignore,.gitpod.yml,CNAME,.npmrc,.browserslistrc",
-    ".eslintrc.cjs": ".eslintignore,.prettierignore,.stylelintignore,.commitlintrc.*,.prettierrc.*,.stylelintrc.*,.eslintrc-auto-import.json,.editorconfig,.commitlint.cjs"
-  }
+	"explorer.fileNesting.enabled": true,
+	"explorer.fileNesting.expand": false,
+	"eslint.validate": ["typescript", "typescriptreact"],
+	"typescript.tsdk": "node_modules/typescript/lib",
+	"typescript.enablePromptUseWorkspaceTsdk": true,
+	"explorer.fileNesting.patterns": {
+		"*.ts": "$(capture).test.ts, $(capture).test.tsx",
+		"*.tsx": "$(capture).test.ts, $(capture).test.tsx",
+		"CHANGELOG.md": "CHANGELOG*",
+		".env.dev": ".env.dev,.env.prod,.env.test",
+		"project.config.json": "postcss.config.js,project.tt.json,jest.config.ts,babel.config.js,.stylelintrc.js,.eslintrc.js,tailwind.config.js,.prettierrc,.prettierignore,openapi.config.ts",
+		"package.json": "README.md,pnpm-lock.yaml,pnpm-workspace.yaml,LICENSE,.gitattributes,.gitignore,.gitpod.yml,CNAME,.npmrc,.browserslistrc",
+		"tsconfig.json": ".eslintignore,.prettierrc.*,.prettierignore,tsconfig.*"
+		// ".eslintrc.cjs": ".eslintignore,.prettierignore,.stylelintignore,.commitlintrc.*,.prettierrc.*,.stylelintrc.*,.eslintrc-auto-import.json,.editorconfig,.commitlint.cjs"
+	}
 }

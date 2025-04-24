@@ -1,19 +1,21 @@
 {
-  "name": "gixy_work",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "eslint": "^9.24.0",
-    "prettier": "^3.5.3",
-    "typescript": "^5.8.3",
-    "typescript-plugin-css-modules": "^5.1.0"
-  }
+	"name": "gixy_work",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"dev": "pnpm --filter @gixy/bitCraft dev",
+		"types": "pnpm --filter @gixy/types build"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"@skimhugo/eslint-config": "^0.2.8",
+		"@skimhugo/tsconfig": "^1.0.4",
+		"eslint": "^9.24.0",
+		"prettier": "^3.5.3",
+		"typescript": "^5.8.3",
+		"typescript-plugin-css-modules": "^5.1.0"
+	}
 }
- 
