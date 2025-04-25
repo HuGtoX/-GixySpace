@@ -1,54 +1,33 @@
-# React + TypeScript + Vite
+## 项目编码规范
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### 类型规范
 
-Currently, two official plugins are available:
+- 业务编写过程中尽量完善类型定义，完善后不应存在any类型
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 目录结构规范
 
-## Expanding the ESLint configuration
+- 每个路由页面必须新建一个文件夹
+- 组件文件夹为components，不建议嵌套多层
+- 当组件关联文件较多时也需要使用文件夹包裹
+- 多个页面使用到的组件放到src/components下
+- 通用性较强的组件可以单独放到子包中
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 命名规范
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+- 页面文件使用小驼峰命名
+- 组件文件使用大驼峰命名
+- 样式文件使用小驼峰命名
+- 样式文件使用\*.module.scss后缀
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 主题色
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+在写样式时，尽量使用主题色，一是为了统一页面风格，其次是为了后续的主题切换需求准备。
+例如：
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```css
+.btn {
+	color: var(--theme-text-color);
+	background-color: var(--theme-backgroud-color);
+	border-color: var(--theme-border-color);
+}
 ```

@@ -1,0 +1,28 @@
+.layout {
+	display: flex;
+	flex-direction: column;
+
+	&__header--home {
+		cursor: pointer;
+		color: white;
+	}
+
+	&__header--logo {
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+	}
+
+	&__header--right {
+		flex: 1;
+		display: flex;
+		justify-content: flex-end;
+	}
+
+	&__content:global(.ant-layout) {
+		flex: 1;
+		margin: 16px 20px;
+		padding: 24px 0;
+		overflow: auto;
+	}
+}
