@@ -4,6 +4,11 @@
 	"eslint.validate": ["typescript", "typescriptreact"],
 	"typescript.tsdk": "node_modules/typescript/lib",
 	"typescript.enablePromptUseWorkspaceTsdk": true,
+	"deno.enable": true,
+	"deno.enablePaths": ["./faas"],
+	"deno.lint": true,
+	"deno.codeLens.references": true,
+	"deno.codeLens.implementations": true,
 	"explorer.fileNesting.patterns": {
 		"*.ts": "$(capture).test.ts, $(capture).test.tsx",
 		"*.tsx": "$(capture).test.ts, $(capture).test.tsx",

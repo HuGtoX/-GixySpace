@@ -1,0 +1,13 @@
+{
+	"name": "@gixy/registry",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"start": "deno run server.ts"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {}
+}
