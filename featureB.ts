@@ -1,3 +1,3 @@
 export function B() {
-	return 'AAAABBBBB';
+	return 'AAAABBBBBCCCC';
 }
