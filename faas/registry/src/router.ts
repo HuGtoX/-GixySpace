@@ -1,10 +1,12 @@
 import { Application, Router } from '../deps.ts';
 import cfg from '../config.json' with { type: 'json' };
 import * as HealthCheck from './healthcheck/mod.ts';
+import * as DB from './db/mod.ts';
 
 export async function start() {
 	const router = new Router();
 	router.get('/v1/healthcheck', HealthCheck.getHandler);
+	router.get('/debug/db', DB.getHandler);
 
 	const app = new Application();
 	app.use(router.routes());

@@ -72,4 +72,22 @@ export class RegistryDictDB extends DB<RegistryDict> {
 				}
 			});
 	}
+	// 第一次注册地址
+	setRegistry(registry: Registry) {
+		this.checkUniquePath(registry.filePath, registry.path);
+		// 没有地址，更新地址
+		const registryDict = this.get();
+		registryDict[registry.filePath] = registry;
+		this.setAndRefreshCache(registryDict);
+	}
+
+	// 非第一次注册地址，更新地址
+	refreshPath(filePath: string, path: string[]) {
+		this.checkUniquePath(filePath, path);
+		const registryDict = this.get();
+
+		// 没有地址冲突，更新地址的Path
+		registryDict[filePath].path = path;
+		this.setAndRefreshCache(registryDict);
+	}
 }
