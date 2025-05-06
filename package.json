@@ -1,10 +1,10 @@
 {
-	"name": "gixy_work",
+	"name": "gixy-work",
 	"version": "1.0.0",
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"dev": "pnpm --filter @gixy/bitCraft dev",
+		"dev": "pnpm --filter @gixy/bit-craft dev",
 		"types": "pnpm --filter @gixy/types build"
 	},
 	"keywords": [],
@@ -14,6 +14,7 @@
 		"@skimhugo/eslint-config": "^0.2.8",
 		"@skimhugo/tsconfig": "^1.0.4",
 		"eslint": "^9.24.0",
+		"eslint-plugin-simple-import-sort": "^12.1.1",
 		"prettier": "^3.5.3",
 		"typescript": "^5.8.3",
 		"typescript-plugin-css-modules": "^5.1.0"

@@ -2,15 +2,24 @@
 	display: flex;
 	flex-direction: column;
 
+	&__body {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		padding: 24px 48px;
+	}
+
 	&__header--home {
 		cursor: pointer;
 		color: white;
 	}
 
-	&__header--logo {
+	&__sider--logo {
 		cursor: pointer;
 		display: flex;
 		align-items: center;
+		justify-content: center;
+		height: var(--ant-layout-header-height);
 	}
 
 	&__header--right {
@@ -21,8 +30,6 @@
 
 	&__content:global(.ant-layout) {
 		flex: 1;
-		margin: 16px 20px;
-		padding: 24px 0;
 		overflow: auto;
 	}
 }
