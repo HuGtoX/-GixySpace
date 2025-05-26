@@ -1,5 +1,5 @@
 import { Layout, Button } from "antd";
-
+import styles from "./style.module.scss";
 const { Header: AntHeader } = Layout;
 
 type HeaderProps = {
@@ -9,8 +9,8 @@ type HeaderProps = {
 function Header({ title }: HeaderProps) {
   return (
     <AntHeader
+    className={styles.header}
       style={{
-        backgroundColor: "white",
         height: 56,
         display: "flex",
         alignItems: "center",

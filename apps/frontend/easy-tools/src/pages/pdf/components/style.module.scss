@@ -4,13 +4,19 @@
   height: 100%;
 
   .header {
+		border-radius: var(--ant-border-radius);
     flex-shrink: 0;
+    background-color: white;
+    overflow: hidden;
   }
 
   .content {
     flex: 1;
     padding: 8px 10px;
+		border-radius: var(--ant-border-radius);
+    background-color: white;
     overflow: auto;
+
 
     &::-webkit-scrollbar {
       width: 8px;
@@ -36,9 +42,15 @@
   }
 
   .footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     flex-shrink: 0;
     margin-top: 6px;
     padding: 0 8px;
-    height: 56px;
+    height: 60px;
+		border-radius: var(--ant-border-radius);
+    background-color: white;
+
   }
 }

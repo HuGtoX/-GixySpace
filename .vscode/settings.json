@@ -9,6 +9,7 @@
 	"deno.enablePaths": ["./faas"],
 	"deno.lint": true,
 	"deno.codeLens.references": true,
+	"css.lint.unknownAtRules": "ignore",
 	"deno.codeLens.implementations": true,
 	"explorer.fileNesting.patterns": {
 		"*.ts": "$(capture).test.ts, $(capture).test.tsx",

@@ -139,9 +139,15 @@ importers:
       globals:
         specifier: ^15.15.0
         version: 15.15.0
+      postcss:
+        specifier: ^8.5.3
+        version: 8.5.3
       sass:
         specifier: ^1.86.3
         version: 1.86.3
+      tailwindcss:
+        specifier: ^3.4.17
+        version: 3.4.17
       typescript-eslint:
         specifier: ^8.24.1
         version: 8.29.0(eslint@9.27.0(jiti@2.4.2))(typescript@5.8.3)
