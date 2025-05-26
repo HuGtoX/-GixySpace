@@ -17,7 +17,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 }) => {
 	return (
 		<Card
-			className="bg-darkGray rounded-xl overflow-hidden hover:transform hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
+			className="bg-white dark:bg-darkGray rounded-xl overflow-hidden hover:transform hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
 			cover={
 				<div className="h-48 overflow-hidden">
 					<img
@@ -29,12 +29,12 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 			}
 		>
 			<div className="p-6">
-				<h3 className="text-xl font-bold text-lightGray mb-2">{title}</h3>
+				<h3 className="text-xl font-bold dark:text-lightGray mb-2">{title}</h3>
 				<p className="text-secondary mb-4">{description}</p>
 				<div className="flex justify-between items-center">
 					<div className="flex space-x-2">
 						{tags.map((tag, index) => (
-							<Tag key={index} className="bg-dark text-secondary">
+							<Tag key={index} className="dark:bg-dark dark:text-secondary">
 								{tag}
 							</Tag>
 						))}
