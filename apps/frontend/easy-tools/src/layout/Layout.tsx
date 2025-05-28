@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Layout, Avatar, Button } from 'antd';
 import { Outlet, useNavigate } from 'react-router-dom';
-import Menu from './Menu';
+import Menu from './Menus';
 import styles from './style.module.scss';
 import ThemeSwitcher from '../components/ThemeSwitcher';
 import { useTheme } from '../context/ThemeContext';
