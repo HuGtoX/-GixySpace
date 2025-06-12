@@ -4,9 +4,12 @@ import { fastify } from 'fastify';
 const signMock = vi.fn(() => 'returns');
 
 function buildServer() {
-	return fastify()
-		.decorate('jwt', { sign: signMock })
-		.register(import('../routes/login.js'));
+	return (
+		fastify()
+			// @ts-ignore
+			.decorate('jwt', { sign: signMock })
+			.register(import('../routes/login.js'))
+	);
 }
 
 describe('POST /login', () => {

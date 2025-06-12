@@ -1,40 +1,38 @@
 import { fastify } from 'fastify';
-import fs from 'fs';
-import { default as jwt } from '@fastify/jwt';
+import type { Config } from './config.js';
 
 declare module 'fastify' {
 	interface FastifyInstance {
 		configuration: { db: string; port: number };
 	}
 }
-const logStream = fs.createWriteStream('./log/my-log.log', { flags: 'a' });
-
-async function buildServer() {
-	const app = fastify({
-		logger: {
-			stream: logStream,
-			level: 'info',
-			transport: {
-				target: 'pino-pretty',
-				options: {
-					translateTime: 'SYS:standard',
-					ignore: 'pid,hostname'
+async function buildServer(
+	config: Config
+): Promise<ReturnType<typeof fastify>> {
+	const pino = config.PRETTY_PRINT
+		? {
+				transport: {
+					target: 'pino-pretty',
+					options: {
+						translateTime: 'HH:MM:ss Z',
+						ignore: 'pid,hostname'
+					}
 				}
 			}
+		: {};
+	const opts = {
+		...config,
+		logger: {
+			level: config.LOG_LEVEL,
+			...pino
 		}
+	};
+	const app = fastify(opts);
+	app.register(import('./plugins/my-authenticate.js'), {
+		JWT_SECRET: opts.JWT_SECRET
 	});
 
-	app.decorate('configuration', {
-		db: 'mysql-db',
-		port: 3306
-	});
-
-	app.register(jwt, {
-		secret: 'super-secret'
-	});
 	await app.register(import('./plugins/plugin1'));
-	await app.register(import('./plugins/plugin2'));
-
 	app.register(import('./routes/users.js'));
 	app.register(import('./routes/login.js'));
 

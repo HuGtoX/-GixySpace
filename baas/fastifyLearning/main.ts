@@ -1,6 +1,7 @@
 import buildServer from './server';
+import config from './config.js';
 
-const server = await buildServer();
+const server = await buildServer(config);
 const start = async () => {
 	try {
 		await server.listen({ port: 3000 });
