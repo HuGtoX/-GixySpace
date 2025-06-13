@@ -1,3 +1,7 @@
-curl -X POST http://localhost:3000/login \ 
-  -H "Content-Type: application/json" \ 
-  -d '{"username":"testuser", "password":"testuser"}'
+curl http://localhost:8080/debug/db
+
+# curl -X POST http://localhost:3000/login \ 
+#   -H "Content-Type: application/json" \ 
+#   -d '{"username":"testuser", "password":"testuser"}'
+
+

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import buildServer from '../server.js';
-import config from '../config.js';
+import buildServer from '../../server.js';
+import config from '../../../config.js';
 
 describe('GET /users', () => {
 	it('成功 200:返回用户名', async () => {

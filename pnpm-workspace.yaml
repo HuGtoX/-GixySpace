@@ -1,6 +1,6 @@
 packages:
   - packages/**
-  - apps/frontend/**
+  - apps/**
   - baas/**
 onlyBuiltDependencies:
   - esbuild

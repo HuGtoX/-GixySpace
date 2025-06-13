@@ -9,4 +9,5 @@ dist
 .idea
 .husky
 
-/faas
+# 不对Deno项目进行lint检查  
+/faas  

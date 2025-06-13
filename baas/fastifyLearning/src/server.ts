@@ -1,5 +1,5 @@
 import { fastify } from 'fastify';
-import type { Config } from './config.js';
+import type { Config } from '../config.js';
 
 declare module 'fastify' {
 	interface FastifyInstance {
@@ -32,9 +32,9 @@ async function buildServer(
 		JWT_SECRET: opts.JWT_SECRET
 	});
 
-	await app.register(import('./plugins/plugin1'));
 	app.register(import('./routes/users.js'));
 	app.register(import('./routes/login.js'));
+	app.register(import('./routes/user/index.js'));
 
 	app.get('/', (_req, res) => {
 		res.send({});

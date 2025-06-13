@@ -8,7 +8,7 @@ function buildServer() {
 		fastify()
 			// @ts-ignore
 			.decorate('jwt', { sign: signMock })
-			.register(import('../routes/login.js'))
+			.register(import('../../routes/login.js'))
 	);
 }
 

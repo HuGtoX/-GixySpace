@@ -1,4 +1,4 @@
-import cfg from '../../../config.json' with { type: 'json' };
+import cfg from '../../../cfg.json' with { type: 'json' };
 import { PORTS_KEY } from '../../consts.ts';
 import DB from '../../db.ts';
 import type { PortList, Port } from './port-list-types.ts';

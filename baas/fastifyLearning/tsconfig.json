@@ -8,10 +8,13 @@
 		"types": ["node"],
 		// 在解析非绝对路径模块时的基准路径
 		"baseUrl": ".",
+		"module": "nodenext",
+		"moduleResolution": "nodenext",
 		// 基于baseUrl的路径映射集合
 		"paths": {
 			"@/*": ["src/*"]
 		}
 	},
-	"include": ["plugins/*.ts"]
+	"include": ["tests/**/*.ts", "src/**/*.ts", "src/**/*.d.ts"],
+	"exclude": ["node_modules", "tests/server/**/*.ts", "**/*.js", "**/*.md"]
 }

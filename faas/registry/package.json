@@ -4,7 +4,8 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"start": "deno run server.ts"
+		"start": "deno run --allow-net --allow-read=./public server.ts",
+		"example": "deno run --allow-net --allow-env --allow-read ./example/users-search/main.ts"
 	},
 	"keywords": [],
 	"author": "",
