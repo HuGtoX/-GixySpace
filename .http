@@ -1,6 +1,6 @@
 curl -X POST http://localhost:18004/v1/mail/send 
 -H "Content-Type: application/json" 
--d '{"toMail": "1070856116@qq.com", "topic": "cancelNotification", "args": {
+-d '{"toMail": "xxx@qq.com", "topic": "cancelNotification", "args": {
     "activityName": "取消邮件测试",
     "publisherName": "测试"}}'
 
