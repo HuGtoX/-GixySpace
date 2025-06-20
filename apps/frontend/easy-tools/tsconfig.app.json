@@ -20,7 +20,10 @@
 		"strict": false,
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
-		"noFallthroughCasesInSwitch": true
+		"noFallthroughCasesInSwitch": true,
+		"paths": {
+			"@/*": ["./src/*"]
+		}
 	},
 	"include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.d.ts"],
 	"exclude": ["node_modules"]

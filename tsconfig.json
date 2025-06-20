@@ -5,6 +5,9 @@
 		"strict": false, // 启用严格类型检查
 		"esModuleInterop": true, // 允许 CommonJS 和 ES 模块互操作
 		"skipLibCheck": true, // 跳过库文件检查以加快编译速度
-		"noImplicitAny": true
+		"noImplicitAny": true,
+		"paths": {
+			"@/*": ["src/*"]
+		}
 	}
 }

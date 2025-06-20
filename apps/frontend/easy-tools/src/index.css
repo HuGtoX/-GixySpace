@@ -1,3 +1,92 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+	.content-auto {
+		content-visibility: auto;
+	}
+	.card-hover {
+		transition:
+			transform 0.3s ease,
+			box-shadow 0.3s ease;
+	}
+	.card-hover:hover {
+		transform: translateY(-5px) rotate(2deg);
+		box-shadow:
+			0 10px 25px -5px rgba(0, 0, 0, 0.1),
+			0 10px 10px -5px rgba(0, 0, 0, 0.04);
+	}
+	.tool-icon {
+		transition: all 0.3s ease;
+	}
+	.tool-icon:hover {
+		transform: scale(1.1);
+	}
+	.ripple {
+		position: relative;
+		overflow: hidden;
+	}
+	.ripple:after {
+		content: '';
+		background: rgba(255, 255, 255, 0.3);
+		position: absolute;
+		border-radius: 50%;
+		transform: scale(0);
+		animation: ripple 0.6s linear;
+	}
+	@keyframes ripple {
+		to {
+			transform: scale(2.5);
+			opacity: 0;
+		}
+	}
+	.theme-transition {
+		transition: background-color 1s ease;
+	}
+	.pixel-grow {
+		animation: pixelGrow 0.5s ease-out;
+	}
+	@keyframes pixelGrow {
+		0% {
+			transform: scale(0.8);
+			opacity: 0.6;
+		}
+		50% {
+			transform: scale(1.1);
+			opacity: 0.8;
+		}
+		100% {
+			transform: scale(1);
+			opacity: 1;
+		}
+	}
+	.draggable {
+		cursor: grab;
+	}
+	.draggable:active {
+		cursor: grabbing;
+	}
+	.gradient-mask {
+		background: linear-gradient(
+			to top,
+			rgba(0, 0, 0, 0.7) 0%,
+			rgba(0, 0, 0, 0) 60%
+		);
+	}
+	.animated-bg {
+		background-size: 400% 400%;
+		animation: gradientBG 15s ease infinite;
+	}
+	@keyframes gradientBG {
+		0% {
+			background-position: 0% 50%;
+		}
+		50% {
+			background-position: 100% 50%;
+		}
+		100% {
+			background-position: 0% 50%;
+		}
+	}
+}
