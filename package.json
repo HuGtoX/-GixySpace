@@ -26,6 +26,7 @@
 		"vitest": "^3.2.3"
 	},
 	"dependencies": {
+		"@netlify/sdk": "^2.26.3",
 		"@sinclair/typebox": "^0.34.33",
 		"fastify": "^5.3.3",
 		"fastify-plugin": "^5.0.1",
