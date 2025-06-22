@@ -38,12 +38,11 @@ const Header = () => {
 				<div className="container mx-auto px-4 py-3 flex items-center justify-between">
 					<div className="flex items-center space-x-4">
 						<div className="text-2xl font-bold text-primary dark:text-dark-primary">
-							ToolHub
+							番茄工具
 						</div>
 						<div className="relative hidden md:block w-64">
 							<Search
 								placeholder="搜索工具或资讯..."
-								className="rounded-full bg-gray-100 dark:bg-gray-700"
 							/>
 						</div>
 					</div>
