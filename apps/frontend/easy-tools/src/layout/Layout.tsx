@@ -14,19 +14,20 @@ const App: React.FC = () => {
   return (
     <Container>
       <Header />
-      <main className="container mx-auto px-4 py-6">
-        <div className="flex flex-col lg:flex-row gap-6">
-          {/* 左侧主操作区（70%） */}
+      {/* 桌面端固定高度布局，移动端保持原有滚动 */}
+      <main className="container mx-auto px-4 py-6 lg:h-[calc(100vh-120px)] lg:overflow-hidden">
+        <div className="flex flex-col lg:flex-row gap-6 lg:h-full">
+          {/* 左侧主操作区 */}
           <Content
+            className="lg:flex-1 lg:overflow-y-auto lg:pr-3 custom-scrollbar"
             style={{
               minHeight: 280,
             }}
           >
             <Outlet />
           </Content>
-
-          {/* 右侧辅助区（30%） */}
-          <div className="lg:w-5/12  transition-all duration-300">
+          {/* 右侧说明区 */}
+          <div className="lg:w-5/12 lg:overflow-y-auto lg:pl-3 transition-all duration-300 custom-scrollbar">
             {/* 使用说明 */}
             <Instructions />
             {/* 历史记录 */}

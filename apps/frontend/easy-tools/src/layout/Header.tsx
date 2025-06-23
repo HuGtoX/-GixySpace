@@ -8,11 +8,13 @@ import {
   FaSignOutAlt,
 } from "react-icons/fa";
 import { useTheme } from "@/context/ThemeContext";
+import { useNavigate } from "react-router-dom";
 const { Search } = Input;
 
 // 顶部导航栏组件
 const Header = () => {
   const { isDarkMode, toggleTheme } = useTheme();
+  const navigate = useNavigate();
 
   const userMenu = (
     <Menu>
@@ -37,9 +39,12 @@ const Header = () => {
       <header className="sticky top-0 z-50 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 shadow-sm">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-3">
+            <div
+              className="flex items-center space-x-3 cursor-pointer"
+              onClick={() => navigate("/")}
+            >
               <div className="w-10 h-10 rounded-lg flex items-center justify-center">
-                <img src="/tomato.svg" />
+                <img title="tomato logo" src="/tomato.svg" />
               </div>
               <div className="text-2xl font-bold text-primary dark:text-dark-primary">
                 番茄工具

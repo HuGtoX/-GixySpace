@@ -9,6 +9,7 @@ function Card({ title, children }: CardProps) {
       <div className="p-4 border-b border-solid border-gray-200 dark:border-gray-700 flex items-center justify-between">
         <h3 className="font-semibold text-gray-800 dark:text-white">{title}</h3>
         <button
+          title="chevron-down"
           id="toggle-instructions"
           className="text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary/80 transition-colors"
         >
