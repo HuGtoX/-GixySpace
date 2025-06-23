@@ -19,7 +19,7 @@ function Footer() {
 				</div>
 				<div>
 					<span className="text-xs text-gray-500 dark:text-gray-400">
-						© 2025 ToolHub. 保留所有权利。
+						© 2025 番茄工具. 保留所有权利。
 					</span>
 				</div>
 			</div>

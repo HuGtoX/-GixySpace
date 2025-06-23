@@ -1,14 +1,7 @@
-import { Button } from 'antd';
-import {
-	FaCalculator,
-	FaQrcode,
-	FaExchangeAlt,
-	FaRegClock,
-	FaRegStickyNote,
-	FaLanguage,
-	FaPalette
-} from 'react-icons/fa';
 import IconWrapper from '@/components/IconWrapper';
+import { Button } from 'antd';
+import { useNavigate } from 'react-router-dom';
+import { toolsMenu } from '../config';
 
 interface ToolItemProps {
 	name: string;
@@ -20,12 +13,22 @@ interface ToolItemProps {
 const ToolItem = ({
 	name,
 	icon,
+	link,
 	background = 'bg-primary/10'
 }: ToolItemProps) => {
+	const navigate = useNavigate();
+
+	const handleClick = () => {
+		if (link) {
+			navigate(link);
+		}
+	};
+
 	return (
 		<div
 			className="tool-icon bg-white dark:bg-gray-800 rounded-xl p-4 text-center shadow-md hover:shadow-lg ripple cursor-pointer pixel-grow"
 			draggable="true"
+			onClick={handleClick}
 		>
 			<IconWrapper size={12} background={background} icon={icon} />
 			<span className="text-sm font-medium">{name}</span>
@@ -47,74 +50,16 @@ export default function Tools() {
 			</div>
 
 			<div id="tool-grid" className="grid grid-cols-2 gap-4">
-				{/* 工具1：计算器 */}
-				<ToolItem
-					name="计算器"
-					icon={
-						<FaCalculator className="text-primary dark:text-dark-primary" />
-					}
-					link="/tools/calculator"
-					description="计算器"
-				/>
-
-				{/* 工具2：二维码生成器 */}
-				<ToolItem
-					name="二维码生成器"
-					icon={
-						<FaQrcode className="text-secondary dark:text-dark-secondary" />
-					}
-					background="bg-secondary/10"
-					link="/tools/qrcode"
-					description="二维码生成器"
-				/>
-
-				{/* 工具3：单位转换 */}
-				<ToolItem
-					name="单位转换"
-					background=" bg-green-500/10 dark:bg-green-500/10"
-					icon={
-						<FaExchangeAlt className="text-green-500 dark:text-green-400" />
-					}
-					link="/tools/unit"
-					description="单位转换"
-				/>
-
-				{/* 工具4：时间戳转换 */}
-				<ToolItem
-					name="时间戳转换"
-					background=" bg-blue-500/10 dark:bg-blue-500/10"
-					icon={<FaRegClock className="text-blue-500 dark:text-blue-400" />}
-					link="/tools/time"
-					description="时间戳转换"
-				/>
-
-				{/* 工具5：颜色选择器 */}
-				<ToolItem
-					name="颜色选择器"
-					background=" bg-purple-500/10 dark:bg-purple-500/10"
-					icon={<FaPalette className="text-purple-500 dark:text-purple-400" />}
-					link="/tools/color"
-					description="颜色选择器"
-				/>
-
-				{/* 工具6：JSON格式化 */}
-				<ToolItem
-					name="便签"
-					background=" bg-pink-500/10 dark:bg-pink-500/10"
-					icon={
-						<FaRegStickyNote className="text-pink-500 dark:text-pink-400" />
-					}
-					link="/tools/json"
-					description="便签"
-				/>
-
-				<ToolItem
-					name="翻译"
-					background=" bg-yellow-500/10 dark:bg-yellow-500/10"
-					icon={<FaLanguage className="text-yellow-500 dark:text-yellow-400" />}
-					link="/tools/regex"
-					description="翻译"
-				/>
+				{toolsMenu.map((item) => (
+					<ToolItem
+						key={item.id}
+						name={item.name}
+						icon={item.icon}
+						link={item.url}
+						background={item?.background}
+						description={item.description}
+					/>
+				))}
 			</div>
 
 			<div>
