@@ -14,14 +14,20 @@ const Container: React.FC<ContainerProps> = (props) => {
 
   return (
     <div className={styles.container}>
-      <div className="">
+      <div>
         <Header title={title} />
         {header}
       </div>
 
-      <div className={styles.content}>{children}</div>
+      <div className={`${styles.content} bg-white dark:bg-gray-800`}>
+        {children}
+      </div>
 
-      {footer && <div className={styles.footer}>{footer}</div>}
+      {footer && (
+        <div className={`${styles.footer} bg-white dark:bg-gray-800`}>
+          {footer}
+        </div>
+      )}
     </div>
   );
 };

@@ -11,6 +11,9 @@
 	"deno.codeLens.references": true,
 	"css.lint.unknownAtRules": "ignore",
 	"deno.codeLens.implementations": true,
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.formatOnSaveMode": "file",
+	"editor.formatOnSave": true,
 	"explorer.fileNesting.patterns": {
 		"*.ts": "$(capture).test.ts, $(capture).test.tsx",
 		"*.tsx": "$(capture).test.ts, $(capture).test.tsx",
@@ -20,5 +23,8 @@
 		"package.json": "README.md,pnpm-lock.yaml,pnpm-workspace.yaml,LICENSE,.gitattributes,.gitignore,.gitpod.yml,CNAME,.npmrc,.browserslistrc",
 		"tsconfig.json": ".eslintignore,.prettierrc.*,.prettierignore,tsconfig.*"
 		// ".eslintrc.cjs": ".eslintignore,.prettierignore,.stylelintignore,.commitlintrc.*,.prettierrc.*,.stylelintrc.*,.eslintrc-auto-import.json,.editorconfig,.commitlint.cjs"
+	},
+	"[javascript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	}
 }

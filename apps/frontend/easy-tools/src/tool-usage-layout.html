@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>工具使用页面</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/qrcode.js@1.0.0/qrcode.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind 配置 -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4A90E2',
+                        secondary: '#6366F1',
+                        accent: '#10B981',
+                        error: '#FF4757',
+                        dark: {
+                            primary: '#3B82F6',
+                            secondary: '#818CF8',
+                            background: '#1E293B',
+                            card: '#334155'
+                        }
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'glow': 'glow 1.2s linear infinite',
+                        'float': 'float 3s ease-in-out infinite',
+                        'bounce-slow': 'bounce 2s infinite',
+                        'shake': 'shake 0.5s ease-in-out',
+                        'fade-in': 'fadeIn 0.3s ease-in-out',
+                        'slide-in': 'slideIn 0.4s cubic-bezier(0.2, 1, 0.3, 1)',
+                        'flip': 'flip 0.6s ease-out-back',
+                        'particle-spread': 'particleSpread 0.5s ease-out'
+                    },
+                    keyframes: {
+                        glow: {
+                            '0%, 100%': { boxShadow: '0 0 0 rgba(74, 144, 226, 0.4)' },
+                            '50%': { boxShadow: '0 0 15px rgba(74, 144, 226, 0.8)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        shake: {
+                            '0%, 100%': { transform: 'translateX(0)' },
+                            '10%, 30%, 50%, 70%, 90%': { transform: 'translateX(-5px)' },
+                            '20%, 40%, 60%, 80%': { transform: 'translateX(5px)' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideIn: {
+                            '0%': { transform: 'scale(0.95)', opacity: '0' },
+                            '100%': { transform: 'scale(1)', opacity: '1' },
+                        },
+                        flip: {
+                            '0%': { transform: 'rotateY(180deg)', opacity: '0' },
+                            '100%': { transform: 'rotateY(0)', opacity: '1' },
+                        },
+                        particleSpread: {
+                            '0%': { opacity: '1', transform: 'scale(1)' },
+                            '100%': { opacity: '0', transform: 'scale(2)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- 自定义工具类 -->
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .glass {
+                backdrop-filter: blur(8px);
+                background-color: rgba(255, 255, 255, 0.7);
+            }
+            .dark .glass {
+                background-color: rgba(30, 41, 59, 0.7);
+            }
+            .glow-border {
+                box-shadow: 0 0 0 1px rgba(74, 144, 226, 0.8);
+            }
+            .glow-border-accent {
+                box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.8);
+            }
+            .glow-border-error {
+                box-shadow: 0 0 0 1px rgba(255, 71, 87, 0.8);
+            }
+            .scrollbar-hide::-webkit-scrollbar {
+                display: none;
+            }
+            .scrollbar-hide {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+            .gradient-text {
+                background-clip: text;
+                -webkit-background-clip: text;
+                color: transparent;
+                background-image: linear-gradient(to right, #4A90E2, #6366F1);
+            }
+            .dark .gradient-text {
+                background-image: linear-gradient(to right, #3B82F6, #818CF8);
+            }
+            .btn-gradient {
+                background: linear-gradient(to right, #4A90E2, #6366F1);
+            }
+            .dark .btn-gradient {
+                background: linear-gradient(to right, #3B82F6, #818CF8);
+            }
+            .corner-decor {
+                position: relative;
+            }
+            .corner-decor::before,
+            .corner-decor::after {
+                content: '';
+                position: absolute;
+                background-color: #4A90E2;
+            }
+            .dark .corner-decor::before,
+            .dark .corner-decor::after {
+                background-color: #3B82F6;
+            }
+            .corner-decor::before {
+                top: 0;
+                left: 0;
+            }
+            .corner-decor::after {
+                bottom: 0;
+                right: 0;
+            }
+            .corner-decor-sm::before,
+            .corner-decor-sm::after {
+                width: 20px;
+                height: 2px;
+            }
+            .corner-decor-sm::after {
+                width: 2px;
+                height: 20px;
+            }
+            .corner-decor-lg::before,
+            .corner-decor-lg::after {
+                width: 30px;
+                height: 3px;
+            }
+            .corner-decor-lg::after {
+                width: 3px;
+                height: 30px;
+            }
+            .slider-track {
+                height: 4px;
+                border-radius: 2px;
+                background: linear-gradient(to right, #4A90E2, #6366F1);
+            }
+            .dark .slider-track {
+                background: linear-gradient(to right, #3B82F6, #818CF8);
+            }
+            .slider-thumb {
+                width: 14px;
+                height: 14px;
+                border-radius: 50%;
+                background-color: white;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+                transition: width 0.2s, height 0.2s;
+            }
+            .slider-thumb:hover {
+                width: 16px;
+                height: 16px;
+            }
+            .btn-pulse {
+                animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            }
+            .input-focus {
+                transition: box-shadow 0.8s;
+            }
+            .input-focus:focus {
+                box-shadow: 0 0 0 1px rgba(74, 144, 226, 0.8);
+            }
+            .dropdown-animate {
+                animation: fadeIn 0.3s ease-in-out, slideDown 0.3s ease-in-out;
+            }
+            @keyframes slideDown {
+                0% { transform: translateY(-10px); }
+                100% { transform: translateY(0); }
+            }
+            .particles-container {
+                position: relative;
+                overflow: hidden;
+            }
+            .particle {
+                position: absolute;
+                background-color: rgba(255, 255, 255, 0.6);
+                border-radius: 50%;
+                pointer-events: none;
+            }
+            .shine-effect {
+                position: relative;
+                overflow: hidden;
+            }
+            .shine-effect::after {
+                content: '';
+                position: absolute;
+                top: -50%;
+                left: -50%;
+                width: 200%;
+                height: 200%;
+                background: linear-gradient(
+                    to right,
+                    rgba(255, 255, 255, 0) 0%,
+                    rgba(255, 255, 255, 0.3) 50%,
+                    rgba(255, 255, 255, 0) 100%
+                );
+                transform: rotate(30deg);
+                animation: shine 1.2s linear infinite;
+            }
+            @keyframes shine {
+                0% { transform: translateX(-100%) rotate(30deg); }
+                100% { transform: translateX(100%) rotate(30deg); }
+            }
+        }
+    </style>
+</head>
+<body class="font-inter bg-gray-50 dark:bg-dark-background transition-colors duration-300">
+    <!-- 顶部导航栏 -->
+    <header class="sticky top-0 z-50 bg-white dark:bg-dark-background shadow-md transition-all duration-300">
+        <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+            <!-- Logo和标题 -->
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+                    <i class="fa fa-cogs text-white text-xl"></i>
+                </div>
+                <h1 class="text-xl font-bold gradient-text">ToolMaster</h1>
+            </div>
+            
+            <!-- 搜索框 -->
+            <div class="hidden md:flex items-center flex-1 max-w-xl mx-8">
+                <div class="relative w-full">
+                    <input 
+                        type="text" 
+                        placeholder="搜索工具或功能..." 
+                        class="w-full pl-10 pr-4 py-2 rounded-full bg-gray-100 dark:bg-dark-card text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all duration-300"
+                    >
+                    <i class="fa fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                </div>
+            </div>
+            
+            <!-- 用户区域 -->
+            <div class="flex items-center space-x-4">
+                <!-- 主题切换 -->
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-dark-card transition-colors duration-300">
+                    <i class="fa fa-moon-o dark:hidden text-gray-600"></i>
+                    <i class="fa fa-sun-o hidden dark:block text-yellow-400"></i>
+                </button>
+                
+                <!-- 通知 -->
+                <button class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-dark-card transition-colors duration-300 relative">
+                    <i class="fa fa-bell-o text-gray-600 dark:text-gray-300"></i>
+                    <span class="absolute top-1 right-1 w-2 h-2 bg-accent rounded-full"></span>
+                </button>
+                
+                <!-- 用户头像 -->
+                <div class="relative group">
+                    <button class="flex items-center space-x-2">
+                        <div class="w-9 h-9 rounded-full overflow-hidden border-2 border-primary/30">
+                            <img src="https://picsum.photos/200/200?random=1" alt="用户头像" class="w-full h-full object-cover">
+                        </div>
+                        <span class="hidden md:inline text-sm font-medium">用户名</span>
+                        <i class="fa fa-angle-down text-gray-500"></i>
+                    </button>
+                    
+                    <!-- 用户下拉菜单 -->
+                    <div class="absolute right-0 mt-2 w-48 bg-white dark:bg-dark-card rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 dropdown-animate">
+                        <div class="py-2">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-background transition-colors duration-300">
+                                <i class="fa fa-user-o mr-2"></i>个人资料
+                            </a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-background transition-colors duration-300">
+                                <i class="fa fa-cog mr-2"></i>设置
+                            </a>
+                            <div class="border-t border-gray-200 dark:border-gray-700 my-1"></div>
+                            <a href="#" class="block px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-dark-background transition-colors duration-300">
+                                <i class="fa fa-sign-out mr-2"></i>退出登录
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="container mx-auto px-4 py-6">
+        <div class="flex flex-col lg:flex-row gap-6">
+            <!-- 左侧操作面板 (70%) -->
+            <div class="lg:w-7/12 bg-white dark:bg-dark-card rounded-xl shadow-md p-6 transition-all duration-300">
+                <!-- 标题栏 -->
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center mr-4">
+                            <i class="fa fa-qrcode text-white text-2xl"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-800 dark:text-white">二维码生成器</h2>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">快速创建自定义二维码</p>
+                        </div>
+                    </div>
+                    
+                    <!-- AI优化按钮 -->
+                    <button class="relative px-4 py-2 rounded-full bg-gradient-to-r from-purple-500 to-indigo-600 text-white text-sm font-medium flex items-center hover:shadow-lg transition-all duration-300 shine-effect">
+                        <i class="fa fa-robot mr-2"></i>
+                        智能优化
+                        <span class="absolute -top-1 -right-1 w-5 h-5 bg-accent rounded-full flex items-center justify-center text-[10px] font-bold">AI</span>
+                    </button>
+                </div>
+                
+                <!-- 内容输入区 -->
+                <div class="mb-6">
+                    <label for="qr-content" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        输入内容
+                        <span class="text-xs text-gray-500 dark:text-gray-400 ml-2">(支持文本、URL、联系方式等)</span>
+                    </label>
+                    <div class="relative">
+                        <textarea 
+                            id="qr-content" 
+                            rows="3" 
+                            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-dark-background text-gray-800 dark:text-gray-200 input-focus focus:outline-none resize-none transition-all duration-300"
+                            placeholder="请输入要转换为二维码的内容..."
+                        >https://www.example.com</textarea>
+                        <div class="absolute bottom-3 right-3 text-xs text-gray-500 dark:text-gray-400">
+                            <span id="char-count">22</span>/500
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 参数调节区 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <!-- 尺寸滑块 -->
+                    <div>
+                        <label for="qr-size" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            尺寸
+                            <span class="text-xs text-gray-500 dark:text-gray-400 ml-2">(100px-500px)</span>
+                        </label>
+                        <div class="relative pt-5">
+                            <input 
+                                type="range" 
+                                id="qr-size" 
+                                min="100" 
+                                max="500" 
+                                step="10" 
+                                value="200" 
+                                class="w-full appearance-none slider-track focus:outline-none"
+                            >
+                            <div class="absolute top-0 left-0 transform -translate-y-full bg-white dark:bg-dark-card px-2 py-1 rounded text-xs font-medium shadow-sm border border-gray-200 dark:border-gray-700" id="size-value">
+                                200px
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 容错率选择器 -->
+                    <div>
+                        <label for="error-correction" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            容错率
+                            <span class="text-xs text-gray-500 dark:text-gray-400 ml-2">(推荐M级)</span>
+                        </label>
+                        <div class="relative">
+                            <select 
+                                id="error-correction" 
+                                class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-dark-background text-gray-800 dark:text-gray-200 appearance-none focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all duration-300"
+                            >
+                                <option value="L">L (7%)</option>
+                                <option value="M" selected>M (15%)</option>
+                                <option value="Q">Q (25%)</option>
+                                <option value="H">H (30%)</option>
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                                <i class="fa fa-chevron-down text-gray-500 dark:text-gray-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 主色选择器 -->
+                    <div>
+                        <label for="qr-color" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            主色
+                        </label>
+                        <div class="flex items-center space-x-2">
+                            <input 
+                                type="color" 
+                                id="qr-color" 
+                                value="#000000" 
+                                class="w-10 h-10 rounded-full border-none cursor-pointer appearance-none overflow-hidden"
+                            >
+                            <div class="flex space-x-1">
+                                <button class="w-6 h-6 rounded-full bg-black border-2 border-white dark:border-dark-card hover:scale-110 transition-transform" data-color="#000000"></button>
+                                <button class="w-6 h-6 rounded-full bg-primary border-2 border-white dark:border-dark-card hover:scale-110 transition-transform" data-color="#4A90E2"></button>
+                                <button class="w-6 h-6 rounded-full bg-secondary border-2 border-white dark:border-dark-card hover:scale-110 transition-transform" data-color="#6366F1"></button>
+                                <button class="w-6 h-6 rounded-full bg-accent border-2 border-white dark:border-dark-card hover:scale-110 transition-transform" data-color="#10B981"></button>
+                                <button class="w-6 h-6 rounded-full bg-error border-2 border-white dark:border-dark-card hover:scale-110 transition-transform" data-color="#FF4757"></button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 背景色选择器 -->
+                    <div>
+                        <label for="bg-color" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            背景色
+                        </label>
+                        <div class="flex items-center space-x-2">
+                            <input 
+                                type="color" 
+                                id="bg-color" 
+                                value="#FFFFFF" 
+                                class="w-10 h-10 rounded-full border-none cursor-pointer appearance-none overflow-hidden"
+                            >
+                            <div class="flex space-x-1">
+                                <button class="w-6 h-6 rounded-full bg-white border-2 border-gray-300 dark:border-gray-600 hover:scale-110 transition-transform" data-color="#FFFFFF"></button>
+                                <button class="w-6 h-6 rounded-full bg-gray-100 border-2 border-gray-300 dark:border-gray-600 hover:scale-110 transition-transform" data-color="#F3F4F6"></button>
+                                <button class="w-6 h-6 rounded-full bg-blue-50 border-2 border-gray-300 dark:border-gray-600 hover:scale-110 transition-transform" data-color="#EFF6FF"></button>
+                                <button class="w-6 h-6 rounded-full bg-green-50 border-2 border-gray-300 dark:border-gray-600 hover:scale-110 transition-transform" data-color="#ECFDF5"></button>
+                                <button class="w-6 h-6 rounded-full bg-purple-50 border-2 border-gray-300 dark:border-gray-600 hover:scale-110 transition-transform" data-color="#F5F3FF"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 实时预览区 -->
+                <div class="mb-6">
+                    <div class="flex items-center justify-between mb-3">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            实时预览
+                            <span class="text-xs text-gray-500 dark:text-gray-400 ml-2">(支持鼠标滚轮缩放)</span>
+                        </label>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xs text-gray-500 dark:text-gray-400">缩放:</span>
+                            <button id="zoom-out" class="p-1 text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary/80 transition-colors">
+                                <i class="fa fa-search-minus"></i>
+                            </button>
+                            <span id="zoom-level" class="text-xs font-medium text-gray-700 dark:text-gray-300">100%</span>
+                            <button id="zoom-in" class="p-1 text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary/80 transition-colors">
+                                <i class="fa fa-search-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="relative rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 p-6 bg-gray-50 dark:bg-dark-background glass corner-decor-lg">
+                        <div id="qr-preview-container" class="flex items-center justify-center h-[240px] md:h-[300px] transition-all duration-300">
+                            <div id="qr-preview" class="w-[200px] h-[200px] transition-all duration-300"></div>
+                        </div>
+                        
+                        <!-- 加载状态 (默认隐藏) -->
+                        <div id="loading-skeleton" class="absolute inset-0 flex items-center justify-center bg-white/80 dark:bg-dark-background/80 opacity-0 invisible transition-all duration-300">
+                            <div class="animate-pulse flex flex-col items-center">
+                                <div class="w-20 h-20 rounded-lg bg-gray-200 dark:bg-gray-700 mb-3"></div>
+                                <div class="w-32 h-3 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 操作按钮组 -->
+                <div class="flex flex-wrap gap-3">
+                    <button id="generate-btn" class="flex-1 px-6 py-3 rounded-full btn-gradient text-white font-medium hover:shadow-lg transition-all duration-300 flex items-center justify-center relative particles-container">
+                        <i class="fa fa-refresh mr-2"></i>
+                        生成
+                    </button>
+                    <button id="download-png" class="flex-1 px-6 py-3 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-300 flex items-center justify-center">
+                        <i class="fa fa-download mr-2"></i>
+                        下载PNG
+                    </button>
+                    <button id="copy-svg" class="flex-1 px-6 py-3 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-300 flex items-center justify-center">
+                        <i class="fa fa-copy mr-2"></i>
+                        复制SVG
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 右侧辅助功能区 (30%) -->
+            <div class="lg:w-5/12 space-y-6">
+                <!-- 使用说明卡片 -->
+                <div class="bg-white dark:bg-dark-card rounded-xl shadow-md transition-all duration-300">
+                    <div class="p-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+                        <h3 class="font-semibold text-gray-800 dark:text-white">使用说明</h3>
+                        <button id="toggle-instructions" class="text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary/80 transition-colors">
+                            <i class="fa fa-chevron-down"></i>
+                        </button>
+                    </div>
+                    <div id="instructions-content" class="p-4">
+                        <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                            <li class="flex items-start">
+                                <i class="fa fa-check-circle text-accent mt-1 mr-2"></i>
+                                <span>支持中文、URL、联系方式等格式，系统会自动识别内容类型</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-check-circle text-accent mt-1 mr-2"></i>
+                                <span>建议保持默认容错率（M级），可应对15%的图案破损</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-check-circle text-accent mt-1 mr-2"></i>
+                                <span>生成后可通过鼠标滚轮调整预览大小</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-check-circle text-accent mt-1 mr-2"></i>
+                                <span>深色背景建议搭配浅色前景色，确保扫描效果</span>
+                            </li>
+                        </ul>
+                        <div class="mt-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-100 dark:border-blue-800">
+                            <p class="text-xs text-blue-700 dark:text-blue-300">
+                                <i class="fa fa-lightbulb-o mr-1"></i>
+                                提示：使用AI智能优化功能，可自动调整最佳参数组合
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 历史记录面板 -->
+                <div class="bg-white dark:bg-dark-card rounded-xl shadow-md transition-all duration-300">
+                    <div class="p-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+                        <h3 class="font-semibold text-gray-800 dark:text-white">历史记录</h3>
+                        <button class="text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary/80 transition-colors">
+                            <i class="fa fa-trash-o"></i>
+                        </button>
+                    </div>
+                    <div class="p-4 max-h-[240px] overflow-y-auto scrollbar-hide">
+                        <ul class="space-y-3">
+                            <li class="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 rounded bg-primary/10 dark:bg-primary/20 flex items-center justify-center mr-3">
+                                        <i class="fa fa-qrcode text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-800 dark:text-white truncate max-w-[120px]">https://www.example.com</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">今天 10:30</p>
+                                    </div>
+                                </div>
+                                <button class="p-1.5 text-gray-500 hover:text-primary transition-colors">
+                                    <i class="fa fa-copy"></i>
+                                </button>
+                            </li>
+                            <li class="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 rounded bg-primary/10 dark:bg-primary/20 flex items-center justify-center mr-3">
+                                        <i class="fa fa-qrcode text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-800 dark:text-white truncate max-w-[120px]">微信：example</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">昨天 16:45</p>
+                                    </div>
+                                </div>
+                                <button class="p-1.5 text-gray-500 hover:text-primary transition-colors">
+                                    <i class="fa fa-copy"></i>
+                                </button>
+                            </li>
+                            <li class="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 rounded bg-primary/10 dark:bg-primary/20 flex items-center justify-center mr-3">
+                                        <i class="fa fa-qrcode text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-800 dark:text-white truncate max-w-[120px]">tel:+123456789</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">2023-06-22 09:15</p>
+                                    </div>
+                                </div>
+                                <button class="p-1.5 text-gray-500 hover:text-primary transition-colors">
+                                    <i class="fa fa-copy"></i>
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- 相关工具推荐 -->
+                <div class="bg-white dark:bg-dark-card rounded-xl shadow-md transition-all duration-300">
+                    <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+                        <h3 class="font-semibold text-gray-800 dark:text-white">相关工具</h3>
+                    </div>
+                    <div class="p-4">
+                        <div class="grid grid-cols-2 gap-3">
+                            <a href="#" class="group p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-primary/50 dark:hover:border-primary/50 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-all duration-300">
+                                <div class="flex flex-col items-center">
+                                    <div class="w-12 h-12 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center mb-2 group-hover:bg-blue-100 dark:group-hover:bg-blue-900/30 transition-colors">
+                                        <i class="fa fa-barcode text-blue-500"></i>
+                                    </div>
+                                    <p class="text-sm font-medium text-gray-800 dark:text-white">条形码生成器</p>
+                                </div>
+                            </a>
+                            <a href="#" class="group p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-primary/50 dark:hover:border-primary/50 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-all duration-300">
+                                <div class="flex flex-col items-center">
+                                    <div class="w-12 h-12 rounded-full bg-green-50 dark:bg-green-900/20 flex items-center justify-center mb-2 group-hover:bg-green-100 dark:group-hover:bg-green-900/30 transition-colors">
+                                        <i class="fa fa-link text-green-500"></i>
+                                    </div>
+                                    <p class="text-sm font-medium text-gray-800 dark:text-white">短链接生成器</p>
+                                </div>
+                            </a>
+                            <a href="#" class="group p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-primary/50 dark:hover:border-primary/50 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-all duration-300">
+                                <div class="flex flex-col items-center">
+                                    <div class="w-12 h-12 rounded-full bg-purple-50 dark:bg-purple-900/20 flex items-center justify-center mb-2 group-hover:bg-purple-100 dark:group-hover:bg-purple-900/30 transition-colors">
+                                        <i class="fa fa-lock text-purple-500"></i>
+                                    </div>
+                                    <p class="text-sm font-medium text-gray-800 dark:text-white">文本加密工具</p>
+                                </div>
+                            </a>
+                            <a href="#" class="group p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-primary/50 dark:hover:border-primary/50 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-all duration-300">
+                                <div class="flex flex-col items-center">
+                                    <div class="w-12 h-12 rounded-full bg-red-50 dark:bg-red-900/20 flex items-center justify-center mb-2 group-hover:bg-red-100 dark:group-hover:bg-red-900/30 transition-colors">
+                                        <i class="fa fa-qrcode text-red-500"></i>
+                                    </div>
+                                    <p class="text-sm font-medium text-gray-800 dark:text-white">二维码解码工具</p>
+                                </div>
+                            </a>
+                            <a href="#" class="group p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-primary/50 dark:hover:border-primary/50 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-all duration-300">
+                                <div class="flex flex-col items-center">
+                                    <div class="w-12 h-12 rounded-full bg-yellow-50 dark:bg-yellow-900/20 flex items-center justify-center mb-2 group-hover:bg-yellow-100 dark:group-hover:bg-yellow-900/30 transition-colors">
+                                        <i class="fa fa-image text-yellow-500"></i>
+                                    </div>
+                                    <p class="text-sm font-medium text-gray-800 dark:text-white">图片转二维码</p>
+                                </div>
+                            </a>
+                            <a href="#" class="group p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-primary/50 dark:hover:border-primary/50 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-all duration-300">
+                                <div class="flex flex-col items-center">
+                                    <div class="w-12 h-12 rounded-full bg-indigo-50 dark:bg-indigo-900/20 flex items-center justify-center mb-2 group-hover:bg-indigo-100 dark:group-hover:bg-indigo-900/30 transition-colors">
+                                        <i class="fa fa-clone text-indigo-500"></i>
+                                    </div>
+                                    <p class="text-sm font-medium text-gray-800 dark:text-white">批量生成器</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 错误提示气泡 (默认隐藏) -->
+    <div id="error-tooltip" class="fixed opacity-0 invisible transition-all duration-300 z-50 bg-white dark:bg-dark-card border border-error rounded-lg shadow-lg p-3 max-w-xs">
+        <div class="flex items-start">
+            <i class="fa fa-exclamation-circle text-error mt-0.5 mr-2"></i>
+            <div>
+                <p class="text-sm font-medium text-gray-800 dark:text-white" id="error-message">错误提示</p>
+                <p class="text-xs text-gray-600 dark:text-gray-400" id="error-details">详细信息</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 成功提示 (默认隐藏) -->
+    <div id="success-toast" class="fixed bottom-4 right-4 bg-accent text-white rounded-lg shadow-lg p-4 opacity-0 invisible transition-all duration-300 flex items-center">
+        <i class="fa fa-check-circle mr-2"></i>
+        <p id="success-message">操作成功！</p>
+    </div>
+
+    <script>
+        // DOM元素
+        const themeToggle = document.getElementById('theme-toggle');
+        const qrContent = document.getElementById('qr-content');
+        const charCount = document.getElementById('char-count');
+        const qrSize = document.getElementById('qr-size');
+        const sizeValue = document.getElementById('size-value');
+        const errorCorrection = document.getElementById('error-correction');
+        const qrColor = document.getElementById('qr-color');
+        const bgColor = document.getElementById('bg-color');
+        const colorPresets = document.querySelectorAll('[data-color]');
+        const qrPreview = document.getElementById('qr-preview');
+        const generateBtn = document.getElementById('generate-btn');
+        const downloadPNG = document.getElementById('download-png');
+        const copySVG = document.getElementById('copy-svg');
+        const zoomIn = document.getElementById('zoom-in');
+        const zoomOut = document.getElementById('zoom-out');
+        const zoomLevel = document.getElementById('zoom-level');
+        const qrPreviewContainer = document.getElementById('qr-preview-container');
+        const loadingSkeleton = document.getElementById('loading-skeleton');
+        const toggleInstructions = document.getElementById('toggle-instructions');
+        const instructionsContent = document.getElementById('instructions-content');
+        const errorTooltip = document.getElementById('error-tooltip');
+        const errorMessage = document.getElementById('error-message');
+        const errorDetails = document.getElementById('error-details');
+        const successToast = document.getElementById('success-toast');
+        const successMessage = document.getElementById('success-message');
+        
+        // 初始化变量
+        let qrCode;
+        let currentZoom = 100;
+        let isInstructionsOpen = true;
+        
+        // 初始化二维码
+        function initQRCode() {
+            // 清空现有内容
+            qrPreview.innerHTML = '';
+            
+            // 创建新的二维码实例
+            qrCode = new QRCode(qrPreview, {
+                text: qrContent.value,
+                width: parseInt(qrSize.value),
+                height: parseInt(qrSize.value),
+                colorDark: qrColor.value,
+                colorLight: bgColor.value,
+                correctLevel: QRCode.CorrectLevel[errorCorrection.value]
+            });
+        }
+        
+        // 更新字符计数
+        qrContent.addEventListener('input', () => {
+            const count = qrContent.value.length;
+            charCount.textContent = count;
+            
+            if (count > 500) {
+                showErrorTooltip(qrContent, '内容过长', '最多可输入500个字符');
+                qrContent.value = qrContent.value.substring(0, 500);
+                charCount.textContent = 500;
+            }
+        });
+        
+        // 更新尺寸显示
+        qrSize.addEventListener('input', () => {
+            sizeValue.textContent = `${qrSize.value}px`;
+            sizeValue.style.left = `${((qrSize.value - 100) / (500 - 100)) * 100}%`;
+        });
+        
+        // 尺寸变更时更新二维码
+        qrSize.addEventListener('change', generateQRCode);
+        
+        // 容错率变更时更新二维码
+        errorCorrection.addEventListener('change', generateQRCode);
+        
+        // 颜色变更时更新二维码
+        qrColor.addEventListener('input', generateQRCode);
+        bgColor.addEventListener('input', generateQRCode);
+        
+        // 颜色预设点击
+        colorPresets.forEach(preset => {
+            preset.addEventListener('click', () => {
+                const color = preset.getAttribute('data-color');
+                
+                // 如果是主色预设按钮
+                if (preset.parentElement.id === 'qr-color') {
+                    qrColor.value = color;
+                } 
+                // 如果是背景色预设按钮
+                else if (preset.parentElement.id === 'bg-color') {
+                    bgColor.value = color;
+                }
+                
+                generateQRCode();
+            });
+        });
+        
+        // 生成二维码
+        function generateQRCode() {
+            const content = qrContent.value.trim();
+            
+            if (!content) {
+                showErrorTooltip(qrContent, '内容不能为空', '请输入要生成二维码的内容');
+                return;
+            }
+            
+            // 显示加载状态
+            showLoading(true);
+            
+            // 模拟加载延迟
+            setTimeout(() => {
+                // 隐藏加载状态
+                showLoading(false);
+                
+                // 生成二维码
+                initQRCode();
+                
+                // 添加生成成功提示
+                showSuccessToast('二维码生成成功！');
+                
+                // 触发按钮粒子效果
+                createParticles(generateBtn);
+            }, 800);
+        }
+        
+        // 显示/隐藏加载状态
+        function showLoading(show) {
+            if (show) {
+                loadingSkeleton.classList.remove('opacity-0', 'invisible');
+                loadingSkeleton.classList.add('opacity-100', 'visible');
+            } else {
+                loadingSkeleton.classList.remove('opacity-100', 'visible');
+                loadingSkeleton.classList.add('opacity-0', 'invisible');
+            }
+        }
+        
+        // 显示错误提示气泡
+        function showErrorTooltip(targetElement, message, details) {
+            // 设置错误信息
+            errorMessage.textContent = message;
+            errorDetails.textContent = details;
+            
+            // 获取目标元素位置
+            const rect = targetElement.getBoundingClientRect();
+            
+            // 设置气泡位置
+            errorTooltip.style.top = `${rect.bottom + 10}px`;
+            errorTooltip.style.left = `${rect.left}px`;
+            
+            // 显示气泡
+            errorTooltip.classList.remove('opacity-0', 'invisible');
+            errorTooltip.classList.add('opacity-100', 'visible');
+            
+            // 添加抖动动画
+            errorTooltip.classList.add('animate-shake');
+            
+            // 移除动画类
+            setTimeout(() => {
+                errorTooltip.classList.remove('animate-shake');
+            }, 500);
+            
+            // 3秒后自动隐藏
+            setTimeout(() => {
+                hideErrorTooltip();
+            }, 3000);
+        }
+        
+        // 隐藏错误提示气泡
+        function hideErrorTooltip() {
+            errorTooltip.classList.remove('opacity-100', 'visible');
+            errorTooltip.classList.add('opacity-0', 'invisible');
+        }
+        
+        // 显示成功提示
+        function showSuccessToast(message) {
+            successMessage.textContent = message;
+            
+            // 显示提示
+            successToast.classList.remove('opacity-0', 'invisible');
+            successToast.classList.add('opacity-100', 'visible');
+            
+            // 3秒后自动隐藏
+            setTimeout(() => {
+                successToast.classList.remove('opacity-100', 'visible');
+                successToast.classList.add('opacity-0', 'invisible');
+            }, 3000);
+        }
+        
+        // 创建按钮点击粒子效果
+        function createParticles(button) {
+            const rect = button.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            
+            // 创建15个粒子
+            for (let i = 0; i < 15; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // 随机粒子大小
+                const size = Math.random() * 4 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // 随机角度和距离
+                const angle = Math.random() * Math.PI * 2;
+                const distance = Math.random() * 20 + 10;
+                
+                // 计算最终位置
+                const x = centerX + Math.cos(angle) * distance;
+                const y = centerY + Math.sin(angle) * distance;
+                
+                // 设置初始位置
+                particle.style.left = `${x}px`;
+                particle.style.top = `${y}px`;
+                
+                // 添加到文档
+                document.body.appendChild(particle);
+                
+                // 动画
+                setTimeout(() => {
+                    particle.style.transition = 'all 0.5s ease-out';
+                    particle.style.opacity = '0';
+                    particle.style.transform = `translate(${Math.cos(angle) * 30}px, ${Math.sin(angle) * 30}px) scale(0.5)`;
+                    
+                    // 移除粒子
+                    setTimeout(() => {
+                        document.body.removeChild(particle);
+                    }, 500);
+                }, 10);
+            }
+        }
+        
+        // 下载PNG
+        downloadPNG.addEventListener('click', () => {
+            if (!qrCode) {
+                showErrorTooltip(downloadPNG, '没有可下载的二维码', '请先生成二维码');
+                return;
+            }
+            
+            // 获取canvas元素
+            const canvas = qrPreview.querySelector('canvas');
+            
+            // 创建下载链接
+            const link = document.createElement('a');
+            link.download = 'qrcode.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            
+            showSuccessToast('二维码已下载！');
+        });
+        
+        // 复制SVG
+        copySVG.addEventListener('click', () => {
+            if (!qrCode) {
+                showErrorTooltip(copySVG, '没有可复制的二维码', '请先生成二维码');
+                return;
+            }
+            
+            // 获取canvas元素
+            const canvas = qrPreview.querySelector('canvas');
+            
+            // 创建临时元素
+            const temp = document.createElement('div');
+            temp.appendChild(canvas);
+            
+            // 复制到剪贴板
+            navigator.clipboard.writeText(temp.innerHTML)
+                .then(() => {
+                    showSuccessToast('SVG代码已复制到剪贴板！');
+                    
+                    // 添加按钮呼吸光效
+                    copySVG.classList.add('btn-pulse');
+                    
+                    // 2秒后移除光效
+                    setTimeout(() => {
+                        copySVG.classList.remove('btn-pulse');
+                    }, 2000);
+                })
+                .catch(err => {
+                    showErrorTooltip(copySVG, '复制失败', '请手动复制SVG代码');
+                    console.error('复制失败:', err);
+                });
+        });
+        
+        // 缩放控制
+        zoomIn.addEventListener('click', () => {
+            if (currentZoom < 200) {
+                currentZoom += 25;
+                updateZoom();
+            }
+        });
+        
+        zoomOut.addEventListener('click', () => {
+            if (currentZoom > 50) {
+                currentZoom -= 25;
+                updateZoom();
+            }
+        });
+        
+        // 鼠标滚轮缩放
+        qrPreviewContainer.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            
+            if (e.deltaY < 0 && currentZoom < 200) {
+                currentZoom += 25;
+            } else if (e.deltaY > 0 && currentZoom > 50) {
+                currentZoom -= 25;
+            }
+            
+            updateZoom();
+        });
+        
+        // 更新缩放
+        function updateZoom() {
+            qrPreview.style.transform = `scale(${currentZoom / 100})`;
+            zoomLevel.textContent = `${currentZoom}%`;
+        }
+        
+        // 切换使用说明显示状态
+        toggleInstructions.addEventListener('click', () => {
+            isInstructionsOpen = !isInstructionsOpen;
+            
+            if (isInstructionsOpen) {
+                instructionsContent.classList.remove('hidden');
+                toggleInstructions.innerHTML = '<i class="fa fa-chevron-down"></i>';
+            } else {
+                instructionsContent.classList.add('hidden');
+                toggleInstructions.innerHTML = '<i class="fa fa-chevron-right"></i>';
+            }
+        });
+        
+        // 主题切换
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+        });
+        
+        // 检查系统主题偏好
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            // 初始化二维码
+            initQRCode();
+            
+            // 初始化滑块位置
+            sizeValue.style.left = `${((qrSize.value - 100) / (500 - 100)) * 100}%`;
+            
+            // 点击其他地方隐藏错误提示
+            document.addEventListener('click', (e) => {
+                if (!errorTooltip.contains(e.target) && e.target !== qrContent) {
+                    hideErrorTooltip();
+                }
+            });
+            
+            // 为所有输入框添加焦点发光效果
+            const inputs = document.querySelectorAll('input, textarea, select');
+            inputs.forEach(input => {
+                input.addEventListener('focus', () => {
+                    input.classList.add('glow-border');
+                });
+                
+                input.addEventListener('blur', () => {
+                    input.classList.remove('glow-border');
+                });
+            });
+        });
+    </script>
+</body>
+</html>    
