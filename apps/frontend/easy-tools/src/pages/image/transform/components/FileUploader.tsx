@@ -3,7 +3,6 @@ import { Upload, message, Typography, Alert } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 import { v4 as uuidv4 } from "uuid";
 import { useDeviceDetect } from "@/hooks/useDeviceDetect";
-import { useTheme } from "@/context/ThemeContext";
 import {
   checkFileSizeLimit,
   createPreviewUrl,
@@ -19,10 +18,8 @@ interface FileUploaderProps {
 }
 
 const FileUploader: React.FC<FileUploaderProps> = ({ onFilesAdded }) => {
-  const [isOver, setIsOver] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { isMobile } = useDeviceDetect();
-  const { isDarkMode } = useTheme();
 
   // 处理文件函数
   const processFiles = useCallback(
@@ -112,7 +109,6 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFilesAdded }) => {
   const handleDrop = useCallback(
     (e: React.DragEvent<HTMLDivElement>) => {
       e.preventDefault();
-      setIsOver(false);
 
       if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
         const fileArray = Array.from(e.dataTransfer.files);
@@ -127,11 +123,9 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFilesAdded }) => {
       <div
         onDragOver={(e) => {
           e.preventDefault();
-          setIsOver(true);
         }}
         onDragLeave={(e) => {
           e.preventDefault();
-          setIsOver(false);
         }}
         onDrop={handleDrop}
         style={{ position: "relative" }}
