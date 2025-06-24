@@ -100,7 +100,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
           }
 
           // 验证文件大小
-          if (!checkFileSizeLimit(file, currentMaxSize)) {
+          if (!checkFileSizeLimit(file, true)) {
             invalidFiles.push(
               `${file.name} (${errorMessages?.overSize || `超过${currentMaxSize}MB限制`})`,
             );
