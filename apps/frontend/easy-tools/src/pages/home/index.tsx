@@ -1,8 +1,8 @@
 import Header from "@/layout/Header";
 import Footer from "@/layout/Footer";
-import News from "./components/News";
-import Tools from "./components/Tools";
-import Aside from "./components/Aside";
+import News from "./GridSpace/News";
+import Tools from "./GridSpace/Tools";
+import Aside from "./GridSpace/Aside";
 import Container from "@/layout/Container";
 
 const HomePage = () => {

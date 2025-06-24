@@ -171,7 +171,6 @@ export const formatFileSize = (bytes: number): string => {
 };
 
 // 检查文件大小是否在限制范围内
-export const checkFileSizeLimit = (file: File, isMobile: boolean): boolean => {
-	const maxSize = isMobile ? 20 * 1024 * 1024 : 50 * 1024 * 1024; // 移动端20MB，桌面端50MB
-	return file.size <= maxSize;
+export const checkFileSizeLimit = (file: File, maxSize: number): boolean => {
+  return file.size <= maxSize * 1024 * 1024; // maxSize以MB为单位
 };
