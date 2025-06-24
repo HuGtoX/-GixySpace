@@ -160,7 +160,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFilesAdded }) => {
                 ? "点击上传"
                 : "拖放文件到这里，或点击上传"}
           </Typography.Title>
-          <Text type="secondary">支持JPG、PNG、WEBP、GIF、SVG格式图片</Text>
+          <Text type="secondary">支持JPG、PNG、WEBP、SVG格式图片</Text>
           <br />
           <Text type="secondary">
             单个文件大小限制：{isMobile ? "20MB" : "50MB"}
