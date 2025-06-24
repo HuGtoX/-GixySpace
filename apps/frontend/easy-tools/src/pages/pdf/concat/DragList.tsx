@@ -89,6 +89,7 @@ const DraggableList: React.FC<DraggableListProps> = (props) => {
   return (
     <div className="list">
       <List
+        className="custom-scrollbar"
         itemLayout="horizontal"
         dataSource={items}
         renderItem={(item, index) => (
