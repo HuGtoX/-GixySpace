@@ -2,8 +2,6 @@ import { useState, useRef } from "react";
 import { List, Button, Space } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import { CustomUploadFile } from "./index";
-import { FaFilePdf } from "react-icons/fa";
-import { formatBytes } from "@gixy/utils";
 import style from "./style.module.scss";
 
 type DraggableListProps = {
@@ -54,7 +52,7 @@ const DraggableList: React.FC<DraggableListProps> = (props) => {
       newIndex = filteredItems.length;
     } else {
       newIndex = positions.findIndex(
-        (pos) => clientY >= pos.top && clientY <= pos.bottom,
+        (pos) => clientY >= pos.top && clientY <= pos.bottom
       );
 
       // 精确计算插入位置（上半部还是下半部）
@@ -97,31 +95,26 @@ const DraggableList: React.FC<DraggableListProps> = (props) => {
         renderItem={(item, index) => (
           <List.Item
             draggable
-            key={item.id}
+            key={item.uid}
             onDragStart={(e) => handleDragStart(e, index)}
             onDragOver={handleDragOver}
             onDragEnd={handleDragEnd}
             className={`${style.list__item} list-item ${
-              index === draggingIndex
-                ? `${style.dragging} transition-transform translate-y-1`
-                : ""
-            }`}
-          >
+              index === draggingIndex ? "dragging" : ""
+            }`}>
             <List.Item.Meta
-              className="group"
-              avatar={<FaFilePdf className=" text-red-600 w-8 h-8" />}
-              title={<span className="font-medium">{item.name}</span>}
-              description={
-                <span>大小: {item.size ? formatBytes(item.size) : "--"}</span>
+              avatar={
+                <img src="https://placehold.co/64x64?text=PDF" alt="pdf" />
               }
+              title={<span>{item.name}</span>}
+              description={<span>大小: {item.size}</span>}
             />
             <Space>
               <Button
                 icon={<DeleteOutlined />}
-                onClick={() => handleDelete(item.id)}
+                onClick={() => handleDelete(item.uid)}
                 type="link"
-                style={{ color: "#ff4d4f" }}
-              >
+                style={{ color: "#ff4d4f" }}>
                 删除
               </Button>
             </Space>

@@ -11,8 +11,6 @@ import ConversionSettings from "./components/ConversionSettings";
 import FileUploader from "./components/FileUploader";
 import ImageItem from "./components/ImageItem";
 import { ImageFile, ConversionSettings as SettingsType } from "./type";
-import { Container } from "@/layout/ToolsLayout";
-import { content } from "./Right";
 
 // 检查浏览器是否支持Web Share API
 const isShareSupported =
@@ -486,13 +484,7 @@ function App() {
   }));
 
   return (
-    <Container
-      title="图片转换"
-      instructions={{
-        tips: "整个转换过程都在您的本地进行，我们不会上传任何数据到云端服务器",
-        content,
-      }}
-    >
+    <>
       {/* 自定义确认对话框 */}
       <Modal
         title="确认重新转换"
@@ -576,7 +568,7 @@ function App() {
         showNavigation={true}
         showZoom={true}
       />
-    </Container>
+    </>
   );
 }
 

@@ -1,1 +1,3 @@
-export { downloadFile, formatBytes } from './file';
+export function isObject(value) {
+  return typeof value === "object" && value !== null;
+}

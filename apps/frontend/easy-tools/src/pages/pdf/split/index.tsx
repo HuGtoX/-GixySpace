@@ -1,150 +1,128 @@
-import { useState } from "react";
-import { Layout, message } from "antd";
-import { Container, Toolbar } from "../../../layout/ToolsLayout";
-import { downloadFile } from "@gixy/utils";
-import FileUploader, { AcceptMap } from "@/components/FileUploader";
-import * as workerSrc from "pdfjs-dist/build/pdf.worker.min?url";
-import * as pdfjsLib from "pdfjs-dist";
-import { PDFDocument } from "pdf-lib";
-import { content } from "./Right";
-
-pdfjsLib.GlobalWorkerOptions.workerSrc = workerSrc.default;
-
+import { Layout } from "antd";
+import { Container, Toolbar } from "../components";
 const { Content } = Layout;
 
-type Pages = Array<{
-  id: number;
-  canvas: string;
-  selected: boolean;
-  pageNumber: number;
-}>;
-
 const SplitDocumentInterface = () => {
-  const [pages, setPages] = useState<Pages>([]);
-  const [pdfDoc, setPdfDoc] = useState<PDFDocument>();
-  const [selectedPages, setSelectedPages] = useState<number[]>([]);
-
-  const handlePageSplit = async () => {
-    try {
-      if (!pdfDoc) {
-        message.error("请先上传PDF文档");
-        return;
-      }
-      if (selectedPages.length === 0) {
-        message.error("请选择要拆分的页面");
-        return;
-      }
-      const newPdfDoc = await PDFDocument.create();
-      const sortedPages = selectedPages.sort((a, b) => a - b);
-      for (let i = 0; i < selectedPages.length; i++) {
-        const [copiedPage] = await newPdfDoc.copyPages(pdfDoc, [
-          sortedPages[i],
-        ]);
-        newPdfDoc.addPage(copiedPage);
-      }
-      const newPdfBytes = await newPdfDoc.save();
-      const newPdfBlob = new Blob([newPdfBytes], { type: "application/pdf" });
-      const newPdfUrl = URL.createObjectURL(newPdfBlob);
-      downloadFile(newPdfUrl, "split.pdf");
-
-      return;
-    } catch (error) {
-      console.error("拆分PDF失败:", error);
-      message.error("拆分PDF时发生错误，请检查控制台日志");
-    }
+  const handleAdd = () => {
+    console.log("添加操作");
   };
 
-  const handlePageClick = (pageNumber: number) => {
-    setSelectedPages((prev) => {
-      if (prev.includes(pageNumber)) {
-        return prev.filter((num) => num !== pageNumber);
-      }
-      return [...prev, pageNumber];
-    });
+  const handleRotateLeft = () => {
+    console.log("向左旋转操作");
   };
 
-  const handleUpload = async (files: any[]) => {
-    for (const { file } of files) {
-      const reader = new FileReader();
-      reader.onload = async (e) => {
-        const pdfBytes = e.target.result as ArrayBuffer;
+  const handleRotateRight = () => {
+    console.log("向右旋转操作");
+  };
 
-        // 2. 使用 pdf-lib 加载 PDF 文档
-        const pdfDoc = await PDFDocument.load(pdfBytes);
-        setPdfDoc(pdfDoc);
-
-        // 1. 使用 pdfjs-dist 加载并渲染页面（用于预览）
-        const pdf = await pdfjsLib.getDocument({ data: pdfBytes }).promise;
-        const pageCount = pdf.numPages;
-        for (let i = 1; i <= pageCount; i++) {
-          const page = await pdf.getPage(i);
-          const scale = 1;
-          const viewport = page.getViewport({ scale });
-
-          const canvas = document.createElement("canvas");
-          const context = canvas.getContext("2d");
-          if (!context) {
-            message.error(`第${i}页渲染失败：无法获取canvas上下文`);
-            continue;
-          }
-          canvas.width = viewport.width;
-          canvas.height = viewport.height;
-
-          await page.render({ canvasContext: context, viewport }).promise;
-
-          const canvasDataURL = canvas.toDataURL("image/png");
-          setPages((prev) => [
-            ...prev,
-            {
-              id: Date.now() + i,
-              pageNumber: i,
-              canvas: canvasDataURL,
-              selected: false,
-            },
-          ]);
-        }
-      };
-      reader.readAsArrayBuffer(file);
-    }
+  const handleComplete = () => {
+    console.log("完成操作");
   };
 
   return (
     <Container
-      title="PDF拆分"
-      header={<Toolbar handleComplete={handlePageSplit} />}
-      instructions={{
-        tips: "整个转换过程都在您的本地进行，我们不会上传任何数据到云端服务器",
-        content,
-      }}
-    >
-      <Content>
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-4 p-4">
-          {pages.map((page, index) => (
+      title="拆分"
+      header={
+        <Toolbar
+          handleAdd={handleAdd}
+          handleRotateRight={handleRotateRight}
+          handleRotateLeft={handleRotateLeft}
+          handleComplete={handleComplete}
+        />
+      }>
+      <Content
+        style={{
+          padding: 20,
+          overflowY: "auto",
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
+          gap: 20,
+          alignContent: "start",
+        }}>
+        {Array.from({ length: 6 }, (_, index) => (
+          <div
+            key={index}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}>
             <div
-              key={page.id}
-              className="relative border p-1 border-solid border-gray-200 rounded-lg  hover:cursor-pointer transition-colors"
-              onClick={() => handlePageClick(index)}
               style={{
-                borderColor: selectedPages.includes(index)
-                  ? "#1677ff"
-                  : "#e8e8e8",
-                backgroundColor: selectedPages.includes(index)
-                  ? "#f0f5ff"
-                  : "white",
-              }}
-            >
+                width: "100%",
+                height: 120,
+                backgroundColor: "white",
+                border: "1px solid #e5e5e5",
+                borderRadius: 4,
+                overflow: "hidden",
+                position: "relative",
+                boxShadow: "0 2px 8px rgba(0, 0, 0, 0.05)",
+              }}>
               <img
-                src={page.canvas}
-                alt="PDF页面"
-                className="w-full h-[150px] object-cover"
+                src={`https://picsum.photos/180/120?random=${index + 1}`}
+                alt="页面预览"
+                style={{ width: "100%", height: "100%", objectFit: "cover" }}
               />
-              <div className="absolute top-1 left-1 text-white bg-black/60 px-2 py-1 rounded">
-                第{page.pageNumber}页
-              </div>
             </div>
-          ))}
+            <div
+              style={{
+                marginTop: 8,
+                fontSize: 12,
+                color: "#666",
+                display: "flex",
+                alignItems: "center",
+              }}>
+              <div
+                style={{
+                  backgroundColor: "#f5e8c3",
+                  padding: "2px 6px",
+                  borderRadius: 4,
+                  marginRight: 4,
+                  fontSize: 12,
+                }}>
+                ppt.pdf
+              </div>
+              <span>{index + 1}</span>
+            </div>
+          </div>
+        ))}
+        <div
+          style={{
+            width: "100%",
+            height: 120,
+            border: "1px dashed #c0c0c0",
+            borderRadius: 4,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "#69c0ff",
+            cursor: "pointer",
+          }}
+          onClick={handleAdd}>
+          <div
+            style={{
+              width: 32,
+              height: 32,
+              borderRadius: "50%",
+              border: "1px solid #69c0ff",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              marginBottom: 10,
+            }}>
+            +
+          </div>
+          <div
+            style={{
+              fontSize: 12,
+              color: "#69c0ff",
+              textAlign: "center",
+              lineHeight: 1.5,
+            }}>
+            添加 PDF、图像、Word、Excel 和 PowerPoint 文档
+          </div>
         </div>
-        <FileUploader accept={[AcceptMap.pdf]} onUploadSuccess={handleUpload} />
       </Content>
     </Container>
   );

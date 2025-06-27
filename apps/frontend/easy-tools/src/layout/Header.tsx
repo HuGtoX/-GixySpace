@@ -19,23 +19,17 @@ const Header = () => {
   const userMenu = (
     <Menu>
       <Menu.Item key="profile">
-        <div className="flex items-center">
-          <FaUser className="mr-2" />
-          个人资料
-        </div>
+        <FaUser className="mr-2" />
+        个人资料
       </Menu.Item>
-      <Menu.Item className="flex items-center" key="settings">
-        <div className="flex items-center">
-          <FaCog className="mr-2" />
-          设置
-        </div>
+      <Menu.Item key="settings">
+        <FaCog className="mr-2" />
+        设置
       </Menu.Item>
       <Menu.Divider />
-      <Menu.Item className="flex items-center" key="logout">
-        <div className="flex items-center">
-          <FaSignOutAlt className="mr-2" />
-          退出登录
-        </div>
+      <Menu.Item key="logout">
+        <FaSignOutAlt className="mr-2" />
+        退出登录
       </Menu.Item>
     </Menu>
   );

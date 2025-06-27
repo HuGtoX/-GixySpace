@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback } from "react";
 import { Upload, message, Typography, Alert } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 import { v4 as uuidv4 } from "uuid";
@@ -12,26 +12,9 @@ import {
 const { Dragger } = Upload;
 const { Text } = Typography;
 
-export const AcceptMap = {
-  image: "image/*",
-  pdf: "application/pdf",
-  jpeg: "image/jpeg",
-  png: "image/png",
-  gif: "image/gif",
-  bmp: "image/bmp",
-  tiff: "image/tiff",
-  webp: "image/webp",
-  doc: "application/msword",
-  docx: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-  xls: "application/vnd.ms-excel",
-  xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-  csv: "text/csv",
-  pptx: "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-} as const;
-type AcceptType = (typeof AcceptMap)[keyof typeof AcceptMap];
-
 interface FileUploaderProps {
-  accept: AcceptType[];
+  onFilesAdded: (files: any[]) => void;
+  accept?: string; // 允许的文件类型，默认image/*
   maxSizeMobile?: number; // 移动端最大文件大小（MB），默认20
   maxSizeDesktop?: number; // 桌面端最大文件大小（MB），默认50
   uploadText?: string; // 上传提示文本
@@ -46,6 +29,7 @@ interface FileUploaderProps {
   draggerStyle?: React.CSSProperties; // 自定义拖放区域样式
   maxFiles?: number; // 最大允许上传文件数（默认无限制）
   beforeUpload?: (files: File[]) => Promise<boolean>; // 上传前钩子（返回false则取消上传）
+  uploadButtonProps?: React.ButtonHTMLAttributes<HTMLButtonElement>; // 上传按钮额外属性
   multiple?: boolean; // 是否允许多文件上传（默认true）
   fileFilter?: (file: File) => boolean; // 自定义文件过滤函数（默认不过滤）
   onUploadSuccess?: (files: any[]) => void; // 上传成功回调
@@ -54,7 +38,8 @@ interface FileUploaderProps {
 }
 
 const FileUploader: React.FC<FileUploaderProps> = ({
-  accept,
+  onFilesAdded,
+  accept = "image/*",
   maxSizeMobile = 20,
   maxSizeDesktop = 50,
   uploadText,
@@ -64,6 +49,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
   draggerStyle,
   maxFiles,
   beforeUpload,
+  uploadButtonProps,
   multiple = true,
   fileFilter,
   onUploadSuccess,
@@ -72,20 +58,6 @@ const FileUploader: React.FC<FileUploaderProps> = ({
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { isMobile } = useDeviceDetect();
-
-  const inputAccept = useMemo(() => {
-    return accept.join(",");
-  }, [accept]);
-
-  const acceptText = useMemo(() => {
-    let text = [];
-    for (let [key, value] of Object.entries(AcceptMap)) {
-      if (accept.includes(value as AcceptType)) {
-        text.push(key);
-      }
-    }
-    return text.join("、");
-  }, [accept]);
 
   // 处理文件函数
   const processFiles = useCallback(
@@ -116,14 +88,10 @@ const FileUploader: React.FC<FileUploaderProps> = ({
         const invalidFiles: string[] = [];
 
         for (const file of fileList) {
-          let isValidType = true;
           // 验证文件类型
-          if (fileTypeValidator) {
-            isValidType = fileTypeValidator(file);
-          }
-          if (accept) {
-            isValidType = accept?.some((type) => type === file.type);
-          }
+          const isValidType = fileTypeValidator
+            ? fileTypeValidator(file)
+            : file.type.startsWith("image/");
           if (!isValidType) {
             invalidFiles.push(
               `${file.name} (${errorMessages?.invalidType || "文件类型不支持"})`,
@@ -174,6 +142,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
 
         // 返回有效文件
         if (validFiles.length > 0) {
+          onFilesAdded(validFiles);
           message.success(`已添加${validFiles.length}个文件`);
           onUploadSuccess?.(validFiles);
         }
@@ -183,6 +152,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
     },
     [
       isMobile,
+      onFilesAdded,
       isLoading,
       maxFiles,
       errorMessages,
@@ -198,10 +168,12 @@ const FileUploader: React.FC<FileUploaderProps> = ({
   const handleFileUpload = useCallback(
     (options: any) => {
       const { file, onSuccess } = options;
+
       // 单个文件上传处理
       if (file instanceof File) {
         processFiles([file]);
       }
+
       // 完成上传操作
       if (onSuccess) {
         onSuccess("ok");
@@ -237,8 +209,8 @@ const FileUploader: React.FC<FileUploaderProps> = ({
       >
         <Dragger
           name="file"
-          accept={inputAccept}
           multiple={multiple}
+          accept={accept}
           showUploadList={false}
           customRequest={handleFileUpload}
           fileList={[]}
@@ -264,8 +236,13 @@ const FileUploader: React.FC<FileUploaderProps> = ({
               : uploadText ||
                 (isMobile ? "点击上传" : "拖放文件到这里，或点击上传")}
           </Typography.Title>
-
-          <Text type="secondary">{`支持${acceptText}格式文件`}</Text>
+          <button
+            {...uploadButtonProps}
+            className="mt-4 text-xs bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200 px-3 py-1 rounded-full"
+          >
+            选择文件
+          </button>
+          <Text type="secondary">支持JPG、PNG、WEBP、GIF、SVG格式图片</Text>
           <br />
           <Text type="secondary">
             单个文件大小限制：{isMobile ? "20MB" : "50MB"}
