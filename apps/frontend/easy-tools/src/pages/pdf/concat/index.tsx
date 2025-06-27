@@ -1,15 +1,13 @@
 import { useState } from "react";
-import { Upload, Button, message } from "antd";
-import { DragOutlined } from "@ant-design/icons";
+import { Button, message } from "antd";
 import { PDFDocument } from "pdf-lib";
-import { Container } from "../components";
-import type { UploadFile } from "antd";
+import { Container } from "@/layout/ToolsLayout";
 import DragList from "./DragList";
+import FileUploader from "@/components/FileUploader";
+import { content } from "./Right";
 
-const { Dragger } = Upload;
-
-type RcFileType = File & { uid?: string };
-export interface CustomUploadFile extends UploadFile {
+type RcFileType = File & { id: string };
+export interface CustomUploadFile extends RcFileType {
   file: RcFileType;
 }
 
@@ -19,25 +17,14 @@ const PdfMerger = () => {
   const [messageApi, contextHolder] = message.useMessage();
 
   // 处理文件上传
-  const handleUpload = (info: { file: RcFileType } & any) => {
-    const {
-      file: { uid, name, size },
-    } = info;
-
-    setFileList((prev) => [
-      ...prev,
-      {
-        uid,
-        name,
-        size,
-        file: info.file,
-      },
-    ]);
+  const handleUpload = (files: any[]) => {
+    console.log("-- [ files ] --", files);
+    setFileList((prev) => [...prev, ...files]);
   };
 
   // 处理文件删除
   const handleDelete = (uid: string) => {
-    setFileList((prev) => prev.filter((file) => uid !== file.uid));
+    setFileList((prev) => prev.filter((file) => uid !== file.id));
   };
 
   // 合并PDF逻辑
@@ -53,7 +40,7 @@ const PdfMerger = () => {
         const pdfDoc = await PDFDocument.load(pdfBytes);
         const pages = await mergedPdf.copyPages(
           pdfDoc,
-          pdfDoc.getPageIndices()
+          pdfDoc.getPageIndices(),
         );
         pages.forEach((page) => {
           mergedPdf.addPage(page);
@@ -82,7 +69,10 @@ const PdfMerger = () => {
 
   return (
     <Container
-      title="合并"
+      title="PDF合并"
+      instructions={{
+        content,
+      }}
       footer={
         <Button
           block
@@ -90,34 +80,18 @@ const PdfMerger = () => {
           onClick={handleMerge}
           loading={isLoading}
           disabled={fileList.length < 2}
-          style={{ height: 46, fontSize: 16 }}>
+          style={{ height: 46, fontSize: 16 }}
+        >
           开始合并 PDF 🚀
         </Button>
-      }>
+      }
+    >
       {contextHolder}
-      <Dragger
-        name="pdf"
+      <FileUploader
+        onUploadSuccess={handleUpload}
+        accept={["application/pdf"]}
         multiple
-        listType="picture-card"
-        showUploadList={false}
-        maxCount={10}
-        beforeUpload={async (file) => {
-          if (file.type !== "application/pdf") {
-            messageApi.error("请上传PDF格式的文件");
-            return false;
-          }
-          return file;
-        }}
-        customRequest={handleUpload}>
-        <p className="ant-upload-drag-icon">
-          <DragOutlined style={{ fontSize: 24 }} />
-        </p>
-        <p className="ant-upload-text">拖拽或点击上传PDF</p>
-        <p className="ant-upload-hint">
-          Support for a single or bulk upload. Strictly prohibited from
-          uploading company data or other banned files.
-        </p>
-      </Dragger>
+      ></FileUploader>
 
       <DragList
         handleDelete={handleDelete}
