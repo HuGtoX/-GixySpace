@@ -1,4 +1,13 @@
 {
-  "name": "@gixy/utils",
-  "version": "0.0.1"
+	"name": "@gixy/utils",
+	"version": "0.0.1",
+	"main": "dist/index.cjs",
+	"module": "dist/index.mjs",
+	"types": "dist/index.d.ts",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "tsup src/index.ts --format cjs,esm --dts"
+	}
 }

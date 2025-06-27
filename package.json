@@ -20,12 +20,16 @@
 		"eslint": "^9.24.0",
 		"eslint-plugin-simple-import-sort": "^12.1.1",
 		"prettier": "^3.5.3",
+		"tsup": "^8.5.0",
 		"tsx": "^4.19.4",
 		"typescript": "^5.8.3",
 		"typescript-plugin-css-modules": "^5.1.0",
-		"vitest": "^3.2.3"
+		"vitest": "^3.2.3",
+		"vite": "^6.2.0"
 	},
 	"dependencies": {
+		"antd": "^5.24.6",
+		"dayjs": "^1.11.13",
 		"@netlify/sdk": "^2.26.3",
 		"@sinclair/typebox": "^0.34.33",
 		"fastify": "^5.3.3",
