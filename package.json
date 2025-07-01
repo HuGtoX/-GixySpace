@@ -5,7 +5,7 @@
 	"main": "index.js",
 	"scripts": {
 		"dev": "pnpm --filter @gixy/bit-craft dev",
-		"build": "pnpm build:util && pnpm build:types && pnpm build:bit-craft",
+		"build": "pnpm build:utils && pnpm build:types && pnpm build:bit-craft",
 		"build:bit-craft": "pnpm --filter @gixy/bit-craft build",
 		"build:utils": "pnpm --filter @gixy/utils build",
 		"build:types": "pnpm --filter @gixy/types build",
