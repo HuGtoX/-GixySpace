@@ -1,6 +1,7 @@
 packages:
-  - packages/**
-  - apps/**
-  - baas/**
+    - packages/**
+    - apps/**
+    - baas/**
+    - faas/**
 onlyBuiltDependencies:
-  - esbuild
+    - esbuild

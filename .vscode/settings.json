@@ -6,7 +6,7 @@
 	"typescript.tsdk": "node_modules/typescript/lib",
 	"typescript.enablePromptUseWorkspaceTsdk": true,
 	"deno.enable": true,
-	"deno.enablePaths": ["./faas"],
+	"deno.enablePaths": ["./faas", "faas/edge_functions"],
 	"deno.lint": true,
 	"deno.codeLens.references": true,
 	"css.lint.unknownAtRules": "ignore",
@@ -26,5 +26,8 @@
 	},
 	"[javascript]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
-	}
+	},
+	// "deno.unstable": true,
+	// "deno.importMap": ".netlify/edge-functions-import-map.json",
+	"deno.path": "C:\\Users\\v_xghaxu\\AppData\\Roaming\\netlify\\Config\\deno-cli\\deno.exe"
 }

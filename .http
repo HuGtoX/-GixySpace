@@ -1,8 +1,11 @@
-curl -X POST http://localhost:18004/v1/mail/send 
--H "Content-Type: application/json" 
--d '{"toMail": "xxx@qq.com", "topic": "cancelNotification", "args": {
-    "activityName": "取消邮件测试",
-    "publisherName": "测试"}}'
+curl -X GET http://localhost:8888/api/weather
+
+# curl -X POST http://localhost:18004/v1/mail/send 
+# -H "Content-Type: application/json" 
+# -d '{"toMail": "xxx@qq.com", "topic": "cancelNotification", "args": {
+#     "activityName": "取消邮件测试",
+#     "publisherName": "测试"}}'
+
 
 # curl -X GET http://localhost:18080/s3/v1/package.json 
 

@@ -1,41 +1,11 @@
 import FaIcon from "@/components/FaIcon";
 import IconWrapper from "@/components/IconWrapper";
+import Weather from "../components/Weather";
 
 export default function Aside() {
   return (
     <>
-      <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md">
-        <div className="flex justify-between items-center mb-4">
-          <h3 className="font-semibold">今日天气</h3>
-          <button className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
-            <i className="fa fa-refresh"></i>
-          </button>
-        </div>
-        <div className="flex flex-col items-center w-full">
-          <div className="text-4xl mb-2">
-            <FaIcon icon="FaRegSun" className="text-yellow-500" />
-          </div>
-          <div className="text-2xl font-bold mb-1">26°C</div>
-          <div className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-            晴天 · 微风
-          </div>
-          <div className="flex justify-between w-full text-xs text-gray-500 dark:text-gray-400">
-            <div className="flex flex-col items-center">
-              <FaIcon icon="FaArrowUp" className="mr-1" />
-              28°C
-            </div>
-            <div className="flex flex-col items-center">
-              <FaIcon icon="FaArrowDown" className="mr-1" />
-              22°C
-            </div>
-            <div className="flex flex-col items-center">
-              <FaIcon icon="FaTint" className="mr-1" />
-              45%
-            </div>
-          </div>
-        </div>
-      </div>
-
+      <Weather />
       <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md">
         <h3 className="font-semibold mb-3">快捷访问</h3>
         <div className="space-y-3">
