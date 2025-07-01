@@ -305,3 +305,18 @@ body::-webkit-scrollbar-thumb:hover {
     transform: translateX(100%) rotate(30deg);
   }
 }
+
+@keyframes progress {
+  0% {
+    width: 0;
+    opacity: 1;
+  }
+  50% {
+    width: 70%;
+    opacity: 0.8;
+  }
+  100% {
+    width: 100%;
+    opacity: 0;
+  }
+}

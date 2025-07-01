@@ -1,2 +1,12 @@
 [build]
-  edge_functions = "faas/edge_functions"
+  publish = "dist"
+  
+[functions]
+  directory = "faas/edge-functions"
+
+[[edge_functions]]
+  function = "weather"
+  path = "/api/weather"
+
+[dev]
+  framework = "#static"
