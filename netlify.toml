@@ -1,9 +1,3 @@
-[build]
-  publish = "dist"
-  
-[functions]
-  directory = "faas/edge-functions"
-
 [[edge_functions]]
   function = "weather"
   path = "/api/weather"
