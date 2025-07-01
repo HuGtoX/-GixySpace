@@ -1,5 +1,5 @@
-import { Context } from 'https://edge.netlify.com';
-import { Status } from 'https://deno.land/std@0.201.0/http/http_status.ts';
+import { Context } from '@netlify/edge-functions';
+import { Status } from './deps/http_status.ts';
 import type {
 	GeoResponse,
 	WeatherResponse,
