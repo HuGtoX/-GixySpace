@@ -1,6 +1,0 @@
-[[edge_functions]]
-  function = "weather"
-  path = "/api/weather"
-
-[dev]
-  framework = "#static"
