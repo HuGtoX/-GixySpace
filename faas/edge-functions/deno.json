@@ -1,7 +1,7 @@
 {
 	"lint": {
 		"files": {
-			"include": ["utils"]
+			"include": ["src/"]
 		},
 		"rules": {
 			"exclude": ["no-explicit-any"],
@@ -12,5 +12,8 @@
 		"allowJs": true,
 		"noImplicitAny": false,
 		"strict": false
+	},
+	"imports": {
+		"@std/assert": "jsr:@std/assert@^1.0.13"
 	}
 }

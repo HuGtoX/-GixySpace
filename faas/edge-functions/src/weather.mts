@@ -5,9 +5,10 @@ import type {
 	WeatherResponse,
 	AirResponse
 } from '../../../packages/types/src/weather.ts';
+import { getEnv } from '../utils/getEnv.mts';
 
-const baseUrl = Netlify.env.get('HF_BASEURL');
-const key = Netlify.env.get('QWEATHER_KEY');
+const baseUrl = getEnv('HF_BASEURL');
+const key = getEnv('QWEATHER_KEY');
 
 async function getLocationId(
 	lat: string,
