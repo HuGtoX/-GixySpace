@@ -1,12 +1,13 @@
 import { Context } from '@netlify/edge-functions';
-import { Status } from './deps/http_status.ts';
+import { Status } from '../deps/http_status.ts';
 import type {
 	GeoResponse,
 	WeatherResponse,
 	AirResponse
-} from '../../packages/types/src/weather.ts';
+} from '../../../packages/types/src/weather.ts';
 
-const baseUrl = 'https://px5ctubwtq.re.qweatherapi.com';
+const baseUrl = Netlify.env.get('HF_BASEURL');
+const key = Netlify.env.get('QWEATHER_KEY');
 
 async function getLocationId(
 	lat: string,
@@ -25,7 +26,7 @@ async function getLocationId(
 	return geoData.location[0].id;
 }
 
-export default async (request: Request, context: Context) => {
+async function weather(request: Request, context: Context) {
 	const corsHeaders = {
 		'Access-Control-Allow-Origin': '*',
 		'Access-Control-Allow-Methods': 'GET, OPTIONS',
@@ -57,7 +58,6 @@ export default async (request: Request, context: Context) => {
 			);
 		}
 
-		const key = Netlify.env.get('QWEATHER_KEY');
 		if (!key) {
 			throw new Error('未配置和风天气 API 密钥');
 		}
@@ -117,9 +117,6 @@ export default async (request: Request, context: Context) => {
 			}
 		);
 	}
-};
+}
 
-export const config = {
-	path: '/api/weather',
-	generator: 'edge-functions'
-};
+export default weather;

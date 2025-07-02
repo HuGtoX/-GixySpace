@@ -1,0 +1,16 @@
+{
+	"lint": {
+		"files": {
+			"include": ["utils"]
+		},
+		"rules": {
+			"exclude": ["no-explicit-any"],
+			"include": ["ban-untagged-todo"] // 保留其他规则
+		}
+	},
+	"compilerOptions": {
+		"allowJs": true,
+		"noImplicitAny": false,
+		"strict": false
+	}
+}
