@@ -1,0 +1,5 @@
+{
+	"imports": {
+		"dot-env": "https://esm.sh/jsr/@std/dotenv/load"
+	}
+}

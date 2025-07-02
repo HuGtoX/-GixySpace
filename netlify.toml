@@ -1,0 +1,2 @@
+[functions]
+  deno_import_map = "./faas/edge-functions/import_map.json"
