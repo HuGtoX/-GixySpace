@@ -1,4 +1,4 @@
-import '@dotenv';
+import 'dotenv';
 
 // 初始化 Netlify mock
 if (!globalThis.Netlify) {

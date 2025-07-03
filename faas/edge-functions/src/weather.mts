@@ -10,7 +10,6 @@ import { getEnv } from '../utils/getEnv.mts';
 const baseUrl = getEnv('HF_BASEURL');
 const key = getEnv('QWEATHER_KEY');
 
-console.log('-- [ key ] --', key);
 async function getLocationId(
 	lat: string,
 	lon: string,

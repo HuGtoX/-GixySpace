@@ -1,4 +1,4 @@
-import { assertEquals } from '@std/assert';
+import { assertEquals } from 'std/assert';
 import weather from '../src/weather.mts';
 
 Deno.test('weather API - 正常请求', async () => {
