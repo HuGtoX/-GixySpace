@@ -15,6 +15,6 @@
 	},
 	"imports": {
 		"@std/assert": "jsr:@std/assert@^1.0.13",
-		"dot-env": "https://esm.sh/jsr/@std/dotenv/load"
+		"dotenv": "https://esm.sh/jsr/@std/dotenv/load"
 	}
 }

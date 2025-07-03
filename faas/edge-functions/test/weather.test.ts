@@ -1,5 +1,6 @@
 import { assertEquals } from 'jsr:@std/assert';
 import weather from '../src/weather.mts';
+import 'https://esm.sh/jsr/@std/dotenv/load';
 
 Deno.test('weather API - 正常请求', async () => {
 	const request = new Request(

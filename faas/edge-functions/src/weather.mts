@@ -10,6 +10,7 @@ import { getEnv } from '../utils/getEnv.mts';
 const baseUrl = getEnv('HF_BASEURL');
 const key = getEnv('QWEATHER_KEY');
 
+console.log('-- [ key ] --', key);
 async function getLocationId(
 	lat: string,
 	lon: string,
@@ -26,7 +27,6 @@ async function getLocationId(
 	}
 	return geoData.location[0].id;
 }
-
 async function weather(request: Request, context: Context) {
 	const corsHeaders = {
 		'Access-Control-Allow-Origin': '*',
