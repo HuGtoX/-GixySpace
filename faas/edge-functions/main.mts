@@ -1,6 +1,7 @@
 import { Config, Context } from '@netlify/edge-functions';
 import test from './src/test.ts';
 import weather from './src/weather.mts';
+import supabase from './src/demo.mts';
 export const config: Config = {
 	path: '/api/*'
 };
@@ -14,7 +15,8 @@ export type RouteHandler = (
 // 路由映射表
 const routes: Record<string, RouteHandler> = {
 	'/api/test': test,
-	'/api/weather': weather
+	'/api/weather': weather,
+	'/api/guest/test': supabase
 };
 
 // 主要处理函数
