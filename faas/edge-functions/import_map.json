@@ -1,5 +1,6 @@
 {
 	"imports": {
-		"dotenv": "https://esm.sh/jsr/@std/dotenv/load"
+		"@dotenv": "https://esm.sh/jsr/@std/dotenv/load",
+		"@std/assert": "jsr:@std/assert@^0.216.0"
 	}
 }

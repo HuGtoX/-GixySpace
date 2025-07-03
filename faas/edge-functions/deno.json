@@ -1,20 +1,14 @@
 {
+	"importMap": "./import_map.json", // 指定 Import Map 文件
 	"lint": {
-		"files": {
-			"include": ["src/"]
-		},
+		"include": ["src/**/*.mts", "test/**/*.ts"], // 包含的文件
 		"rules": {
+			"tags": ["recommended"],
 			"exclude": ["no-explicit-any"],
 			"include": ["ban-untagged-todo"] // 保留其他规则
 		}
 	},
 	"compilerOptions": {
-		"allowJs": true,
-		"noImplicitAny": false,
 		"strict": false
-	},
-	"imports": {
-		"@std/assert": "jsr:@std/assert@^1.0.13",
-		"dotenv": "https://esm.sh/jsr/@std/dotenv/load"
 	}
 }

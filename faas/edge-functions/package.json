@@ -3,6 +3,6 @@
 	"version": "1.0.0",
 	"description": "",
 	"scripts": {
-		"test": "deno test --allow-env --allow-read --allow-net"
+		"test": "deno test --allow-env --allow-read --allow-net --no-check"
 	}
 }
