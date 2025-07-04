@@ -1,10 +1,11 @@
 import IconWrapper from "@/components/IconWrapper";
-import { Button, Tooltip } from "antd";
+import { Button } from "antd";
 import { useNavigate } from "react-router-dom";
 import { toolsMenu } from "../config";
 import TodoList from "@/pages/home/components/TodoList";
 import AIToolsSection from "../components/AIToolsSection";
 import { FaComment, FaImage } from "react-icons/fa";
+import VisitedCard from "../components/visitCard";
 
 interface ToolItemProps {
   name: string;
@@ -29,20 +30,17 @@ const ToolItem = ({
   };
 
   return (
-    <Tooltip
-      title={description || "暂无描述"} // 无描述时显示默认提示
-      placement="top"
-      mouseEnterDelay={0.3} // 悬停0.3秒后显示
+    <div
+      className="tool-icon bg-white dark:bg-gray-800 rounded-xl p-4 text-center shadow-md hover:shadow-lg ripple cursor-pointer pixel-grow"
+      draggable="true"
+      onClick={handleClick}
     >
-      <div
-        className="tool-icon bg-white dark:bg-gray-800 rounded-xl p-4 text-center shadow-md hover:shadow-lg ripple cursor-pointer pixel-grow"
-        draggable="true"
-        onClick={handleClick}
-      >
-        <IconWrapper size={12} background={background} icon={icon} />
-        <span className="text-sm font-medium">{name}</span>
-      </div>
-    </Tooltip>
+      <IconWrapper size={12} background={background} icon={icon} />
+      <span className="text-sm font-medium mb-1">{name}</span>
+      <p className="text-gray-500 dark:text-gray-400 text-xs">
+        {description || ""}
+      </p>
+    </div>
   );
 };
 
@@ -107,6 +105,8 @@ export default function Tools() {
           },
         ]}
       />
+
+      <VisitedCard />
     </section>
   );
 }

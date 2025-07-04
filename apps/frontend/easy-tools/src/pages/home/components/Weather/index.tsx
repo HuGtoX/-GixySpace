@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { baseUrl } from "@/utils/getEnv";
 import FaIcon from "@/components/FaIcon";
 import DetailModal from "./DetailModal";
+import SectionCard from "../SectionCard";
 import type { WeatherData } from "@gixy/types";
 import "qweather-icons/font/qweather-icons.css"; // 引入天气图标样式
 
@@ -25,7 +26,7 @@ export default function Weather() {
       );
       const { latitude, longitude } = position.coords;
       const response = await fetch(
-        `${baseUrl}/api/weather?lat=${latitude}&lon=${longitude}`,
+        `${baseUrl}/hf/weather?lat=${latitude}&lon=${longitude}`,
       );
       if (!response.ok) throw new Error("网络请求失败");
       const data = await response.json();
@@ -44,16 +45,17 @@ export default function Weather() {
   }, []);
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md cursor-pointer">
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="font-semibold">今日天气</h3>
-        <button
-          className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
-          onClick={() => fetchWeather()}
-        >
-          <FaIcon icon="FaCircleNotch" />
+    <SectionCard
+      title="今日天气"
+      right={
+        <button onClick={fetchWeather}>
+          <FaIcon
+            className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+            icon="FaCircleNotch"
+          />
         </button>
-      </div>
+      }
+    >
       <div
         className="flex flex-col items-center w-full"
         onClick={() => weatherData && setIsModalVisible(true)}
@@ -93,6 +95,6 @@ export default function Weather() {
         setIsModalVisible={setIsModalVisible}
         weatherData={weatherData}
       />
-    </div>
+    </SectionCard>
   );
 }

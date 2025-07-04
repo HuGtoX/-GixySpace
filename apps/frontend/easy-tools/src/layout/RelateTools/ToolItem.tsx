@@ -9,12 +9,12 @@ interface ToolItemProps {
 
 // 预定义颜色类名映射
 const colorClasses = {
-  blue: "bg-blue-50 dark:bg-blue-500 text-blue-500",
-  green: "bg-green-50 dark:bg-green-500 text-green-500",
-  purple: "bg-purple-50 dark:bg-purple-500 text-purple-500",
-  red: "bg-red-50 dark:bg-red-500 text-red-500",
-  yellow: "bg-yellow-50 dark:bg-yellow-500 text-yellow-500",
-  indigo: "bg-indigo-50 dark:bg-indigo-500 text-indigo-500",
+  blue: "bg-blue-50 dark:bg-blue-100 text-blue-200",
+  green: "bg-green-50 dark:bg-green-100 text-green-200",
+  purple: "bg-purple-50 dark:bg-purple-100 text-purple-200",
+  red: "bg-red-50 dark:bg-red-100 text-red-200",
+  yellow: "bg-yellow-50 dark:bg-yellow-100 text-yellow-200",
+  indigo: "bg-indigo-50 dark:bg-indigo-100 text-indigo-200",
 };
 
 const ToolItem: React.FC<ToolItemProps> = ({

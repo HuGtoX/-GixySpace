@@ -79,8 +79,9 @@ const Header = () => {
             </Button>
             <Dropdown overlay={userMenu} placement="bottomRight">
               <Avatar
-                src="https://picsum.photos/id/64/40/40"
-                className="border-2 border-primary dark:border-dark-primary"
+                size={38}
+                src="/avatar/a5.png"
+                className="border-1 border-solid border-orange-500 dark:border-dark-primary"
               />
             </Dropdown>
           </div>

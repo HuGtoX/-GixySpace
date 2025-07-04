@@ -1,71 +1,11 @@
-import FaIcon from "@/components/FaIcon";
-import IconWrapper from "@/components/IconWrapper";
 import Weather from "../components/Weather";
+import QickLink from "../components/QickLink";
 
 export default function Aside() {
   return (
     <>
       <Weather />
-      <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md">
-        <h3 className="font-semibold mb-3">快捷访问</h3>
-        <div className="space-y-3">
-          <a
-            href="#"
-            className="flex items-center p-2 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors"
-          >
-            <IconWrapper
-              className="w-8 h-8 rounded bg-blue-100 dark:bg-blue-900 flex items-center justify-center mr-3"
-              icon={
-                <FaIcon
-                  icon="FaGithub"
-                  className="text-blue-600 dark:text-blue-400"
-                />
-              }
-            />
-
-            <span>GitHub</span>
-          </a>
-          <a
-            href="#"
-            className="flex items-center p-2 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors"
-          >
-            <div className="w-8 h-8 rounded bg-red-100 dark:bg-red-900 flex items-center justify-center mr-3">
-              <FaIcon
-                icon="FaYoutube"
-                className="text-red-600 dark:text-red-400"
-              />
-            </div>
-            <span>YouTube</span>
-          </a>
-          <a
-            href="#"
-            className="flex items-center p-2 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors"
-          >
-            <div className="w-8 h-8 rounded bg-green-100 dark:bg-green-900 flex items-center justify-center mr-3">
-              <FaIcon
-                icon="FaSpotify"
-                className="text-green-600 dark:text-green-400"
-              />
-            </div>
-            <span>Spotify</span>
-          </a>
-          <a
-            href="#"
-            className="flex items-center p-2 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors"
-          >
-            <div className="w-8 h-8 rounded bg-purple-100 dark:bg-purple-900 flex items-center justify-center mr-3">
-              <FaIcon
-                icon="FaDribbble"
-                className="text-purple-600 dark:text-purple-400"
-              />
-            </div>
-            <span>Dribbble</span>
-          </a>
-        </div>
-        <button className="w-full mt-3 text-sm text-primary dark:text-dark-primary hover:underline">
-          管理快捷访问
-        </button>
-      </div>
+      <QickLink />
 
       <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md">
         <h3 className="font-semibold mb-3">发现更多工具</h3>

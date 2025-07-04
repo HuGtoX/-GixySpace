@@ -1,0 +1,15 @@
+{
+	"importMap": "./import_map.json",
+	"lint": {
+		"include": ["src/**/*.mts", "test/**/*.ts"],
+		"exclude": ["./drizzle.config.ts"],
+		"rules": {
+			"tags": ["recommended"],
+			"exclude": ["no-explicit-any"],
+			"include": ["ban-untagged-todo"]
+		}
+	},
+	"compilerOptions": {
+		"strict": false
+	}
+}
