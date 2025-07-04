@@ -23,6 +23,7 @@
 		"@types/node": "^24.0.3",
 		"@types/react": "^19.1.8",
 		"antd": "^5.26.3",
+		"drizzle-kit": "^0.31.4",
 		"eslint": "^9.24.0",
 		"eslint-plugin-simple-import-sort": "^12.1.1",
 		"lodash-es": "^4.17.21",
