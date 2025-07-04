@@ -20,7 +20,7 @@ export const toolsMenu = [
     name: "图片转换",
     icon: <FaImage className="text-primary dark:text-dark-primary" />,
     url: "/image/transform",
-    description: "图片转换压缩",
+    description: "图片格式转换压缩",
   },
   {
     id: 3,

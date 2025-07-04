@@ -1,15 +1,13 @@
 import { Config } from '@netlify/edge-functions';
-import test from './src/test.ts';
-import weather from './src/weather.mts';
+import Create from './src/guest/create.mts';
 import handlerMaker from './utils/handleMaker.mts';
 
 // 路由映射表
 const routes = {
-	'/api/hf/test': test,
-	'/api/hf/weather': weather
+	'/api/guest/create': Create
 };
 
 export default handlerMaker(routes);
 export const config: Config = {
-	path: '/api/hf/*'
+	path: '/api/guest/*'
 };

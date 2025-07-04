@@ -1,11 +1,12 @@
 {
-	"importMap": "./import_map.json", // 指定 Import Map 文件
+	"importMap": "./import_map.json",
 	"lint": {
-		"include": ["src/**/*.mts", "test/**/*.ts"], // 包含的文件
+		"include": ["src/**/*.mts", "test/**/*.ts"],
+		"exclude": ["./drizzle.config.ts"],
 		"rules": {
 			"tags": ["recommended"],
 			"exclude": ["no-explicit-any"],
-			"include": ["ban-untagged-todo"] // 保留其他规则
+			"include": ["ban-untagged-todo"]
 		}
 	},
 	"compilerOptions": {
