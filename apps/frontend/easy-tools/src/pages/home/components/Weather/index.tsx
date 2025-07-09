@@ -15,18 +15,20 @@ export default function Weather() {
   const fetchWeather = async () => {
     try {
       // 获取用户地理位置
-      const position = await new Promise<GeolocationPosition>(
-        (resolve, reject) => {
-          if (!navigator.geolocation) {
-            reject(new Error("浏览器不支持地理定位"));
-            return;
-          }
-          navigator.geolocation.getCurrentPosition(resolve, reject);
-        },
-      );
-      const { latitude, longitude } = position.coords;
+      // const position = await new Promise<GeolocationPosition>(
+      //   (resolve, reject) => {
+      //     if (!navigator.geolocation) {
+      //       reject(new Error("浏览器不支持地理定位"));
+      //       return;
+      //     }
+      //     navigator.geolocation.getCurrentPosition(resolve, reject);
+      //   },
+      // );
+      // const { latitude, longitude } = position.coords;
+
+      // 使用固定坐标（例如深圳）进行测试
       const response = await fetch(
-        `${baseUrl}/hf/weather?lat=${latitude}&lon=${longitude}`,
+        `${baseUrl}/hf/weather?lat=22.56&lon=113.91`,
       );
       if (!response.ok) throw new Error("网络请求失败");
       const data = await response.json();

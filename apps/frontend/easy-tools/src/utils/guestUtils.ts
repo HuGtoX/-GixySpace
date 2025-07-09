@@ -18,17 +18,7 @@ export const getGuestId = async () => {
     "-" +
     Math.random().toString(36).slice(2, 10);
 
-  // await fetch("http://localhost:8888/api/guest/create", {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSON.stringify({
-  //     guestId: newId,
-  //   }),
-  // });
-
-  await axiosInstance.post("http://localhost:8888/api/guest/create", {
+  await axiosInstance.post("/api/guest/create", {
     guestId: newId,
   });
 

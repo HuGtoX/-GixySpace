@@ -9,10 +9,10 @@ export type RouteHandler = (
 	context: Context
 ) => RequestResult | Promise<RequestResult>;
 
+// CORS 配置
 const corsHeaders = {
 	'Access-Control-Allow-Origin': '*',
-	'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-	'Access-Control-Allow-Credentials': 'true',
+	'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
 	'Access-Control-Allow-Headers': 'Content-Type, Authorization'
 };
 
@@ -22,16 +22,16 @@ function handlerMaker(routes: Record<string, RouteHandler>) {
 		request: Request,
 		context: Context
 	): Promise<Response> {
+		console.log('-- [ request ] --', request);
 		try {
 			if (request.method === 'OPTIONS') {
+				// 处理 OPTIONS 预检请求
 				return new Response(null, {
-					status: 200,
-					headers: {
-						...corsHeaders,
-						'Access-Control-Max-Age': '86400'
-					}
+					headers: corsHeaders,
+					status: 204
 				});
 			}
+
 			const url = new URL(request.url);
 			const path = url.pathname;
 

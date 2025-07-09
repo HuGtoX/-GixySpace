@@ -5,7 +5,6 @@ import type {
   AxiosResponse,
 } from "axios";
 import { message } from "antd";
-import { baseUrl } from "@/utils/getEnv";
 
 type ApiResponse<T> = {
   data: T;
@@ -26,8 +25,7 @@ declare module "axios" {
 }
 
 const instance: AxiosInstance = axios.create({
-  baseURL: baseUrl,
-  withCredentials: true,
+  withCredentials: false,
   timeout: 1000 * 60,
 });
 

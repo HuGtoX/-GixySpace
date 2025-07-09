@@ -10,8 +10,8 @@ export default async (req: Request, context: Context) => {
 	console.log('-- [ contentType ] --', contentType);
 
 	// 解析 JSON 请求体
-	const body = req.json();
-	console.log('-- [ body ] --', body);
+	// const body = req.json()
+	// console.log('-- [ body ] --', body);
 
 	const queryClient = postgres(Netlify.env.get('DATABASE_URL')!);
 	const db = drizzle({ client: queryClient });
