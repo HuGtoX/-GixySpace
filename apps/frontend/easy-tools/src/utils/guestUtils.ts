@@ -1,23 +1,38 @@
-import { v4 as uuidv4 } from "uuid";
+import axiosInstance from "@/server";
+import { GuestID } from "../../config/Const";
 
 // 生成或获取访客ID
 export const getGuestId = async () => {
-  // 优先从localStorage获取
-  const storedId = localStorage.getItem("guest_id");
+  const storedId = localStorage.getItem(GuestID);
   if (storedId) return storedId;
 
-  // 生成新访客ID
-  const newId = uuidv4();
-  localStorage.setItem("guest_id", newId);
+  // 生成新ID
+  const newId =
+    [
+      navigator.hardwareConcurrency,
+      screen.width,
+      screen.height,
+      navigator.language,
+      Date.now().toString(36),
+    ].join("-") +
+    "-" +
+    Math.random().toString(36).slice(2, 10);
 
-  // 创建访客记录
-  await fetch("/api/guest/create", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      guest_id: newId,
-    }),
+  // await fetch("http://localhost:8888/api/guest/create", {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  //   body: JSON.stringify({
+  //     guestId: newId,
+  //   }),
+  // });
+
+  await axiosInstance.post("http://localhost:8888/api/guest/create", {
+    guestId: newId,
   });
+
+  localStorage.setItem(GuestID, newId);
 
   return newId;
 };

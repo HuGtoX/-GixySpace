@@ -15,6 +15,7 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@gixy/utils": "workspace:^",
+    "axios": "^1.10.0",
     "file-saver": "^2.0.5",
     "pdf-lib": "^1.17.1",
     "pdfjs-dist": "^5.1.91",

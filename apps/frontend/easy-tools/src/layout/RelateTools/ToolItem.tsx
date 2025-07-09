@@ -1,4 +1,5 @@
 import React from "react";
+import { colorClasses } from "../../../config/theme";
 
 interface ToolItemProps {
   icon: React.ReactElement<{ className: string }>;
@@ -6,16 +7,6 @@ interface ToolItemProps {
   name: string; // 工具名称
   href?: string; // 跳转链接（可选）
 }
-
-// 预定义颜色类名映射
-const colorClasses = {
-  blue: "bg-blue-50 dark:bg-blue-100 text-blue-200",
-  green: "bg-green-50 dark:bg-green-100 text-green-200",
-  purple: "bg-purple-50 dark:bg-purple-100 text-purple-200",
-  red: "bg-red-50 dark:bg-red-100 text-red-200",
-  yellow: "bg-yellow-50 dark:bg-yellow-100 text-yellow-200",
-  indigo: "bg-indigo-50 dark:bg-indigo-100 text-indigo-200",
-};
 
 const ToolItem: React.FC<ToolItemProps> = ({
   icon,

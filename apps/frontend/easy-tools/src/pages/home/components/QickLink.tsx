@@ -1,5 +1,6 @@
 import FaIcon from "@/components/FaIcon";
 import SectionCard from "./SectionCard";
+import { colorClasses } from "../../../../config/theme";
 
 const links = [
   {
@@ -49,7 +50,7 @@ function LinkItem({ href, icon, color, text }: LinkItemProps) {
       className="flex items-center p-2 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors"
     >
       <div
-        className={`w-8 h-8 rounded bg-${color}-100 dark:bg-${color}-900 flex items-center justify-center mr-3`}
+        className={`w-8 h-8 rounded ${colorClasses[color]} flex items-center justify-center mr-3`}
       >
         {icon}
       </div>

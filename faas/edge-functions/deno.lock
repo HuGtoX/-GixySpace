@@ -1,5 +1,20 @@
 {
   "version": "4",
+  "specifiers": {
+    "jsr:@std/assert@0.216": "0.216.0",
+    "jsr:@std/fmt@0.216": "0.216.0"
+  },
+  "jsr": {
+    "@std/assert@0.216.0": {
+      "integrity": "f65392edf3bec39e2d1028e51f1da549db81691034b244eaba83318a757c0c2e",
+      "dependencies": [
+        "jsr:@std/fmt"
+      ]
+    },
+    "@std/fmt@0.216.0": {
+      "integrity": "0d8ef6f7c7fe3b6f2a9a6f5cdf65578cff231bb6e3d90f6b0dfc4b4e82a636dd"
+    }
+  },
   "redirects": {
     "https://esm.sh/@supabase/node-fetch@^2.6.14?target=denonext": "https://esm.sh/@supabase/node-fetch@2.6.15?target=denonext",
     "https://esm.sh/bufferutil@^4.0.1?target=denonext": "https://esm.sh/bufferutil@4.0.9?target=denonext",
@@ -44,6 +59,14 @@
   "workspace": {
     "dependencies": [
       "jsr:@std/assert@0.216"
-    ]
+    ],
+    "packageJson": {
+      "dependencies": [
+        "npm:drizzle-kit@~0.31.4",
+        "npm:drizzle-orm@~0.44.2",
+        "npm:pg@^8.16.3",
+        "npm:postgres@^3.4.7"
+      ]
+    }
   }
 }

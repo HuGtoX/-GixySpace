@@ -1,7 +1,9 @@
 import { Context } from '@netlify/edge-functions';
-
-async function test(_: Request, context: Context): Promise<Response> {
-	return await new Response(JSON.stringify(context));
+import { RequestResult } from '../utils/handleMaker.mts';
+function test(_: Request, context: Context): RequestResult {
+	return {
+		result: JSON.stringify(context)
+	};
 }
 
 export default test;

@@ -9,5 +9,6 @@ const routes = {
 
 export default handlerMaker(routes);
 export const config: Config = {
-	path: '/api/guest/*'
+	path: '/api/guest/*',
+	method: ['POST']
 };
