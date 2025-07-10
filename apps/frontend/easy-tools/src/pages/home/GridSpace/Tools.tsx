@@ -89,7 +89,7 @@ export default function Tools() {
             description: "获取问题的智能答案和建议",
             buttonText: "打开会话",
             status: null,
-            bgColor: "indigo-500",
+            bgColor: "theme-indigo",
           },
           {
             icon: <FaImage className="text-gray-400" />,
@@ -101,7 +101,7 @@ export default function Tools() {
               tagColor: "bg-gray-400/10",
               date: "预计2025年Q3上线",
             },
-            bgColor: "indigo-500",
+            bgColor: "theme-gray",
           },
         ]}
       />

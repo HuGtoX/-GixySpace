@@ -6,11 +6,11 @@ import type {
 } from "axios";
 import { message } from "antd";
 
-type ApiResponse<T> = {
-  data: T;
-  code: number;
-  message: string;
-};
+// type ApiResponse<T> = {
+//   data: T;
+//   code: number;
+//   message: string;
+// };
 
 declare module "axios" {
   interface AxiosInstance {
@@ -47,11 +47,8 @@ instance.interceptors.request.use(
 // 添加响应拦截器
 instance.interceptors.response.use(
   function (response: AxiosResponse): Promise<any> {
-    if (response.data.code !== 0) {
-      message.error(response.data.message);
-      return Promise.reject<ApiResponse<unknown>>(response.data);
-    }
-    return Promise.resolve(response.data.data);
+    console.log("-- [ response ] --", response.data);
+    return Promise.resolve(response.data);
   },
   function (error) {
     message.error(error.message);

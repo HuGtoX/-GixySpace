@@ -2,6 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  /* 预定义颜色类 */
+  .theme-blue {
+    @apply bg-blue-50 text-blue-200;
+  }
+  .theme-green {
+    @apply bg-green-50 text-green-200;
+  }
+  .theme-purple {
+    @apply bg-purple-50 text-purple-200;
+  }
+  .theme-red {
+    @apply bg-red-50 text-red-200;
+  }
+  .theme-yellow {
+    @apply bg-yellow-50 text-yellow-200;
+  }
+  .theme-indigo {
+    @apply bg-indigo-50 text-indigo-200;
+  }
+  .theme-gray {
+    @apply bg-gray-50 text-gray-200;
+  }
+}
+
 /* 全局滚动条样式 */
 html,
 body {

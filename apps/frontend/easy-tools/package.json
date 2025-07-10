@@ -17,6 +17,7 @@
     "@gixy/utils": "workspace:^",
     "axios": "^1.10.0",
     "file-saver": "^2.0.5",
+    "framer-motion": "^12.23.2",
     "pdf-lib": "^1.17.1",
     "pdfjs-dist": "^5.1.91",
     "qweather-icons": "^1.7.0",

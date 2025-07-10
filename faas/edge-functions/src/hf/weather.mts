@@ -3,8 +3,8 @@ import type {
 	GeoResponse,
 	WeatherResponse,
 	AirResponse
-} from '../../../packages/types/src/weather.ts';
-import { getEnv } from '../utils/getEnv.mts';
+} from '@gixy/types/weather.ts';
+import { getEnv } from '../../utils/getEnv.mts';
 
 const baseUrl = getEnv('HF_BASEURL');
 const key = getEnv('QWEATHER_KEY');

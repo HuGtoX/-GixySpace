@@ -1,5 +1,19 @@
 import axiosInstance from "@/server";
+import { GuestVisitStats } from "@gixy/types";
 import { GuestID } from "../../config/Const";
+
+// 获取访问统计数据
+export const fetchVisitStats = async () => {
+  return await axiosInstance.get<GuestVisitStats>("/api/guest/stats");
+};
+
+// 记录访问次数
+export const countVisits = async () => {
+  const guestId = await getGuestId();
+  await axiosInstance.post("/api/guest/visit", {
+    fingerprint: guestId,
+  });
+};
 
 // 生成或获取访客ID
 export const getGuestId = async () => {

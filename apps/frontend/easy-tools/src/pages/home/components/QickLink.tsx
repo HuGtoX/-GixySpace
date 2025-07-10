@@ -1,27 +1,26 @@
 import FaIcon from "@/components/FaIcon";
 import SectionCard from "./SectionCard";
-import { colorClasses } from "../../../../config/theme";
 
 const links = [
   {
     icon: (
       <FaIcon icon="FaGithub" className="text-blue-600 dark:text-blue-400" />
     ),
-    color: "blue",
+    color: "theme-blue",
     text: "GitHub",
   },
   {
     icon: (
       <FaIcon icon="FaYoutube" className="text-red-600 dark:text-red-400" />
     ),
-    color: "red",
+    color: "theme-red",
     text: "YouTube",
   },
   {
     icon: (
       <FaIcon icon="FaSpotify" className="text-green-600 dark:text-green-400" />
     ),
-    color: "green",
+    color: "theme-green",
     text: "Spotify",
   },
   {
@@ -31,7 +30,7 @@ const links = [
         className="text-purple-600 dark:text-purple-400"
       />
     ),
-    color: "purple",
+    color: "theme-purple",
     text: "Dribbble",
   },
 ];
@@ -50,7 +49,7 @@ function LinkItem({ href, icon, color, text }: LinkItemProps) {
       className="flex items-center p-2 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors"
     >
       <div
-        className={`w-8 h-8 rounded ${colorClasses[color]} flex items-center justify-center mr-3`}
+        className={`w-8 h-8 rounded ${color} flex items-center justify-center mr-3`}
       >
         {icon}
       </div>

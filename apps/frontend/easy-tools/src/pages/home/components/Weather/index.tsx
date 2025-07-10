@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { baseUrl } from "@/utils/getEnv";
 import FaIcon from "@/components/FaIcon";
 import DetailModal from "./DetailModal";
 import SectionCard from "../SectionCard";
@@ -27,9 +26,7 @@ export default function Weather() {
       // const { latitude, longitude } = position.coords;
 
       // 使用固定坐标（例如深圳）进行测试
-      const response = await fetch(
-        `${baseUrl}/hf/weather?lat=22.56&lon=113.91`,
-      );
+      const response = await fetch(`/api/hf/weather?lat=22.56&lon=113.91`);
       if (!response.ok) throw new Error("网络请求失败");
       const data = await response.json();
 
@@ -68,6 +65,9 @@ export default function Weather() {
               <i
                 className={`qi-${weatherData.weather.now.icon} text-yellow-500`}
               />
+            </div>
+            <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">
+              深圳
             </div>
             <div className="text-2xl font-bold mb-1">
               {weatherData.weather.now.temp}°C
