@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import buildServer from '../../server.js';
+import buildServer from '../../../server.js';
 import config from '../../../config.js';
 
 describe('GET /users', () => {

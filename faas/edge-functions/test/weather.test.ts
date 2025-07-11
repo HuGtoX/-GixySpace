@@ -1,5 +1,5 @@
 import { assertEquals } from 'std/assert';
-import weather from '../main.mts';
+import weather from '../weather.mts';
 
 Deno.test('weather API - 正常请求', async () => {
 	const request = new Request(

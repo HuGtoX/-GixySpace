@@ -1,4 +1,5 @@
 module.exports = {
+	plugins: ['prettier-plugin-tailwindcss'],
 	printWidth: 80, // 指定行的最大长度
 	tabWidth: 4, // 指定缩进的空格数
 	useTabs: true, // 是否使用制表符进行缩进，默认为 false
