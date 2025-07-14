@@ -3,27 +3,38 @@
 @tailwind utilities;
 
 @layer components {
+  /* 基础样式 */
+  .primay-text {
+    @apply text-sm text-gray-600 dark:text-gray-300;
+  }
+  .secondary-text {
+    @apply text-xs text-gray-500 dark:text-gray-400;
+  }
+
   /* 预定义颜色类 */
   .theme-blue {
-    @apply bg-blue-50 text-blue-200;
+    @apply bg-blue-50 text-blue-400;
   }
   .theme-green {
-    @apply bg-green-50 text-green-200;
+    @apply bg-green-50 text-green-400;
   }
   .theme-purple {
-    @apply bg-purple-50 text-purple-200;
+    @apply bg-purple-50 text-purple-400;
   }
   .theme-red {
-    @apply bg-red-50 text-red-200;
+    @apply bg-red-50 text-red-400;
   }
   .theme-yellow {
-    @apply bg-yellow-50 text-yellow-200;
+    @apply bg-yellow-50 text-yellow-400;
   }
   .theme-indigo {
-    @apply bg-indigo-50 text-indigo-200;
+    @apply bg-indigo-50 text-indigo-400;
   }
   .theme-gray {
-    @apply bg-gray-50 text-gray-200;
+    @apply bg-gray-50 text-gray-400;
+  }
+  .theme-indigo {
+    @apply bg-indigo-50 text-indigo-400;
   }
 }
 

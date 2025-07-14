@@ -65,6 +65,7 @@
     ],
     "packageJson": {
       "dependencies": [
+        "npm:@upstash/redis@^1.35.1",
         "npm:drizzle-kit@~0.31.4",
         "npm:drizzle-orm@~0.44.2",
         "npm:pg@^8.16.3",

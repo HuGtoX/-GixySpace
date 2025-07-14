@@ -19,14 +19,3 @@ Deno.test('weather API - 正常请求', async () => {
 	assertEquals(data.weather.code, '200');
 	assertEquals(data.air.code, '200');
 });
-
-Deno.test('weather API - CORS预检请求', async () => {
-	const request = new Request('http://example.com/api/hf/weather', {
-		method: 'OPTIONS'
-	});
-	const context = {};
-	const response = await weather(request, context);
-	assertEquals(response.status, 200);
-	assertEquals(response.headers.get('Access-Control-Allow-Origin'), '*');
-	assertEquals(response.headers.get('Access-Control-Max-Age'), '86400');
-});

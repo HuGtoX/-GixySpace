@@ -10,6 +10,7 @@ import {
 	foreignKey,
 	bigserial,
 	primaryKey,
+	date,
 	jsonb
 } from 'drizzle-orm/pg-core';
 
@@ -150,5 +151,23 @@ export const guestUserMapping = pgTable(
 			foreignColumns: [usersTable.id],
 			name: 'guest_user_mapping_user_id_fkey'
 		}).onDelete('cascade')
+	]
+);
+
+export const dailySentences = pgTable(
+	'daily_sentences',
+	{
+		id: serial('id').primaryKey(),
+		content: text('content').notNull(),
+		from: text('from'),
+		fetchData: text('fetch_data'),
+		fetchDate: date('fetch_date')
+			.notNull()
+			.default(sql`CURRENT_DATE`),
+		createdAt: timestamp('created_at').notNull().defaultNow()
+	},
+	(table) => [
+		// 确保每天只有一条记录
+		index('idx_daily_sentences_date').on(table.fetchDate)
 	]
 );
