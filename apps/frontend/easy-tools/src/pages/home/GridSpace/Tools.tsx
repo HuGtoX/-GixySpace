@@ -31,13 +31,13 @@ const ToolItem = ({
 
   return (
     <div
-      className="tool-icon bg-white dark:bg-gray-800 rounded-xl p-4 text-center shadow-md hover:shadow-lg ripple cursor-pointer pixel-grow"
+      className="tool-icon ripple pixel-grow cursor-pointer rounded-xl bg-white p-4 text-center shadow-md hover:shadow-lg dark:bg-gray-800"
       draggable="true"
       onClick={handleClick}
     >
       <IconWrapper size={12} background={background} icon={icon} />
-      <span className="text-sm font-medium mb-1">{name}</span>
-      <p className="text-gray-500 dark:text-gray-400 text-xs">
+      <span className="mb-1 text-sm font-medium">{name}</span>
+      <p className="text-xs text-gray-500 dark:text-gray-400">
         {description || ""}
       </p>
     </div>
@@ -46,12 +46,12 @@ const ToolItem = ({
 
 export default function Tools() {
   return (
-    <section className="lg:col-span-3 space-y-6">
-      <div className="flex justify-between items-center">
+    <section className="space-y-6 lg:col-span-3">
+      <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold">常用工具</h2>
         <Button
           type="text"
-          className="text-sm text-primary dark:text-dark-primary hover:underline"
+          className="text-sm text-primary hover:underline dark:text-dark-primary"
         >
           编辑
         </Button>
@@ -69,15 +69,13 @@ export default function Tools() {
           />
         ))}
       </div>
-
-      <TodoList
-        initialTodos={[
-          { id: "1", text: "完成项目报告", completed: true },
-          { id: "2", text: "回复客户邮件", completed: false },
-          { id: "3", text: "准备演示文稿", completed: false },
-          { id: "4", text: "与团队开会", completed: false },
-        ]}
-      />
+      {/* initialTodos={[
+          { id: "1", text: "完成项目报告", completed: true, archived: false },
+          { id: "2", text: "回复客户邮件", completed: false, archived: false },
+          { id: "3", text: "准备演示文稿", completed: false, archived: false },
+          { id: "4", text: "与团队开会", completed: false, archived: false },
+        ]} */}
+      <TodoList />
 
       <AIToolsSection
         title="AI助手"

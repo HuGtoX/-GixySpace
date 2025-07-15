@@ -11,6 +11,7 @@ import {
 	bigserial,
 	primaryKey,
 	date,
+	boolean,
 	jsonb
 } from 'drizzle-orm/pg-core';
 
@@ -153,6 +154,39 @@ export const guestUserMapping = pgTable(
 		}).onDelete('cascade')
 	]
 );
+
+// 待办事项表
+export const todos = pgTable(
+	'todos',
+	{
+		id: serial('id').primaryKey(),
+		text: text('text').notNull(),
+		completed: boolean('completed').default(false).notNull(),
+		archived: boolean('archived').default(false).notNull(),
+		createdAt: timestamp('created_at', {
+			withTimezone: true,
+			mode: 'string'
+		})
+			.defaultNow()
+			.notNull(),
+		updatedAt: timestamp('updated_at', {
+			withTimezone: true,
+			mode: 'string'
+		})
+			.defaultNow()
+			.notNull(),
+		guestId: text('guest_id').references(() => guests.id, {
+			onDelete: 'cascade'
+		})
+	},
+	(table) => [
+		index('idx_todos_guest_id').on(table.guestId),
+		index('idx_todos_archived').on(table.archived)
+	]
+);
+
+export type Todo = typeof todos.$inferSelect;
+export type NewTodo = typeof todos.$inferInsert;
 
 export const dailySentences = pgTable(
 	'daily_sentences',

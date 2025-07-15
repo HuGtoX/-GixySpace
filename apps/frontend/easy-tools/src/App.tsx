@@ -42,6 +42,7 @@ const AppWrapper: React.FC = () => {
         algorithm: isDarkMode ? theme.darkAlgorithm : theme.defaultAlgorithm,
         token: {
           colorPrimary: "#FF6347",
+          colorBgSpotlight: "rgba(0,0,0,0.7)",
         },
         components: componentsTheme(isDarkMode),
       }}

@@ -5,12 +5,7 @@ import type {
   AxiosResponse,
 } from "axios";
 import { message } from "antd";
-
-// type ApiResponse<T> = {
-//   data: T;
-//   code: number;
-//   message: string;
-// };
+import { GuestID } from "../../config/Const";
 
 declare module "axios" {
   interface AxiosInstance {
@@ -37,6 +32,13 @@ instance.interceptors.request.use(
     config.headers = {
       "Content-Type": "application/json", //配置请求头
     };
+
+    // 添加访客ID
+    if (typeof window !== "undefined") {
+      const guestId = localStorage.getItem(GuestID) || "default-guest-id";
+      config.headers["X-Guest-ID"] = guestId;
+    }
+
     return config;
   },
   function (error) {
@@ -47,7 +49,6 @@ instance.interceptors.request.use(
 // 添加响应拦截器
 instance.interceptors.response.use(
   function (response: AxiosResponse): Promise<any> {
-    console.log("-- [ response ] --", response.data);
     return Promise.resolve(response.data);
   },
   function (error) {

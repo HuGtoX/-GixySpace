@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import axios from "@/server";
 import { GuestID } from "../../config/Const";
+import { isDev } from "@/utils/getEnv";
 
 interface TrackingEventProps {
   eventName: string;
@@ -17,7 +18,7 @@ export const useTracking = () => {
       eventCategory,
       properties = {},
     }: TrackingEventProps) => {
-      if (!guestId) return;
+      if (!guestId || isDev) return;
 
       try {
         const response = await axios.post("/api/tracking/create", {

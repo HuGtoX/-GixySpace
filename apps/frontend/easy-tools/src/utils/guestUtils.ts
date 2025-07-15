@@ -18,8 +18,6 @@ export const countVisits = async () => {
 // 生成或获取访客ID
 export const getGuestId = async () => {
   const storedId = localStorage.getItem(GuestID);
-
-  console.log("-- [ GuestID ] --", storedId);
   if (storedId) return storedId;
 
   // 生成新ID
