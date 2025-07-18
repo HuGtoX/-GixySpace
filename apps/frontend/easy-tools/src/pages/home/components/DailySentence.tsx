@@ -3,6 +3,7 @@ import { FaSync } from "react-icons/fa";
 import { DailySentence as Reuslt } from "@gixy/types";
 import axios from "@/server";
 import SectionCard from "./SectionCard";
+import dayjs from "dayjs";
 
 export default function DailySentence() {
   const [yiyan, setYiyan] = useState<Reuslt>(null);
@@ -13,6 +14,8 @@ export default function DailySentence() {
       setLoading(true);
       const data = await axios.get<Reuslt>("/api/yiyan/get");
       setYiyan(data);
+      const date = dayjs().format("YYYY-MM-DD");
+      localStorage.setItem("yiyan", JSON.stringify({ ...data, date }));
     } catch (error) {
       console.error("获取每日一言失败:", error);
     } finally {
@@ -21,7 +24,13 @@ export default function DailySentence() {
   };
 
   useEffect(() => {
-    fetchYiyan();
+    const yiyan = JSON.parse(localStorage.getItem("yiyan") || "{}");
+    if (yiyan && yiyan.date === dayjs().format("YYYY-MM-DD")) {
+      setYiyan(yiyan);
+      setLoading(false);
+    } else {
+      fetchYiyan();
+    }
   }, []);
 
   return (

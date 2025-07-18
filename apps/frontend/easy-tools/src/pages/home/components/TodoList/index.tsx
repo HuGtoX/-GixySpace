@@ -1,9 +1,15 @@
 import { useState, useEffect } from "react";
 import { Tooltip, Modal, message, Spin } from "antd";
-import { FaPlus, FaTrash, FaCheckCircle, FaHistory } from "react-icons/fa";
+import {
+  FaPlus,
+  FaTrash,
+  FaCheckCircle,
+  FaHistory,
+  FaRegCalendarCheck,
+} from "react-icons/fa";
 import SectionCard from "../SectionCard";
-import CreateModal from "./CreateModal";
 import DetailModal from "./DetailModal";
+import ActionButton from "@/components/ActionButton";
 import {
   getTodos,
   addTodo,
@@ -21,7 +27,6 @@ type TodoListProps = {};
 const TodoList: React.FC<TodoListProps> = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodo, setNewTodo] = useState("");
-  const [visible, setVisible] = useState(false);
   const [completedModalVisible, setCompletedModalVisible] = useState(false);
   const [deleteConfirmVisible, setDeleteConfirmVisible] = useState(false);
   const [taskToDelete, setTaskToDelete] = useState<string | null>(null);
@@ -133,8 +138,6 @@ const TodoList: React.FC<TodoListProps> = () => {
         setTodos((todos) => [...todos, originalTodo]);
         message.error("删除失败");
         console.error(error);
-      } finally {
-        setTaskToDelete(null);
       }
     }
   };
@@ -204,7 +207,6 @@ const TodoList: React.FC<TodoListProps> = () => {
     // 乐观更新UI
     setTodos([...todos, tempTodo]);
     setNewTodo("");
-    setVisible(false);
 
     try {
       // 调用API
@@ -225,29 +227,22 @@ const TodoList: React.FC<TodoListProps> = () => {
       title="待办事项"
       right={
         <div className="flex gap-3">
-          <button
+          <ActionButton
             onClick={() => setCompletedModalVisible(true)}
-            className="flex items-center gap-1 text-xs text-primary hover:text-primary/80 dark:text-dark-primary dark:hover:text-dark-primary/80"
-            aria-label="查看历史完成任务"
-          >
-            <FaHistory size={14} />
-          </button>
-          <button
-            onClick={() => setVisible(true)}
-            className="flex items-center gap-1 text-xs text-primary hover:text-primary/80 dark:text-dark-primary dark:hover:text-dark-primary/80"
-          >
-            <FaPlus size={14} />
-          </button>
+            icon={<FaRegCalendarCheck size={16} />}
+            ariaLabel="查看历史完成任务"
+            size="sm"
+          />
         </div>
       }
     >
-      <CreateModal
+      {/* <CreateModal
         visible={visible}
         onCancel={() => setVisible(false)}
         onOk={handleAddTodo}
         newTodo={newTodo}
         onTodoChange={setNewTodo}
-      />
+      /> */}
 
       <DetailModal
         visible={completedModalVisible}
@@ -271,7 +266,7 @@ const TodoList: React.FC<TodoListProps> = () => {
         <p>确定要删除此任务吗？此操作不可撤销。</p>
       </Modal>
 
-      <div className="space-y-1">
+      <div className="max-h-[250px] space-y-1 overflow-auto">
         <Spin spinning={loading} tip="加载中...">
           {todos.filter((todo) => !todo.archived).length === 0 ? (
             <div className="py-8 text-center text-gray-500 dark:text-gray-400">
@@ -283,6 +278,23 @@ const TodoList: React.FC<TodoListProps> = () => {
             todos.filter((todo) => !todo.archived).map(renderTodo)
           )}
         </Spin>
+      </div>
+
+      <div className="mt-4 flex">
+        <input
+          type="text"
+          value={newTodo}
+          onChange={(e) => setNewTodo(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleAddTodo()}
+          placeholder="添加新任务..."
+          className="box-border min-w-0 flex-1 rounded-l-lg bg-gray-50 px-3 py-2 text-sm ring-primary focus:outline-none focus:ring-1 dark:bg-dark-bg2"
+        />
+        <button
+          onClick={handleAddTodo}
+          className="box-border rounded-r-lg bg-primary px-3 py-2 text-white transition-colors hover:bg-primary/90 dark:bg-dark-primary"
+        >
+          <FaPlus />
+        </button>
       </div>
     </SectionCard>
   );

@@ -86,6 +86,10 @@ body::-webkit-scrollbar-thumb:hover {
 }
 
 @layer utilities {
+  .item-hover {
+    @apply cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-800;
+  }
+
   /* 自定义滚动条样式 */
   .custom-scrollbar {
     scrollbar-width: thin;
