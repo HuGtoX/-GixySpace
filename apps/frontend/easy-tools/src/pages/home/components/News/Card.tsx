@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FaSync, FaBolt, FaRegStar, FaStar } from "react-icons/fa";
+import { FaSync, FaRegStar } from "react-icons/fa";
 import { Skeleton } from "antd";
 import ActionButton from "@/components/ActionButton";
 import axios from "@/server";
