@@ -3,14 +3,18 @@ import { Card } from "antd";
 import { useDeviceDetect } from "../../../hooks/useDeviceDetect";
 import { useTheme } from "../../../context/ThemeContext";
 
+type RenderStatus = 'idle' | 'compiling' | 'rendering' | 'completed' | 'error';
+
 interface PreviewPanelProps {
   iframeRef: React.RefObject<HTMLIFrameElement>;
   onIframeLoad: () => void;
+  renderStatus?: RenderStatus;
 }
 
 const PreviewPanel: React.FC<PreviewPanelProps> = ({
   iframeRef,
   onIframeLoad,
+  renderStatus = 'idle',
 }) => {
   const { isMobile } = useDeviceDetect();
   const { isDarkMode } = useTheme();
@@ -29,10 +33,46 @@ const PreviewPanel: React.FC<PreviewPanelProps> = ({
       title="实时预览"
       extra={
         <div className="flex items-center gap-2">
-          <span className="text-xs text-gray-500 dark:text-gray-400">
-            自动更新
-          </span>
-          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+          {renderStatus === 'idle' && (
+            <>
+              <span className="text-xs text-gray-500 dark:text-gray-400">
+                就绪
+              </span>
+              <div className="w-2 h-2 bg-green-500 rounded-full" />
+            </>
+          )}
+          {renderStatus === 'compiling' && (
+            <>
+              <span className="text-xs text-blue-600 dark:text-blue-400">
+                编译中
+              </span>
+              <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
+            </>
+          )}
+          {renderStatus === 'rendering' && (
+            <>
+              <span className="text-xs text-orange-600 dark:text-orange-400">
+                渲染中
+              </span>
+              <div className="w-2 h-2 bg-orange-500 rounded-full animate-spin" />
+            </>
+          )}
+          {renderStatus === 'completed' && (
+            <>
+              <span className="text-xs text-green-600 dark:text-green-400">
+                渲染完成
+              </span>
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+            </>
+          )}
+          {renderStatus === 'error' && (
+            <>
+              <span className="text-xs text-red-600 dark:text-red-400">
+                渲染错误
+              </span>
+              <div className="w-2 h-2 bg-red-500 rounded-full" />
+            </>
+          )}
         </div>
       }
       className="h-full flex flex-col"

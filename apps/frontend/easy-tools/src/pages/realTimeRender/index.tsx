@@ -1,10 +1,14 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
 import { useDeviceDetect } from "../../hooks/useDeviceDetect";
 import CodeEditor from "./components/CodeEditor";
 import PreviewPanel from "./components/PreviewPanel";
 import CodeRenderer from "./components/CodeRenderer";
 import FullscreenView from "./components/FullscreenView";
+import ShortcutHelp from "./components/ShortcutHelp";
 import { App } from "antd";
+
+// 渲染状态类型
+type RenderStatus = 'idle' | 'compiling' | 'rendering' | 'completed' | 'error';
 
 const defaultCode = `import React, { useState } from 'react';
 
@@ -84,8 +88,45 @@ const RealTimeRender: React.FC = () => {
   const [code, setCode] = useState(defaultCode);
   const [renderKey, setRenderKey] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [renderStatus, setRenderStatus] = useState<RenderStatus>('idle');
+  const [showShortcutHelp, setShowShortcutHelp] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
   const { message } = App.useApp();
+
+  // 防抖渲染函数
+  const debouncedRender = useCallback(() => {
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+    }
+    
+    setRenderStatus('compiling');
+    debounceTimerRef.current = setTimeout(() => {
+      setRenderStatus('rendering');
+      setRenderKey((prev) => prev + 1);
+      
+      // 模拟渲染完成状态
+      setTimeout(() => {
+        setRenderStatus('completed');
+        setTimeout(() => setRenderStatus('idle'), 1000);
+      }, 500);
+    }, 400);
+  }, []);
+
+  // 代码变更处理
+  const handleCodeChange = useCallback((newCode: string) => {
+    setCode(newCode);
+    debouncedRender();
+  }, [debouncedRender]);
+
+  // 清理定时器
+  useEffect(() => {
+    return () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+    };
+  }, []);
 
   // 复制代码
   const handleCopyCode = async () => {
@@ -99,14 +140,35 @@ const RealTimeRender: React.FC = () => {
 
   // 运行/刷新预览
   const handleRun = () => {
-    setRenderKey((prev) => prev + 1);
+    setRenderStatus('compiling');
+    setTimeout(() => {
+      setRenderStatus('rendering');
+      setRenderKey((prev) => prev + 1);
+      setTimeout(() => {
+        setRenderStatus('completed');
+        setTimeout(() => setRenderStatus('idle'), 1000);
+      }, 500);
+    }, 100);
     message.success("正在运行代码...");
   };
 
   // 刷新预览
   const handleRefresh = () => {
-    setRenderKey((prev) => prev + 1);
+    setRenderStatus('compiling');
+    setTimeout(() => {
+      setRenderStatus('rendering');
+      setRenderKey((prev) => prev + 1);
+      setTimeout(() => {
+        setRenderStatus('completed');
+        setTimeout(() => setRenderStatus('idle'), 1000);
+      }, 500);
+    }, 100);
     message.success("预览已刷新");
+  };
+
+  // 切换快捷键帮助
+  const toggleShortcutHelp = () => {
+    setShowShortcutHelp(!showShortcutHelp);
   };
 
   // 全屏切换
@@ -153,16 +215,22 @@ const RealTimeRender: React.FC = () => {
         {/* 代码编辑区 */}
         <CodeEditor
           code={code}
-          onChange={setCode}
+          onChange={handleCodeChange}
           onRun={handleRun}
           onCopy={handleCopyCode}
           onRefresh={handleRefresh}
           onToggleFullscreen={toggleFullscreen}
+          onToggleShortcutHelp={toggleShortcutHelp}
           isFullscreen={isFullscreen}
+          showShortcutHelp={showShortcutHelp}
         />
 
         {/* 预览区 */}
-        <PreviewPanel iframeRef={iframeRef} onIframeLoad={handleIframeLoad} />
+        <PreviewPanel 
+          iframeRef={iframeRef} 
+          onIframeLoad={handleIframeLoad}
+          renderStatus={renderStatus}
+        />
       </div>
 
       {/* 代码渲染器 */}
@@ -177,6 +245,12 @@ const RealTimeRender: React.FC = () => {
           </p>
         </div>
       )}
+
+      {/* 快捷键帮助 */}
+      <ShortcutHelp
+        visible={showShortcutHelp}
+        onClose={() => setShowShortcutHelp(false)}
+      />
     </div>
   );
 };
