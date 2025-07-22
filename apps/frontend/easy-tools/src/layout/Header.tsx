@@ -1,4 +1,4 @@
-import { Affix, Input, Button, Dropdown, Menu, Avatar, MenuProps } from "antd";
+import { Affix, Input, Button, Dropdown, Avatar, MenuProps } from "antd";
 import {
   FaSun,
   FaMoon,
