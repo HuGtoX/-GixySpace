@@ -1,4 +1,4 @@
-import { Affix, Input, Button, Dropdown, Menu, Avatar } from "antd";
+import { Affix, Input, Button, Dropdown, Menu, Avatar, MenuProps } from "antd";
 import {
   FaSun,
   FaMoon,
@@ -11,34 +11,28 @@ import { useTheme } from "@/context/ThemeContext";
 import { useNavigate } from "react-router-dom";
 const { Search } = Input;
 
+const userMenu: MenuProps["items"] = [
+  {
+    key: "1",
+    icon: <FaUser className="mr-2" />,
+    label: "个人资料",
+  },
+  {
+    key: "2",
+    icon: <FaCog className="mr-2" />,
+    label: "设置",
+  },
+  {
+    key: "3",
+    icon: <FaSignOutAlt className="mr-2" />,
+    label: "退出登录",
+  },
+];
+
 // 顶部导航栏组件
 const Header = () => {
   const { isDarkMode, toggleTheme } = useTheme();
   const navigate = useNavigate();
-
-  const userMenu = (
-    <Menu>
-      <Menu.Item key="profile">
-        <div className="flex items-center">
-          <FaUser className="mr-2" />
-          个人资料
-        </div>
-      </Menu.Item>
-      <Menu.Item className="flex items-center" key="settings">
-        <div className="flex items-center">
-          <FaCog className="mr-2" />
-          设置
-        </div>
-      </Menu.Item>
-      <Menu.Divider />
-      <Menu.Item className="flex items-center" key="logout">
-        <div className="flex items-center">
-          <FaSignOutAlt className="mr-2" />
-          退出登录
-        </div>
-      </Menu.Item>
-    </Menu>
-  );
 
   return (
     <Affix>
@@ -77,7 +71,7 @@ const Header = () => {
             <Button shape="circle" icon={<FaBell />} className="relative">
               <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
             </Button>
-            <Dropdown overlay={userMenu} placement="bottomRight">
+            <Dropdown menu={{ items: userMenu }} placement="bottomRight">
               <Avatar
                 size={38}
                 src="/avatar/a5.png"

@@ -1,4 +1,4 @@
-import { ConfigProvider, theme, message } from "antd";
+import { ConfigProvider, theme, App as AntApp } from "antd";
 import { router } from "./router";
 import { RouterProvider } from "react-router-dom";
 import ThemeProvider, { useTheme } from "./context/ThemeContext";
@@ -78,7 +78,6 @@ const componentsTheme = (isDarkMode: boolean) => ({
 // 包裹一层组件监听状态变化
 const AppWrapper: React.FC = () => {
   const { isDarkMode } = useTheme();
-  const [_, contextHolder] = message.useMessage();
 
   return (
     <ConfigProvider
@@ -91,8 +90,9 @@ const AppWrapper: React.FC = () => {
         components: componentsTheme(isDarkMode),
       }}
     >
-      {contextHolder}
-      <RouterProvider router={router} />
+      <AntApp>
+        <RouterProvider router={router} />
+      </AntApp>
     </ConfigProvider>
   );
 };
