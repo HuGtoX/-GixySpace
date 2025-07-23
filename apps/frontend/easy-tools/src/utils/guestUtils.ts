@@ -1,23 +1,42 @@
-import { v4 as uuidv4 } from "uuid";
+import axiosInstance from "@/server";
+import { GuestVisitStats } from "@gixy/types";
+import { GuestID } from "../../config/Const";
+
+// 获取访问统计数据
+export const fetchVisitStats = async () => {
+  return await axiosInstance.get<GuestVisitStats>("/api/guest/stats");
+};
+
+// 记录访问次数
+export const countVisits = async () => {
+  const guestId = await getGuestId();
+  await axiosInstance.post("/api/guest/visit", {
+    fingerprint: guestId,
+  });
+};
 
 // 生成或获取访客ID
 export const getGuestId = async () => {
-  // 优先从localStorage获取
-  const storedId = localStorage.getItem("guest_id");
+  const storedId = localStorage.getItem(GuestID);
   if (storedId) return storedId;
 
-  // 生成新访客ID
-  const newId = uuidv4();
-  localStorage.setItem("guest_id", newId);
+  // 生成新ID
+  const newId =
+    [
+      navigator.hardwareConcurrency,
+      screen.width,
+      screen.height,
+      navigator.language,
+      Date.now().toString(36),
+    ].join("-") +
+    "-" +
+    Math.random().toString(36).slice(2, 10);
 
-  // 创建访客记录
-  await fetch("/api/guest/create", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      guest_id: newId,
-    }),
+  await axiosInstance.post("/api/guest/create", {
+    guestId: newId,
   });
+
+  localStorage.setItem(GuestID, newId);
 
   return newId;
 };

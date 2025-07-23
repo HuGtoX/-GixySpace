@@ -4,6 +4,8 @@
 		"drizzle-orm/": "https://esm.sh/drizzle-orm/",
 		"drizzle-orm": "https://esm.sh/drizzle-orm",
 		"postgres": "https://esm.sh/postgres",
-		"std/assert": "jsr:@std/assert@^0.216.0"
+		"@upstash/redis": "https://esm.sh/@upstash/redis",
+		"std/assert": "jsr:@std/assert@^0.216.0",
+		"@gixy/types/": "../../packages/types/src/"
 	}
 }

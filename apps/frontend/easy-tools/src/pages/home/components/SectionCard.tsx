@@ -2,14 +2,19 @@ import React from "react";
 
 type SectionCardProps = {
   title: string;
+  plain?: boolean;
   right?: React.ReactNode;
   children: React.ReactNode;
 };
 
-function SectionCard({ title, right, children }: SectionCardProps) {
+function SectionCard({ title, plain, right, children }: SectionCardProps) {
+  const className = plain
+    ? ""
+    : "cursor-pointer rounded-xl bg-white p-4 shadow-md dark:bg-gray-800";
+
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md cursor-pointer">
-      <div className="flex justify-between items-center mb-4">
+    <div className={className}>
+      <div className="mb-4 flex items-center justify-between">
         <h3 className="font-semibold">{title}</h3>
         {right}
       </div>

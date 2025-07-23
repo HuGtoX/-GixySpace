@@ -1,7 +1,7 @@
 import type { fastify } from 'fastify';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import config from '../../../config.js';
-import buildServer from '../../server.js';
+import buildServer from '../../../server.js';
 
 describe('server', () => {
 	let server: ReturnType<typeof fastify>;

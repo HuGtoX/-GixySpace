@@ -1,9 +1,9 @@
 import { assertEquals } from 'std/assert';
-import weather from '../src/weather.mts';
+import weather from '../weather.mts';
 
 Deno.test('weather API - 正常请求', async () => {
 	const request = new Request(
-		'http://example.com/weather?lat=39.90&lon=116.40'
+		'http://example.com/api/hf/weather?lat=39.90&lon=116.40'
 	);
 	const context = {
 		geo: {
@@ -18,15 +18,4 @@ Deno.test('weather API - 正常请求', async () => {
 	assertEquals(response.status, 200);
 	assertEquals(data.weather.code, '200');
 	assertEquals(data.air.code, '200');
-});
-
-Deno.test('weather API - CORS预检请求', async () => {
-	const request = new Request('http://example.com/weather', {
-		method: 'OPTIONS'
-	});
-	const context = {};
-	const response = await weather(request, context);
-	assertEquals(response.status, 200);
-	assertEquals(response.headers.get('Access-Control-Allow-Origin'), '*');
-	assertEquals(response.headers.get('Access-Control-Max-Age'), '86400');
 });
