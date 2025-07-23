@@ -1,21 +1,33 @@
 import { useEffect } from "react";
 import { useTheme } from "../../../context/ThemeContext";
+import { ConsoleLog } from "./ConsolePanel";
 
 interface CodeRendererProps {
   code: string;
   iframeRef: React.RefObject<HTMLIFrameElement>;
   renderKey: number;
+  onConsoleLog?: (log: ConsoleLog) => void;
 }
 
 const CodeRenderer: React.FC<CodeRendererProps> = ({
   code,
   iframeRef,
   renderKey,
+  onConsoleLog,
 }) => {
   const { isDarkMode } = useTheme();
   useEffect(() => {
     // 如果iframe不存在就退出
     if (!iframeRef.current) return;
+
+    // 设置消息监听器来接收console日志
+    const handleMessage = (event: MessageEvent) => {
+      if (event.data && event.data.type === "console-log" && onConsoleLog) {
+        onConsoleLog(event.data.data);
+      }
+    };
+
+    window.addEventListener("message", handleMessage);
 
     const renderCode = () => {
       // 获取iframe实例 如果iframe不存在就退出
@@ -82,6 +94,75 @@ const CodeRenderer: React.FC<CodeRendererProps> = ({
           <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
           
           <script>
+            // 设置console日志捕获
+            (function() {
+              const originalConsole = {
+                log: console.log,
+                warn: console.warn,
+                error: console.error,
+                info: console.info
+              };
+              
+              function sendLogToParent(type, args) {
+                try {
+                  const message = args.map(arg => {
+                    if (typeof arg === 'object') {
+                      try {
+                        return JSON.stringify(arg, null, 2);
+                      } catch {
+                        return String(arg);
+                      }
+                    }
+                    return String(arg);
+                  }).join(' ');
+                  
+                  window.parent.postMessage({
+                    type: 'console-log',
+                    data: {
+                      id: Date.now() + '-' + Math.random().toString(36).substr(2, 9),
+                      type: type,
+                      message: message,
+                      timestamp: Date.now(),
+                      args: args
+                    }
+                  }, '*');
+                } catch (error) {
+                  // 静默处理错误，避免无限循环
+                }
+              }
+              
+              // 重写console方法
+              console.log = function(...args) {
+                originalConsole.log.apply(console, args);
+                sendLogToParent('log', args);
+              };
+              
+              console.warn = function(...args) {
+                originalConsole.warn.apply(console, args);
+                sendLogToParent('warn', args);
+              };
+              
+              console.error = function(...args) {
+                originalConsole.error.apply(console, args);
+                sendLogToParent('error', args);
+              };
+              
+              console.info = function(...args) {
+                originalConsole.info.apply(console, args);
+                sendLogToParent('info', args);
+              };
+              
+              // 捕获未处理的错误
+              window.addEventListener('error', function(event) {
+                sendLogToParent('error', [event.message + ' at ' + event.filename + ':' + event.lineno]);
+              });
+              
+              // 捕获未处理的Promise拒绝
+              window.addEventListener('unhandledrejection', function(event) {
+                sendLogToParent('error', ['Unhandled Promise Rejection:', event.reason]);
+              });
+            })();
+            
             // 等待所有库加载完成
             function waitForLibraries() {
               return new Promise((resolve) => {
@@ -208,8 +289,12 @@ const CodeRenderer: React.FC<CodeRendererProps> = ({
 
     // 延迟渲染，确保iframe完全加载
     const timer = setTimeout(renderCode, 100);
-    return () => clearTimeout(timer);
-  }, [code, renderKey, isDarkMode]);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("message", handleMessage);
+    };
+  }, [code, renderKey, isDarkMode, onConsoleLog]);
 
   return null; // 这是一个逻辑组件，不渲染任何UI
 };

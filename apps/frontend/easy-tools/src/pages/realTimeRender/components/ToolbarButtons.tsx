@@ -6,13 +6,16 @@ import {
   ReloadOutlined,
   FullscreenOutlined,
   FormatPainterOutlined,
+  QuestionCircleOutlined,
 } from "@ant-design/icons";
+import { useDeviceDetect } from "../../../hooks/useDeviceDetect";
 
 interface ToolbarButtonsProps {
   onRun: () => void;
   onCopy: () => void;
   onRefresh: () => void;
   onToggleFullscreen: () => void;
+  onToggleShortcutHelp?: () => void;
   onFormat?: () => void;
   isFullscreen: boolean;
 }
@@ -22,9 +25,11 @@ const ToolbarButtons: React.FC<ToolbarButtonsProps> = ({
   onCopy,
   onRefresh,
   onToggleFullscreen,
+  onToggleShortcutHelp,
   onFormat,
   isFullscreen,
 }) => {
+  const { isMobile } = useDeviceDetect();
   return (
     <div className="flex gap-2">
       <Tooltip title="运行代码">
@@ -67,6 +72,17 @@ const ToolbarButtons: React.FC<ToolbarButtonsProps> = ({
           {isFullscreen ? "退出" : "全屏"}
         </Button>
       </Tooltip>
+      {!isMobile && onToggleShortcutHelp && (
+        <Tooltip title="快捷键帮助">
+          <Button
+            icon={<QuestionCircleOutlined />}
+            onClick={onToggleShortcutHelp}
+            size="small"
+          >
+            帮助
+          </Button>
+        </Tooltip>
+      )}
     </div>
   );
 };
