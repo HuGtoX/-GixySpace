@@ -1,4 +1,4 @@
-import { ConfigProvider, theme, message, Spin } from "antd";
+import { ConfigProvider, theme, App as AntApp, Spin } from "antd";
 import { router } from "./router";
 import { useEffect, useState, CSSProperties } from "react";
 import { RouterProvider } from "react-router-dom";
@@ -11,7 +11,6 @@ import "dayjs/locale/zh-cn";
 const AppWrapper: React.FC = () => {
   const { isDarkMode } = useTheme();
   const [loading, setLoading] = useState(true);
-  const [_, contextHolder] = message.useMessage();
 
   useEffect(() => {
     getGuestId().finally(() => {
@@ -47,14 +46,15 @@ const AppWrapper: React.FC = () => {
         components: componentsTheme(isDarkMode),
       }}
     >
-      {contextHolder}
-      {loading ? (
-        <div style={loadingStyle}>
-          <Spin size="large" tip="加载中..." />
-        </div>
-      ) : (
-        <RouterProvider router={router} />
-      )}
+      <AntApp>
+        {loading ? (
+          <div style={loadingStyle}>
+            <Spin size="large" tip="加载中..." />
+          </div>
+        ) : (
+          <RouterProvider router={router} />
+        )}
+      </AntApp>
     </ConfigProvider>
   );
 };

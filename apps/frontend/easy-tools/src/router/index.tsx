@@ -6,6 +6,7 @@ import React from "react";
 const PdfComponent = React.lazy(() => import("../pages/pdf/concat"));
 const PdfSplitPage = React.lazy(() => import("../pages/pdf/split"));
 const ImageTransformPage = React.lazy(() => import("../pages/image/transform"));
+const RealTimeRenderPage = React.lazy(() => import("../pages/realTimeRender"));
 
 export const router = createBrowserRouter([
   {
@@ -25,4 +26,10 @@ export const router = createBrowserRouter([
     element: <Layout />,
     children: [{ path: "transform", element: <ImageTransformPage /> }],
   },
+  {
+    path: "/dev",
+    element: <Layout />,
+    children: [{ path: "realtime-render", element: <RealTimeRenderPage /> }],
+  },
 ]);
+
