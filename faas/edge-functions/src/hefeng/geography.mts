@@ -1,5 +1,5 @@
-import { corsHeaders } from '../utils/index.mts';
-import type { GeoResponse } from '../../../packages/types/src/weather.ts';
+import { corsHeaders } from '../../utils/index.mts';
+import type { GeoResponse } from '@gixy/types/weather.ts';
 
 const baseUrl = Netlify.env.get('HF_BASEURL');
 const key = Netlify.env.get('QWEATHER_KEY');

@@ -1,6 +1,22 @@
 {
   "version": "4",
+  "specifiers": {
+    "jsr:@std/assert@0.216": "0.216.0",
+    "jsr:@std/fmt@0.216": "0.216.0"
+  },
+  "jsr": {
+    "@std/assert@0.216.0": {
+      "integrity": "f65392edf3bec39e2d1028e51f1da549db81691034b244eaba83318a757c0c2e",
+      "dependencies": [
+        "jsr:@std/fmt"
+      ]
+    },
+    "@std/fmt@0.216.0": {
+      "integrity": "0d8ef6f7c7fe3b6f2a9a6f5cdf65578cff231bb6e3d90f6b0dfc4b4e82a636dd"
+    }
+  },
   "redirects": {
+    "https://deno.land/std/http/server.ts": "https://deno.land/std@0.224.0/http/server.ts",
     "https://esm.sh/@supabase/node-fetch@^2.6.14?target=denonext": "https://esm.sh/@supabase/node-fetch@2.6.15?target=denonext",
     "https://esm.sh/bufferutil@^4.0.1?target=denonext": "https://esm.sh/bufferutil@4.0.9?target=denonext",
     "https://esm.sh/jsr/@std/dotenv/load": "https://esm.sh/jsr/@std/dotenv@0.225.5/load",
@@ -12,6 +28,8 @@
     "https://esm.sh/ws@^8.18.0?target=denonext": "https://esm.sh/ws@8.18.3?target=denonext"
   },
   "remote": {
+    "https://deno.land/std@0.224.0/async/delay.ts": "f90dd685b97c2f142b8069082993e437b1602b8e2561134827eeb7c12b95c499",
+    "https://deno.land/std@0.224.0/http/server.ts": "f9313804bf6467a1704f45f76cb6cd0a3396a3b31c316035e6a4c2035d1ea514",
     "https://esm.sh/@jsr/std__dotenv@0.225.5/denonext/load.mjs": "adf7b7fedd36f4f15fb6858a8105d89ee0eb55c3536baa8cf5c07c03a1d9ae65",
     "https://esm.sh/@jsr/std__dotenv@0.225.5/denonext/parse.mjs": "554219b345b8672cfe0dbdfa77102ba542d2321ff8c7f694401fc66b78003a2f",
     "https://esm.sh/@jsr/std__dotenv@0.225.5/denonext/std__dotenv.mjs": "84bf541f71adef1ab4fdb73cb7ed3f5e30528abc1a014993afa2d822afe02e49",
@@ -44,6 +62,15 @@
   "workspace": {
     "dependencies": [
       "jsr:@std/assert@0.216"
-    ]
+    ],
+    "packageJson": {
+      "dependencies": [
+        "npm:@upstash/redis@^1.35.1",
+        "npm:drizzle-kit@~0.31.4",
+        "npm:drizzle-orm@~0.44.2",
+        "npm:pg@^8.16.3",
+        "npm:postgres@^3.4.7"
+      ]
+    }
   }
 }

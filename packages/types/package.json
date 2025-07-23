@@ -9,6 +9,12 @@
 	"scripts": {
 		"build": "tsc"
 	},
+	"exports": {
+		".": {
+			"types": "./src/index.ts",
+			"default": "./dist/index.js"
+		}
+	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",

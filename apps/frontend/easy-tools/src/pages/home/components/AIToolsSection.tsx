@@ -39,7 +39,7 @@ const AIToolsSection: React.FC<AIToolsSectionProps> = ({
         >
           <div className="flex items-start">
             <div
-              className={`w-10 h-10 rounded-lg bg-${tool.bgColor}/10 dark:bg-${tool.bgColor}/10 flex items-center justify-center mr-3`}
+              className={`w-10 h-10 rounded-lg ${tool.bgColor} flex items-center justify-center mr-3`}
             >
               {tool.icon}
             </div>

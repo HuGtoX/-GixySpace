@@ -16,7 +16,9 @@
     "@emotion/styled": "^11.14.0",
     "@gixy/utils": "workspace:^",
     "@monaco-editor/react": "^4.7.0",
+    "axios": "^1.10.0",
     "file-saver": "^2.0.5",
+    "framer-motion": "^12.23.2",
     "pdf-lib": "^1.17.1",
     "pdfjs-dist": "^5.1.91",
     "qweather-icons": "^1.7.0",
@@ -39,5 +41,8 @@
     "sass": "^1.86.3",
     "tailwindcss": "^3.4.17",
     "typescript-eslint": "^8.24.1"
+  },
+  "overrides": {
+    "stylus": "0.0.1-security"
   }
 }

@@ -1,6 +1,6 @@
 // src/10-pluggable-jwt/test/startup.test.ts
 import { describe, expect, it } from 'vitest';
-import buildServer from '../../server.js';
+import buildServer from '../../../server.js';
 import config from '../../../config.js';
 
 describe('启动', () => {

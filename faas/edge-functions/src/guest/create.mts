@@ -6,19 +6,20 @@ import { Context } from '@netlify/edge-functions';
 export default async (req: Request, context: Context) => {
 	const userAgent = req.headers.get('user-agent') || ''; // 从请求头获取用户代理
 
+	const { guestId } = await req.json();
+
 	const queryClient = postgres(Netlify.env.get('DATABASE_URL')!);
 	const db = drizzle({ client: queryClient });
 
 	// 创建访客记录（填充实际字段）
-	const data = await db.insert(guests).values({
+	await db.insert(guests).values({
+		id: guestId,
 		userAgent,
 		ipHash: context.ip,
-		fingerprint: req.headers.get('sec-ch-ua') || '' // 示例指纹（可根据实际需求调整）
+		fingerprint: req.headers.get('sec-ch-ua') || ''
 	});
 
-	console.log('-- [ data ] --', data);
-
-	return new Response(JSON.stringify({ success: true }), {
-		headers: { 'Content-Type': 'application/json' }
-	});
+	return {
+		result: { success: true, guestId }
+	};
 };

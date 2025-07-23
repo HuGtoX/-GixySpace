@@ -6,6 +6,7 @@
 		"test": "deno test --allow-env --allow-read --allow-net --no-check"
 	},
 	"dependencies": {
+		"@upstash/redis": "^1.35.1",
 		"drizzle-orm": "^0.44.2",
 		"pg": "^8.16.3",
 		"postgres": "^3.4.7"
