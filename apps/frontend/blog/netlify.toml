@@ -1,5 +1,5 @@
 [build]
-  command = "pnpm --filter @gixy/blog build"
+  command = "pnpm --filter '@gixy/blog...' build"
   publish = "apps/frontend/blog/dist"
 
 [[redirects]]

@@ -1,5 +1,5 @@
 [build]
-  command = "pnpm --filter @gixy/bit-craft build"
+  command = "pnpm --filter '@gixy/bit-craft...' build"
   publish = "apps/frontend/easy-tools/dist"
 
 [[redirects]]
