@@ -3,6 +3,7 @@ import {
   FaImage,
   FaFileImport,
   FaEllipsisH,
+  FaCode
 } from "react-icons/fa";
 
 // 工具选项数据
@@ -32,6 +33,14 @@ export const toolsMenu = [
   },
   {
     id: 4,
+    name: "实时编辑渲染",
+    url: "/dev/realtime-render",
+    background: "bg-blue-500/10 dark:bg-blue-500/10",
+    icon: <FaCode className="text-teal-500 dark:text-teal-400" />,
+    description: "React编辑器实现实时编辑渲染",
+  },
+  {
+    id: 5,
     name: "其他",
     url: "",
     background: "bg-gray-500/10 dark:bg-gray-500/10",
