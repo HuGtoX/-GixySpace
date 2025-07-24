@@ -1,0 +1,8 @@
+[build]
+  command = "pnpm --filter @gixy/blog build"
+  publish = "apps/frontend/blog/dist"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
