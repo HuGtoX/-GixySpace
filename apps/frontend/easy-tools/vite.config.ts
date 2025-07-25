@@ -18,7 +18,8 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "http://localhost:8888",
+        // target: "http://localhost:8888",
+        target: "https://tools-service.netlify.app/",
         changeOrigin: true,
       },
     },

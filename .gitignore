@@ -6,3 +6,6 @@ node_modules
 .http
 
 dist
+
+# 环境变量文件
+**/.env
