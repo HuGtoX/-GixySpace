@@ -37,7 +37,6 @@ const PreviewPanel: React.FC<PreviewPanelProps> = ({
   const PreviewArea = (
     <Card
       title="实时预览"
-      size="small"
       extra={
         <div className="flex items-center gap-2">
           {renderStatus === "idle" && (
@@ -45,7 +44,7 @@ const PreviewPanel: React.FC<PreviewPanelProps> = ({
               <span className="text-xs text-gray-500 dark:text-gray-400">
                 就绪
               </span>
-              <div className="w-2 h-2 bg-green-500 rounded-full" />
+              <div className="h-2 w-2 rounded-full bg-green-500" />
             </>
           )}
           {renderStatus === "compiling" && (
@@ -53,7 +52,7 @@ const PreviewPanel: React.FC<PreviewPanelProps> = ({
               <span className="text-xs text-blue-600 dark:text-blue-400">
                 编译中
               </span>
-              <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
+              <div className="h-2 w-2 animate-pulse rounded-full bg-blue-500" />
             </>
           )}
           {renderStatus === "rendering" && (
@@ -61,7 +60,7 @@ const PreviewPanel: React.FC<PreviewPanelProps> = ({
               <span className="text-xs text-orange-600 dark:text-orange-400">
                 渲染中
               </span>
-              <div className="w-2 h-2 bg-orange-500 rounded-full animate-spin" />
+              <div className="h-2 w-2 animate-spin rounded-full bg-orange-500" />
             </>
           )}
           {renderStatus === "completed" && (
@@ -69,7 +68,7 @@ const PreviewPanel: React.FC<PreviewPanelProps> = ({
               <span className="text-xs text-green-600 dark:text-green-400">
                 渲染完成
               </span>
-              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+              <div className="h-2 w-2 animate-pulse rounded-full bg-green-500" />
             </>
           )}
           {renderStatus === "error" && (
@@ -77,12 +76,12 @@ const PreviewPanel: React.FC<PreviewPanelProps> = ({
               <span className="text-xs text-red-600 dark:text-red-400">
                 渲染错误
               </span>
-              <div className="w-2 h-2 bg-red-500 rounded-full" />
+              <div className="h-2 w-2 rounded-full bg-red-500" />
             </>
           )}
         </div>
       }
-      className="h-full flex flex-col"
+      className="flex h-full flex-col"
       styles={{
         body: {
           padding: 0,
@@ -110,7 +109,7 @@ const PreviewPanel: React.FC<PreviewPanelProps> = ({
   // 移动端使用垂直布局，桌面端使用可调整的垂直分割
   if (isMobile) {
     return (
-      <div className="h-full flex flex-col gap-4">
+      <div className="flex h-full flex-col gap-4">
         <div style={{ height: "400px" }}>{PreviewArea}</div>
         <div style={{ height: "200px" }}>{ConsolePanelArea}</div>
       </div>

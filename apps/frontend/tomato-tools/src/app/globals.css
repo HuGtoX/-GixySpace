@@ -1,0 +1,149 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  /* 基础样式 */
+  .primay-text {
+    @apply text-sm text-gray-600 dark:text-gray-300;
+  }
+  .secondary-text {
+    @apply text-xs text-gray-500 dark:text-gray-400;
+  }
+
+  /* 预定义颜色类 */
+  .theme-blue {
+    @apply bg-blue-50 text-blue-400;
+  }
+  .theme-green {
+    @apply bg-green-50 text-green-400;
+  }
+  .theme-purple {
+    @apply bg-purple-50 text-purple-400;
+  }
+  .theme-red {
+    @apply bg-red-50 text-red-400;
+  }
+  .theme-yellow {
+    @apply bg-yellow-50 text-yellow-400;
+  }
+  .theme-indigo {
+    @apply bg-indigo-50 text-indigo-400;
+  }
+  .theme-gray {
+    @apply bg-gray-50 text-gray-400;
+  }
+}
+
+/* 全局滚动条样式 */
+html,
+body {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 4px;
+}
+
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.4);
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+html::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:hover {
+  background: rgba(156, 163, 175, 0.7);
+}
+
+/* 暗黑模式全局滚动条 */
+.dark html,
+.dark body {
+  scrollbar-color: rgba(75, 85, 99, 0.6) transparent;
+}
+
+.dark html::-webkit-scrollbar-thumb,
+.dark body::-webkit-scrollbar-thumb {
+  background: rgba(75, 85, 99, 0.5);
+}
+
+.dark html::-webkit-scrollbar-thumb:hover,
+.dark body::-webkit-scrollbar-thumb:hover {
+  background: rgba(75, 85, 99, 0.8);
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .item-hover {
+    @apply cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-800;
+  }
+
+  /* 自定义滚动条样式 */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 3px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(156, 163, 175, 0.4);
+    border-radius: 3px;
+    transition: all 0.2s ease;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(156, 163, 175, 0.7);
+  }
+
+  /* 暗黑模式滚动条 */
+  .dark .custom-scrollbar {
+    scrollbar-color: rgba(75, 85, 99, 0.6) transparent;
+  }
+
+  .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(75, 85, 99, 0.5);
+  }
+
+  .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(75, 85, 99, 0.8);
+  }
+
+  /* 主题色滚动条（用于重要区域） */
+  .primary-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(255, 99, 71, 0.4);
+  }
+
+  .primary-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 99, 71, 0.7);
+  }
+
+  .dark .primary-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(255, 99, 71, 0.5);
+  }
+
+  .dark .primary-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 99, 71, 0.8);
+  }
+}

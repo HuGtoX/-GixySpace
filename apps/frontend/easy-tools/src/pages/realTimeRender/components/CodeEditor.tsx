@@ -111,7 +111,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
             isFullscreen={isFullscreen}
           />
         }
-        className="h-full flex flex-col"
+        className="flex h-full flex-col"
         styles={{
           body: {
             padding: 0,
