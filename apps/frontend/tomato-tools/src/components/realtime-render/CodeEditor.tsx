@@ -33,9 +33,9 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
 }) => {
   const { isMobile } = useDeviceDetect();
   const { isDarkMode } = useTheme();
-  const editorRef = useRef<any>(null);
+  const editorRef = useRef<unknown>(null);
 
-  const handleEditorDidMount = (editor: any, monaco: Monaco) => {
+  const handleEditorDidMount = (editor: unknown, monaco: Monaco) => {
     editorRef.current = editor;
 
     // 配置Monaco Editor
@@ -137,8 +137,8 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
     );
 
     // 添加快捷键
-    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, onRun);
-    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, (e: any) => {
+    (editor as { addCommand: (keyMod: number, callback: () => void) => void }).addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, onRun);
+    (editor as { addCommand: (keyMod: number, callback: (e: { preventDefault: () => void }) => void) => void }).addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, (e: { preventDefault: () => void }) => {
       e.preventDefault();
       onRun();
     });
@@ -146,7 +146,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
 
   const handleFormat = () => {
     if (editorRef.current) {
-      editorRef.current.getAction("editor.action.formatDocument").run();
+      (editorRef.current as { getAction: (action: string) => { run: () => void } }).getAction("editor.action.formatDocument").run();
     }
   };
 

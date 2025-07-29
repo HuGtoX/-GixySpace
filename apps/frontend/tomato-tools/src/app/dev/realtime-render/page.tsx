@@ -12,7 +12,7 @@ import CodeRenderer from "@/components/realtime-render/CodeRenderer";
 import FullscreenView from "@/components/realtime-render/FullscreenView";
 import { ConsoleLog } from "@/components/realtime-render/ConsolePanel";
 
-type RealTimeRenderPageProps = {};
+type RealTimeRenderPageProps = Record<string, never>;
 
 const defaultCode = `import React, { useState, useEffect } from 'react';
 
@@ -128,7 +128,7 @@ function App() {
 
 export default App;`;
 
-export default function RealTimeRenderPage({}: RealTimeRenderPageProps) {
+export default function RealTimeRenderPage(_props: RealTimeRenderPageProps) {
   const { isMobile } = useDeviceDetect();
   const [code, setCode] = useState<string>(defaultCode);
   const [renderKey, setRenderKey] = useState<number>(0);
@@ -139,30 +139,32 @@ export default function RealTimeRenderPage({}: RealTimeRenderPageProps) {
   const [showShortcutHelp, setShowShortcutHelp] = useState<boolean>(false);
 
   // 防抖渲染
-  const debouncedRender = useCallback(
-    debounce(() => {
-      setRenderStatus("compiling");
-      setTimeout(() => {
-        setRenderStatus("rendering");
-        setRenderKey((prev) => prev + 1);
-      }, 300);
-    }, 1000),
-    [],
+  const debouncedRender = useCallback(() => {
+    setRenderStatus("compiling");
+    setTimeout(() => {
+      setRenderStatus("rendering");
+      setRenderKey((prev) => prev + 1);
+    }, 300);
+  }, []);
+
+  const debouncedRenderWithDelay = useCallback(
+    debounce(debouncedRender, 1000),
+    [debouncedRender],
   );
 
   // 代码变化时自动渲染
   useEffect(() => {
     if (code.trim()) {
-      debouncedRender();
+      debouncedRenderWithDelay();
     }
-  }, [code, debouncedRender]);
+  }, [code, debouncedRenderWithDelay]);
 
   // 复制代码
   const handleCopyCode = useCallback(async () => {
     try {
       await navigator.clipboard.writeText(code);
       message.success("代码已复制到剪贴板");
-    } catch (error) {
+    } catch {
       message.error("复制失败，请手动复制");
     }
   }, [code]);
@@ -300,7 +302,7 @@ export default function RealTimeRenderPage({}: RealTimeRenderPageProps) {
 }
 
 // 防抖函数
-function debounce<T extends (...args: any[]) => any>(
+function debounce<T extends (...args: unknown[]) => unknown>(
   func: T,
   wait: number,
 ): (...args: Parameters<T>) => void {

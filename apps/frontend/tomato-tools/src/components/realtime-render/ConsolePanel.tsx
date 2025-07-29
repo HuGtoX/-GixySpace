@@ -10,7 +10,7 @@ export interface ConsoleLog {
   type: "log" | "warn" | "error" | "info";
   message: string;
   timestamp: number;
-  args?: any[];
+  args?: unknown[];
 }
 
 interface ConsolePanelProps {

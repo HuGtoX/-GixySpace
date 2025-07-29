@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { useTheme } from "@/contexts/ThemeContext";
 import { ConsoleLog } from "./ConsolePanel";
 
@@ -297,7 +297,7 @@ const CodeRenderer: React.FC<CodeRendererProps> = ({
       clearTimeout(timer);
       window.removeEventListener("message", handleMessage);
     };
-  }, [code, renderKey, isDarkMode, onConsoleLog]);
+  }, [code, renderKey, isDarkMode, onConsoleLog, iframeRef]);
 
   return null; // 这是一个逻辑组件，不渲染任何UI
 };
