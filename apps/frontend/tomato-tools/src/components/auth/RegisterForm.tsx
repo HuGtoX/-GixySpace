@@ -29,7 +29,7 @@ export default function RegisterForm({ onSuccess }: RegisterFormProps) {
     setError(null);
 
     try {
-      const { confirmPassword, ...registerData } = values;
+      const { confirmPassword: _confirmPassword, ...registerData } = values;
       
       const response = await fetch('/api/auth/register', {
         method: 'POST',

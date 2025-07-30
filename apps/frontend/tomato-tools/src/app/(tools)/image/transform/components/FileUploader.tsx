@@ -63,7 +63,7 @@ const FileUploader = ({ onFilesAdded }: FileUploaderProps) => {
               name: file.name,
               status: "idle",
             });
-          } catch (error) {
+          } catch (_error) {
             invalidFiles.push(`${file.name} (处理失败)`);
           }
         }
@@ -89,7 +89,7 @@ const FileUploader = ({ onFilesAdded }: FileUploaderProps) => {
 
   // 处理文件选择
   const handleFileUpload = useCallback(
-    (options: any) => {
+    (options: { file: File; onSuccess: (response: string) => void }) => {
       const { file, onSuccess } = options;
 
       // 单个文件上传处理
@@ -116,10 +116,10 @@ const FileUploader = ({ onFilesAdded }: FileUploaderProps) => {
 
   // 处理多文件选择
   const handleMultipleFiles = useCallback(
-    (info: any) => {
+    (info: { fileList: Array<{ originFileObj: File }> }) => {
       const { fileList } = info;
       if (fileList && fileList.length > 0) {
-        const files = fileList.map((item: any) => item.originFileObj).filter(Boolean);
+        const files = fileList.map((item: { originFileObj: File }) => item.originFileObj).filter(Boolean);
         processFiles(files);
       }
     },

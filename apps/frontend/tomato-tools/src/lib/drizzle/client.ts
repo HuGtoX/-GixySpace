@@ -34,7 +34,7 @@ export const createDbClient = (requestId?: string) => {
     db,
     logger,
     // 执行事务的辅助方法
-    async transaction<T>(fn: (tx: any) => Promise<T>): Promise<T> {
+    async transaction<T>(fn: (tx: typeof db) => Promise<T>): Promise<T> {
       logger.debug('Starting database transaction');
       try {
         const result = await db.transaction(fn);

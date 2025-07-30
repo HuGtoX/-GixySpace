@@ -68,7 +68,7 @@ export default function DailySentence() {
         {sentence ? (
           <>
             <blockquote className="text-sm text-gray-700 dark:text-gray-300 mb-2 italic leading-relaxed">
-              "{sentence.content}"
+              &ldquo;{sentence.content}&rdquo;
             </blockquote>
             {sentence.author && (
               <cite className="text-xs text-gray-500 dark:text-gray-400">

@@ -1,13 +1,12 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { User } from '@supabase/supabase-js';
 
 interface UserProfile {
   bio?: string;
   website?: string;
   location?: string;
-  preferences?: any;
+  preferences?: Record<string, unknown>;
 }
 
 interface AuthUser {

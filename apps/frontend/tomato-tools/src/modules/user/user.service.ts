@@ -194,7 +194,7 @@ export class UserService {
         .where(
           and(
             eq(passwordResetTokens.token, token),
-            eq(passwordResetTokens.usedAt, null as any)
+            eq(passwordResetTokens.usedAt, null)
           )
         )
         .limit(1);

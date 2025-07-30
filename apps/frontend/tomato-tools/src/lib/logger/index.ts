@@ -1,26 +1,10 @@
 import pino, { Logger } from 'pino';
 
 // 创建日志实例
-export const logger: Logger =
-  process.env.NODE_ENV === 'production'
-    ? // 生产环境使用JSON格式
-      pino({ 
-        level: process.env.PINO_LOG_LEVEL || 'warn',
-        timestamp: pino.stdTimeFunctions.isoTime,
-      })
-    : // 开发环境使用美化输出
-      pino({
-        transport: {
-          target: 'pino-pretty',
-          options: {
-            colorize: true,
-            translateTime: 'SYS:standard',
-            ignore: 'pid,hostname',
-          },
-        },
-        level: process.env.PINO_LOG_LEVEL || 'debug',
-        timestamp: pino.stdTimeFunctions.isoTime,
-      });
+export const logger: Logger = pino({ 
+  level: process.env.PINO_LOG_LEVEL || (process.env.NODE_ENV === 'production' ? 'warn' : 'debug'),
+  timestamp: pino.stdTimeFunctions.isoTime,
+});
 
 // 创建模块特定的日志器
 export const createModuleLogger = (module: string) => {
