@@ -4,14 +4,18 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
+    "dev:standard": "next dev",
+    "dev:pretty": "next dev 2>&1 | npx pino-pretty",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "generate": "drizzle-kit generate",
-    "migrate": "tsx scripts/migrate.ts"
+    "migrate": "tsx scripts/migrate.ts",
+    "logger:demo": "tsx src/examples/logger-demo.ts"
   },
   "dependencies": {
     "@ant-design/icons": "^6.0.0",
+    "@ant-design/nextjs-registry": "^1.1.0",
     "@ant-design/v5-patch-for-react-19": "^1.0.3",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
@@ -19,7 +23,7 @@
     "@supabase/ssr": "^0.6.1",
     "@supabase/supabase-js": "^2.53.0",
     "ahooks": "3.0.0-alpha.18",
-    "antd": "^5.22.6",
+    "antd": "^5.26.3",
     "axios": "^1.10.0",
     "dayjs": "^1.11.13",
     "drizzle-kit": "^0.31.4",
@@ -55,6 +59,7 @@
     "prettier-plugin-tailwindcss": "^0.6.14",
     "sass": "^1.86.3",
     "tailwindcss": "^3",
+    "tsx": "^4.19.2",
     "typescript": "^5"
   }
 }

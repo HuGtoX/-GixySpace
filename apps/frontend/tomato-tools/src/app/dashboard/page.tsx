@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Card, Button, Avatar, Descriptions, Spin } from "antd";
 import { UserOutlined, LogoutOutlined } from "@ant-design/icons";
 import { useAuth } from "@/contexts/AuthContext";
@@ -9,6 +9,12 @@ import { useRouter } from "next/navigation";
 export default function DashboardPage() {
   const { user, loading, logout } = useAuth();
   const router = useRouter();
+
+  useEffect(() => {
+    if (!user) {
+      router.push("/auth/login");
+    }
+  }, [user, router]);
 
   const handleLogout = async () => {
     try {
@@ -25,11 +31,6 @@ export default function DashboardPage() {
         <Spin size="large" />
       </div>
     );
-  }
-
-  if (!user) {
-    router.push("/auth/login");
-    return null;
   }
 
   return (

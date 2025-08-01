@@ -1,11 +1,6 @@
-'use client';
+"use client";
 
-import React, {
-  useState,
-  createContext,
-  useContext,
-  useEffect,
-} from "react";
+import React, { useState, createContext, useContext, useEffect } from "react";
 
 // 定义主题上下文类型
 interface ThemeContextType {
@@ -44,9 +39,13 @@ const ThemeProvider = ({ children }: ThemeProviderProps) => {
     document.documentElement.classList.toggle("dark", newTheme);
   };
 
-  // 避免服务端渲染和客户端渲染不一致
+  // 避免服务端渲染和客户端渲染不一致 - 改进版本
   if (!mounted) {
-    return <div>{children}</div>;
+    return (
+      <div className="min-h-screen bg-gray-50 transition-colors duration-200 dark:bg-gray-900">
+        {children}
+      </div>
+    );
   }
 
   return (

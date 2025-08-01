@@ -7,6 +7,8 @@
 		"dev": "pnpm --filter @gixy/bit-craft dev",
 		"build": "pnpm --filter '@gixy/bit-craft...' build",
 		"dev:new": "pnpm --filter @gixy/tomato-tools dev",
+		"dev:standard": "pnpm --filter @gixy/tomato-tools dev:standard",
+		"dev:pretty": "pnpm --filter @gixy/tomato-tools dev:pretty",
 		"build:new": "pnpm --filter '@gixy/tomato-tools...' build",
 		"build:bit-craft": "pnpm --filter @gixy/bit-craft build",
 		"build:utils": "pnpm --filter @gixy/utils build",
