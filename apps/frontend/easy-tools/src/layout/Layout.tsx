@@ -8,13 +8,13 @@ import { Spin } from "antd";
 
 // 使用antd的spin实现顶部进度条效果
 const TopBarProgress = () => (
-  <div className="fixed top-[64px] left-0 right-0 z-50">
+  <div className="fixed left-0 right-0 top-[64px] z-50">
     <Spin
       spinning={true}
       indicator={<LoadingOutlined style={{ fontSize: 24, color: "#E53935" }} />}
     >
       <div className="h-1 bg-primary/60">
-        <div className="h-1 bg-primary animate-[progress_2s_ease-in-out_infinite]" />
+        <div className="h-1 animate-[progress_2s_ease-in-out_infinite] bg-primary" />
       </div>
     </Spin>
   </div>

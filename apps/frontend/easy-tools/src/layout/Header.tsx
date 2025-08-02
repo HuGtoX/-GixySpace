@@ -36,14 +36,14 @@ const Header = () => {
 
   return (
     <Affix>
-      <header className="sticky top-0 z-50 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 shadow-sm">
-        <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+      <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/80 shadow-sm backdrop-blur-md dark:border-gray-700 dark:bg-gray-800/80">
+        <div className="container mx-auto flex items-center justify-between px-4 py-3">
           <div className="flex items-center space-x-4">
             <div
-              className="flex items-center space-x-3 cursor-pointer"
+              className="flex cursor-pointer items-center space-x-3"
               onClick={() => navigate("/")}
             >
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg">
                 <img title="tomato logo" src="/tomato.svg" />
               </div>
               <div className="text-2xl font-bold text-primary dark:text-dark-primary">
@@ -51,7 +51,7 @@ const Header = () => {
               </div>
             </div>
 
-            <div className="hidden md:flex items-center flex-1 max-w-xl mx-8">
+            <div className="mx-8 hidden max-w-xl flex-1 items-center md:flex">
               <Search className="w-full" placeholder="搜索工具或资讯..." />
             </div>
           </div>
@@ -66,10 +66,10 @@ const Header = () => {
                 )
               }
               onClick={toggleTheme}
-              className="hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              className="transition-colors hover:bg-gray-100 dark:hover:bg-gray-700"
             />
             <Button shape="circle" icon={<FaBell />} className="relative">
-              <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
+              <span className="absolute right-1 top-1 h-2 w-2 rounded-full bg-red-500" />
             </Button>
             <Dropdown menu={{ items: userMenu }} placement="bottomRight">
               <Avatar
