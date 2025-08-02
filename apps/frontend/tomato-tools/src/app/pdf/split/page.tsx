@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Card, Typography, Button, Space } from 'antd';
-import { FileTextOutlined, ArrowLeftOutlined, ScissorOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, ScissorOutlined } from '@ant-design/icons';
 import ToolLayout from '@/components/layout/ToolLayout';
 import Link from 'next/link';
 

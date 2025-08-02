@@ -1,6 +1,6 @@
-import { eq, and } from 'drizzle-orm';
+import { eq, and, isNull } from 'drizzle-orm';
 import { createDbClient } from '@/lib/drizzle/client';
-import { users, userProfiles, userSessions, passwordResetTokens } from '@/lib/drizzle/schema';
+import { user, userProfile, userSession, passwordResetToken } from '@/lib/drizzle/schema';
 import type { User, NewUser, UserProfile, NewUserProfile, UserSession, NewUserSession } from '@/lib/drizzle/schema';
 import { createModuleLogger } from '@/lib/logger';
 import crypto from 'crypto';
@@ -21,13 +21,13 @@ export class UserService {
     this.logger.info({ email: userData.email }, 'Creating new user');
     
     try {
-      const [user] = await this.dbClient.db
-        .insert(users)
+      const [newUser] = await this.dbClient.db
+        .insert(user)
         .values(userData)
         .returning();
       
-      this.logger.info({ userId: user.id }, 'User created successfully');
-      return user;
+      this.logger.info({ userId: newUser.id }, 'User created successfully');
+      return newUser;
     } catch (error) {
       this.logger.error({ error, email: userData.email }, 'Failed to create user');
       throw error;
@@ -37,13 +37,13 @@ export class UserService {
   // 根据ID获取用户
   async getUserById(id: string): Promise<User | null> {
     try {
-      const [user] = await this.dbClient.db
+      const [foundUser] = await this.dbClient.db
         .select()
-        .from(users)
-        .where(eq(users.id, id))
+        .from(user)
+        .where(eq(user.id, id))
         .limit(1);
       
-      return user || null;
+      return foundUser || null;
     } catch (error) {
       this.logger.error({ error, userId: id }, 'Failed to get user by ID');
       throw error;
@@ -53,13 +53,13 @@ export class UserService {
   // 根据邮箱获取用户
   async getUserByEmail(email: string): Promise<User | null> {
     try {
-      const [user] = await this.dbClient.db
+      const [foundUser] = await this.dbClient.db
         .select()
-        .from(users)
-        .where(eq(users.email, email))
+        .from(user)
+        .where(eq(user.email, email))
         .limit(1);
       
-      return user || null;
+      return foundUser || null;
     } catch (error) {
       this.logger.error({ error, email }, 'Failed to get user by email');
       throw error;
@@ -71,18 +71,18 @@ export class UserService {
     this.logger.info({ userId: id }, 'Updating user');
     
     try {
-      const [user] = await this.dbClient.db
-        .update(users)
+      const [updatedUser] = await this.dbClient.db
+        .update(user)
         .set({ ...userData, updatedAt: new Date() })
-        .where(eq(users.id, id))
+        .where(eq(user.id, id))
         .returning();
       
-      if (!user) {
+      if (!updatedUser) {
         throw new Error('User not found');
       }
       
       this.logger.info({ userId: id }, 'User updated successfully');
-      return user;
+      return updatedUser;
     } catch (error) {
       this.logger.error({ error, userId: id }, 'Failed to update user');
       throw error;
@@ -95,7 +95,7 @@ export class UserService {
     
     try {
       const [profile] = await this.dbClient.db
-        .insert(userProfiles)
+        .insert(userProfile)
         .values(profileData)
         .returning();
       
@@ -112,8 +112,8 @@ export class UserService {
     try {
       const [profile] = await this.dbClient.db
         .select()
-        .from(userProfiles)
-        .where(eq(userProfiles.userId, userId))
+        .from(userProfile)
+        .where(eq(userProfile.userId, userId))
         .limit(1);
       
       return profile || null;
@@ -129,7 +129,7 @@ export class UserService {
     
     try {
       const [session] = await this.dbClient.db
-        .insert(userSessions)
+        .insert(userSession)
         .values(sessionData)
         .returning();
       
@@ -147,12 +147,12 @@ export class UserService {
     
     try {
       await this.dbClient.db
-        .update(userSessions)
+        .update(userSession)
         .set({ 
           logoutAt: new Date(),
           isActive: false 
         })
-        .where(eq(userSessions.sessionId, sessionId));
+        .where(eq(userSession.sessionId, sessionId));
       
       this.logger.info({ sessionId }, 'User session ended');
     } catch (error) {
@@ -170,7 +170,7 @@ export class UserService {
       const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24小时后过期
       
       await this.dbClient.db
-        .insert(passwordResetTokens)
+        .insert(passwordResetToken)
         .values({
           userId,
           token,
@@ -190,11 +190,11 @@ export class UserService {
     try {
       const [resetToken] = await this.dbClient.db
         .select()
-        .from(passwordResetTokens)
+        .from(passwordResetToken)
         .where(
           and(
-            eq(passwordResetTokens.token, token),
-            eq(passwordResetTokens.usedAt, null)
+            eq(passwordResetToken.token, token),
+            isNull(passwordResetToken.usedAt)
           )
         )
         .limit(1);
@@ -215,9 +215,9 @@ export class UserService {
   async markPasswordResetTokenAsUsed(token: string): Promise<void> {
     try {
       await this.dbClient.db
-        .update(passwordResetTokens)
+        .update(passwordResetToken)
         .set({ usedAt: new Date() })
-        .where(eq(passwordResetTokens.token, token));
+        .where(eq(passwordResetToken.token, token));
       
       this.logger.info({ token: token.substring(0, 8) + '...' }, 'Password reset token marked as used');
     } catch (error) {

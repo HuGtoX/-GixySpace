@@ -1,20 +1,17 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
-import { message, Modal, Row, Col, Empty, Button } from "antd";
 import { ImageViewer, ImageViewerItem } from "@/components/ImageViewer";
+import { Container } from "@/components/layout/ToolsLayout";
 import {
   convertImage,
   getRecommendedFormat,
   saveImage,
 } from "@/lib/imageProcessing";
-import { Container } from "@/components/layout/ToolsLayout";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
-import MainContainer from "@/components/layout/Container";
-import FileUploader from "./components/FileUploader";
-import ConversionSettings from "./components/ConversionSettings";
+import { Button, Col, Empty, message, Modal, Row } from "antd";
+import { useCallback, useState } from "react";
 import BatchActions from "./components/BatchActions";
+import ConversionSettings from "./components/ConversionSettings";
+import FileUploader from "./components/FileUploader";
 import ImageItem from "./components/ImageItem";
 import { ImageFile, ConversionSettings as SettingsType } from "./types";
 

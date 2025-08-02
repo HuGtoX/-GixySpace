@@ -128,7 +128,7 @@ function App() {
 
 export default App;`;
 
-export default function RealTimeRenderPage(_props: RealTimeRenderPageProps) {
+export default function RealTimeRenderPage() {
   const { isMobile } = useDeviceDetect();
   const [code, setCode] = useState<string>(defaultCode);
   const [renderKey, setRenderKey] = useState<number>(0);

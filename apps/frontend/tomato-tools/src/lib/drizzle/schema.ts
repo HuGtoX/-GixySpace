@@ -5,7 +5,7 @@ import { relations } from 'drizzle-orm';
 export const userRoleEnum = pgEnum('user_role', ['user', 'admin']);
 
 // 用户表（扩展Supabase auth.users）
-export const users = pgTable('users', {
+export const user = pgTable('user', {
   id: uuid('id').primaryKey(), // 对应 auth.users.id
   email: text('email').notNull().unique(),
   fullName: text('full_name'),
@@ -17,9 +17,9 @@ export const users = pgTable('users', {
 });
 
 // 用户配置表
-export const userProfiles = pgTable('user_profiles', {
+export const userProfile = pgTable('user_profile', {
   id: uuid('id').primaryKey().defaultRandom(),
-  userId: uuid('user_id').references(() => users.id, { onDelete: 'cascade' }).notNull(),
+  userId: uuid('user_id').references(() => user.id, { onDelete: 'cascade' }).notNull(),
   bio: text('bio'),
   website: text('website'),
   location: text('location'),
@@ -29,9 +29,9 @@ export const userProfiles = pgTable('user_profiles', {
 });
 
 // 用户会话日志表
-export const userSessions = pgTable('user_sessions', {
+export const userSession = pgTable('user_session', {
   id: uuid('id').primaryKey().defaultRandom(),
-  userId: uuid('user_id').references(() => users.id, { onDelete: 'cascade' }).notNull(),
+  userId: uuid('user_id').references(() => user.id, { onDelete: 'cascade' }).notNull(),
   sessionId: text('session_id').notNull(),
   ipAddress: text('ip_address'),
   userAgent: text('user_agent'),
@@ -41,9 +41,9 @@ export const userSessions = pgTable('user_sessions', {
 });
 
 // 密码重置令牌表
-export const passwordResetTokens = pgTable('password_reset_tokens', {
+export const passwordResetToken = pgTable('password_reset_token', {
   id: uuid('id').primaryKey().defaultRandom(),
-  userId: uuid('user_id').references(() => users.id, { onDelete: 'cascade' }).notNull(),
+  userId: uuid('user_id').references(() => user.id, { onDelete: 'cascade' }).notNull(),
   token: text('token').notNull().unique(),
   expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
   usedAt: timestamp('used_at', { withTimezone: true }),
@@ -51,42 +51,42 @@ export const passwordResetTokens = pgTable('password_reset_tokens', {
 });
 
 // 关系定义
-export const usersRelations = relations(users, ({ one, many }) => ({
-  profile: one(userProfiles, {
-    fields: [users.id],
-    references: [userProfiles.userId],
+export const userRelations = relations(user, ({ one, many }) => ({
+  profile: one(userProfile, {
+    fields: [user.id],
+    references: [userProfile.userId],
   }),
-  sessions: many(userSessions),
-  passwordResetTokens: many(passwordResetTokens),
+  sessions: many(userSession),
+  passwordResetTokens: many(passwordResetToken),
 }));
 
-export const userProfilesRelations = relations(userProfiles, ({ one }) => ({
-  user: one(users, {
-    fields: [userProfiles.userId],
-    references: [users.id],
-  }),
-}));
-
-export const userSessionsRelations = relations(userSessions, ({ one }) => ({
-  user: one(users, {
-    fields: [userSessions.userId],
-    references: [users.id],
+export const userProfileRelations = relations(userProfile, ({ one }) => ({
+  user: one(user, {
+    fields: [userProfile.userId],
+    references: [user.id],
   }),
 }));
 
-export const passwordResetTokensRelations = relations(passwordResetTokens, ({ one }) => ({
-  user: one(users, {
-    fields: [passwordResetTokens.userId],
-    references: [users.id],
+export const userSessionRelations = relations(userSession, ({ one }) => ({
+  user: one(user, {
+    fields: [userSession.userId],
+    references: [user.id],
+  }),
+}));
+
+export const passwordResetTokenRelations = relations(passwordResetToken, ({ one }) => ({
+  user: one(user, {
+    fields: [passwordResetToken.userId],
+    references: [user.id],
   }),
 }));
 
 // 类型导出
-export type User = typeof users.$inferSelect;
-export type NewUser = typeof users.$inferInsert;
-export type UserProfile = typeof userProfiles.$inferSelect;
-export type NewUserProfile = typeof userProfiles.$inferInsert;
-export type UserSession = typeof userSessions.$inferSelect;
-export type NewUserSession = typeof userSessions.$inferInsert;
-export type PasswordResetToken = typeof passwordResetTokens.$inferSelect;
-export type NewPasswordResetToken = typeof passwordResetTokens.$inferInsert;
+export type User = typeof user.$inferSelect;
+export type NewUser = typeof user.$inferInsert;
+export type UserProfile = typeof userProfile.$inferSelect;
+export type NewUserProfile = typeof userProfile.$inferInsert;
+export type UserSession = typeof userSession.$inferSelect;
+export type NewUserSession = typeof userSession.$inferInsert;
+export type PasswordResetToken = typeof passwordResetToken.$inferSelect;
+export type NewPasswordResetToken = typeof passwordResetToken.$inferInsert;

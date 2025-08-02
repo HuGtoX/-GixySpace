@@ -1,13 +1,13 @@
-import React, { useState, useCallback } from "react";
-import { Upload, message, Typography, Alert } from "antd";
-import { InboxOutlined } from "@ant-design/icons";
-import { v4 as uuidv4 } from "uuid";
 import { useDeviceDetect } from "@/hooks/useDeviceDetect";
 import {
   checkFileSizeLimit,
   createPreviewUrl,
   detectImageFormat,
 } from "@/lib/imageProcessing";
+import { InboxOutlined } from "@ant-design/icons";
+import { Alert, message, Typography, Upload } from "antd";
+import React, { useCallback, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import { ImageFile } from "../types";
 
 const { Dragger } = Upload;
@@ -65,6 +65,7 @@ const FileUploader = ({ onFilesAdded }: FileUploaderProps) => {
             });
           } catch (_error) {
             invalidFiles.push(`${file.name} (处理失败)`);
+            console.log("处理失败", _error);
           }
         }
 
@@ -89,7 +90,7 @@ const FileUploader = ({ onFilesAdded }: FileUploaderProps) => {
 
   // 处理文件选择
   const handleFileUpload = useCallback(
-    (options: { file: File; onSuccess: (response: string) => void }) => {
+    (options: any) => {
       const { file, onSuccess } = options;
 
       // 单个文件上传处理
@@ -98,7 +99,7 @@ const FileUploader = ({ onFilesAdded }: FileUploaderProps) => {
       }
 
       // 完成上传操作
-      onSuccess("ok");
+      onSuccess?.("ok");
       return false; // 阻止默认上传行为
     },
     [processFiles],
@@ -116,10 +117,12 @@ const FileUploader = ({ onFilesAdded }: FileUploaderProps) => {
 
   // 处理多文件选择
   const handleMultipleFiles = useCallback(
-    (info: { fileList: Array<{ originFileObj: File }> }) => {
+    (info: any) => {
       const { fileList } = info;
       if (fileList && fileList.length > 0) {
-        const files = fileList.map((item: { originFileObj: File }) => item.originFileObj).filter(Boolean);
+        const files = fileList
+          .map((item: any) => item.originFileObj)
+          .filter((file: any): file is File => file instanceof File);
         processFiles(files);
       }
     },

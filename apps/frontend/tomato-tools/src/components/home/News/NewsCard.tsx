@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FaSync, FaRegStar } from 'react-icons/fa';
-import { Skeleton, Button } from 'antd';
+import { Skeleton } from 'antd';
 import ActionButton from '@/components/ActionButton';
 import axios from '@/lib/axios';
 import { useRequest } from 'ahooks';

@@ -1,10 +1,11 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { Form, Input, Button, Alert, Card } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import React, { useState } from "react";
+import { Form, Input, Button, Alert, Card } from "antd";
+import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface LoginFormData {
   email: string;
@@ -20,41 +21,29 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const [form] = Form.useForm();
+  const { login } = useAuth();
 
   const handleSubmit = async (values: LoginFormData) => {
     setLoading(true);
     setError(null);
 
     try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(values),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Login failed');
-      }
-
+      await login(values.email, values.password);
       // 登录成功
       if (onSuccess) {
         onSuccess();
       } else {
-        router.push('/dashboard');
+        router.push("/");
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Login failed');
+      setError(err instanceof Error ? err.message : "Login failed");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <Card title="登录" className="w-full max-w-md mx-auto">
+    <Card title="登录" className="mx-auto w-full max-w-md">
       {error && (
         <Alert
           message={error}
@@ -65,7 +54,7 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
           className="mb-4"
         />
       )}
-      
+
       <Form
         form={form}
         name="login"
@@ -77,8 +66,8 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
           name="email"
           label="邮箱"
           rules={[
-            { required: true, message: '请输入邮箱' },
-            { type: 'email', message: '请输入有效的邮箱地址' },
+            { required: true, message: "请输入邮箱" },
+            { type: "email", message: "请输入有效的邮箱地址" },
           ]}
         >
           <Input
@@ -91,9 +80,7 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
         <Form.Item
           name="password"
           label="密码"
-          rules={[
-            { required: true, message: '请输入密码' },
-          ]}
+          rules={[{ required: true, message: "请输入密码" }]}
         >
           <Input.Password
             prefix={<LockOutlined />}
@@ -113,15 +100,21 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
           </Button>
         </Form.Item>
 
-        <div className="text-center space-y-2">
+        <div className="space-y-2 text-center">
           <div>
-            <Link href="/auth/reset-password" className="text-blue-600 hover:text-blue-800">
+            <Link
+              href="/auth/reset-password"
+              className="text-blue-600 hover:text-blue-800"
+            >
               忘记密码？
             </Link>
           </div>
           <div>
-            还没有账号？{' '}
-            <Link href="/auth/register" className="text-blue-600 hover:text-blue-800">
+            还没有账号？{" "}
+            <Link
+              href="/auth/register"
+              className="text-blue-600 hover:text-blue-800"
+            >
               立即注册
             </Link>
           </div>

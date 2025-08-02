@@ -29,7 +29,8 @@ export default function RegisterForm({ onSuccess }: RegisterFormProps) {
     setError(null);
 
     try {
-      const { confirmPassword: _confirmPassword, ...registerData } = values;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { confirmPassword, ...registerData } = values;
       
       const response = await fetch('/api/auth/register', {
         method: 'POST',

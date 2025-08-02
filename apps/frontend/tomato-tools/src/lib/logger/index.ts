@@ -29,8 +29,10 @@ const baseConfig = {
 };
 
 // 创建彩色日志函数
-// 美化JSON对象输出
-const formatJsonValue = (value: any, indent: number = 0): string => {
+// 定义具体的日志值类型
+type LogValue = string | number | boolean | null | undefined | Record<string, string | number | boolean | null | undefined> | (string | number | boolean | null | undefined)[];
+
+const formatJsonValue = (value: LogValue, indent: number = 0): string => {
   if (value === null) return 'null';
   if (typeof value === 'undefined') return 'undefined';
   if (typeof value === 'string') return `"${value}"`;
@@ -63,10 +65,10 @@ const formatJsonValue = (value: any, indent: number = 0): string => {
 };
 
 const createColorLogger = (levelName: string, color: string) => {
-  return (obj: any, msg?: string) => {
+  return (obj: string | Record<string, string | number | boolean | null | undefined>, msg?: string) => {
     const time = new Date().toLocaleTimeString();
-    const module = obj?.module ? `[${obj.module}] ` : "";
-    const message = msg || obj?.msg || (typeof obj === "string" ? obj : "");
+    const modulePrefix = obj && typeof obj === 'object' && obj.module ? `[${obj.module}] ` : "";
+    const message = msg || (typeof obj === 'object' && obj !== null ? obj.msg : undefined) || (typeof obj === "string" ? obj : "");
 
     // 处理结构化数据
     if (obj && typeof obj === "object" && (obj.msg || msg)) {
@@ -78,7 +80,7 @@ const createColorLogger = (levelName: string, color: string) => {
       if (extraFields.length > 0) {
         // 主日志行
         console.log(
-          `${color}[${time}] ${levelName.toUpperCase()}${colors.reset} ${module}${message}`
+          `${color}[${time}] ${levelName.toUpperCase()}${colors.reset} ${modulePrefix}${message}`
         );
         
         // 美化输出结构化数据
@@ -95,14 +97,14 @@ const createColorLogger = (levelName: string, color: string) => {
       } else {
         // 没有额外字段，只输出主日志行
         console.log(
-          `${color}[${time}] ${levelName.toUpperCase()}${colors.reset} ${module}${message}`
+          `${color}[${time}] ${levelName.toUpperCase()}${colors.reset} ${modulePrefix}${message}`
         );
       }
     } else {
       // 简单消息或非对象
       const displayMessage = message || (typeof obj === 'object' ? formatJsonValue(obj) : String(obj));
       console.log(
-        `${color}[${time}] ${levelName.toUpperCase()}${colors.reset} ${module}${displayMessage}`
+        `${color}[${time}] ${levelName.toUpperCase()}${colors.reset} ${modulePrefix}${displayMessage}`
       );
     }
   };
@@ -127,12 +129,13 @@ if (shouldUseColorLogs) {
   });
 
   // 完全重写日志方法以支持彩色输出
-  (baseLogger as any).trace = createColorLogger("trace", colors.trace);
-  (baseLogger as any).debug = createColorLogger("debug", colors.debug);
-  (baseLogger as any).info = createColorLogger("info", colors.info);
-  (baseLogger as any).warn = createColorLogger("warn", colors.warn);
-  (baseLogger as any).error = createColorLogger("error", colors.error);
-  (baseLogger as any).fatal = createColorLogger("fatal", colors.fatal);
+  const loggerWithColors = baseLogger as any;
+  loggerWithColors.trace = createColorLogger("trace", colors.trace);
+  loggerWithColors.debug = createColorLogger("debug", colors.debug);
+  loggerWithColors.info = createColorLogger("info", colors.info);
+  loggerWithColors.warn = createColorLogger("warn", colors.warn);
+  loggerWithColors.error = createColorLogger("error", colors.error);
+  loggerWithColors.fatal = createColorLogger("fatal", colors.fatal);
 } else {
   console.log(
     `\x1b[33m[Logger] 使用标准JSON格式 (Turbopack: ${isTurbopack}, NODE_ENV: ${process.env.NODE_ENV})\x1b[0m`,
@@ -152,7 +155,7 @@ if (shouldUseColorLogs) {
 export const logger: Logger = baseLogger;
 
 // 创建带有彩色日志功能的child logger
-const createColorChildLogger = (fields: any): Logger => {
+const createColorChildLogger = (fields: Record<string, string | number | boolean | null | undefined>): Logger => {
   if (shouldUseColorLogs) {
     // 在彩色模式下，创建一个包装对象来保持字段信息
     const baseChildLogger = logger.child(fields);
@@ -161,64 +164,77 @@ const createColorChildLogger = (fields: any): Logger => {
     const colorChildLogger = Object.create(baseChildLogger);
 
     // 重写日志方法以支持彩色输出
-    colorChildLogger.trace = (obj: any, msg?: string) => {
+    colorChildLogger.trace = (obj: string | Record<string, string | number | boolean | null | undefined>, msg?: string) => {
       if (typeof obj === 'string' && !msg) {
         // 只有消息字符串的情况
         createColorLogger("trace", colors.trace)({ ...fields, msg: obj });
-      } else if (typeof obj === 'object' && msg) {
+      } else if (typeof obj === 'object' && obj !== null && msg) {
         // 有对象和消息的情况
         createColorLogger("trace", colors.trace)({ ...fields, ...obj, msg });
-      } else {
-        // 其他情况
+      } else if (typeof obj === 'object' && obj !== null) {
+        // 只有对象的情况
         createColorLogger("trace", colors.trace)({ ...fields, ...obj }, msg);
+      } else {
+        // 字符串和消息的情况
+        createColorLogger("trace", colors.trace)({ ...fields, msg: typeof obj === 'string' ? obj : String(obj) }, msg);
       }
     };
-    colorChildLogger.debug = (obj: any, msg?: string) => {
+    colorChildLogger.debug = (obj: string | Record<string, string | number | boolean | null | undefined>, msg?: string) => {
       if (typeof obj === 'string' && !msg) {
         createColorLogger("debug", colors.debug)({ ...fields, msg: obj });
-      } else if (typeof obj === 'object' && msg) {
+      } else if (typeof obj === 'object' && obj !== null && msg) {
         createColorLogger("debug", colors.debug)({ ...fields, ...obj, msg });
-      } else {
+      } else if (typeof obj === 'object' && obj !== null) {
         createColorLogger("debug", colors.debug)({ ...fields, ...obj }, msg);
+      } else {
+        createColorLogger("debug", colors.debug)({ ...fields, msg: typeof obj === 'string' ? obj : String(obj) }, msg);
       }
     };
-    colorChildLogger.info = (obj: any, msg?: string) => {
+    colorChildLogger.info = (obj: string | Record<string, string | number | boolean | null | undefined>, msg?: string) => {
       if (typeof obj === 'string' && !msg) {
         createColorLogger("info", colors.info)({ ...fields, msg: obj });
-      } else if (typeof obj === 'object' && msg) {
+      } else if (typeof obj === 'object' && obj !== null && msg) {
         createColorLogger("info", colors.info)({ ...fields, ...obj, msg });
-      } else {
+      } else if (typeof obj === 'object' && obj !== null) {
         createColorLogger("info", colors.info)({ ...fields, ...obj }, msg);
+      } else {
+        createColorLogger("info", colors.info)({ ...fields, msg: typeof obj === 'string' ? obj : String(obj) }, msg);
       }
     };
-    colorChildLogger.warn = (obj: any, msg?: string) => {
+    colorChildLogger.warn = (obj: string | Record<string, string | number | boolean | null | undefined>, msg?: string) => {
       if (typeof obj === 'string' && !msg) {
         createColorLogger("warn", colors.warn)({ ...fields, msg: obj });
-      } else if (typeof obj === 'object' && msg) {
+      } else if (typeof obj === 'object' && obj !== null && msg) {
         createColorLogger("warn", colors.warn)({ ...fields, ...obj, msg });
-      } else {
+      } else if (typeof obj === 'object' && obj !== null) {
         createColorLogger("warn", colors.warn)({ ...fields, ...obj }, msg);
+      } else {
+        createColorLogger("warn", colors.warn)({ ...fields, msg: typeof obj === 'string' ? obj : String(obj) }, msg);
       }
     };
-    colorChildLogger.error = (obj: any, msg?: string) => {
+    colorChildLogger.error = (obj: string | Record<string, string | number | boolean | null | undefined>, msg?: string) => {
       if (typeof obj === 'string' && !msg) {
         createColorLogger("error", colors.error)({ ...fields, msg: obj });
-      } else if (typeof obj === 'object' && msg) {
+      } else if (typeof obj === 'object' && obj !== null && msg) {
         createColorLogger("error", colors.error)({ ...fields, ...obj, msg });
-      } else {
+      } else if (typeof obj === 'object' && obj !== null) {
         createColorLogger("error", colors.error)({ ...fields, ...obj }, msg);
+      } else {
+        createColorLogger("error", colors.error)({ ...fields, msg: typeof obj === 'string' ? obj : String(obj) }, msg);
       }
     };
-    colorChildLogger.fatal = (obj: any, msg?: string) => {
+    colorChildLogger.fatal = (obj: string | Record<string, string | number | boolean | null | undefined>, msg?: string) => {
       if (typeof obj === 'string' && !msg) {
         createColorLogger("fatal", colors.fatal)({ ...fields, msg: obj });
-      } else if (typeof obj === 'object' && msg) {
+      } else if (typeof obj === 'object' && obj !== null && msg) {
         createColorLogger("fatal", colors.fatal)({ ...fields, ...obj, msg });
-      } else {
+      } else if (typeof obj === 'object' && obj !== null) {
         createColorLogger("fatal", colors.fatal)({ ...fields, ...obj }, msg);
+      } else {
+        createColorLogger("fatal", colors.fatal)({ ...fields, msg: typeof obj === 'string' ? obj : String(obj) }, msg);
       }
     };
-    colorChildLogger.child = (childFields: any) =>
+    colorChildLogger.child = (childFields: Record<string, string | number | boolean | null | undefined>) =>
       createColorChildLogger({ ...fields, ...childFields });
 
     return colorChildLogger;

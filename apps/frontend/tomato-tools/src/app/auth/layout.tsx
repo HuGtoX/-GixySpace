@@ -2,6 +2,8 @@ import React from "react";
 
 interface AuthLayoutProps {
   children: React.ReactNode;
+  params?: Promise<Record<string, string | string[]>>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 }
 
 export default function AuthLayout({ children }: AuthLayoutProps) {

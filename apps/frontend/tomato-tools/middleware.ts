@@ -1,16 +1,16 @@
 import { NextRequest } from "next/server";
-import { updateSession } from "@/lib/supabase/middleware";
+import { updateSession } from "@/middleware/supabase/middleware";
 import { createModuleLogger } from "@/lib/logger";
 
 const log = createModuleLogger("middleware");
 
-// 需要认证的路径
+// 需要认证的页面路径
 const protectedPaths = ["/dashboard", "/profile", "/settings"];
 
-// API路径中需要认证的
+// API接口路径中需要认证的
 const protectedApiPaths = ["/api/auth/me", "/api/auth/logout", "/api/user"];
 
-// 公开的认证相关路径
+// 公开的认证相关页面路径
 const publicAuthPaths = [
   "/auth/login",
   "/auth/register",

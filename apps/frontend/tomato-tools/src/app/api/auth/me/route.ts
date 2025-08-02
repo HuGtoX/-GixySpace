@@ -15,31 +15,31 @@ export async function GET(request: NextRequest) {
     const authService = new AuthService(correlationId);
     const userService = new UserService(correlationId);
 
-    // 获取当前用户
-    const result = await authService.getCurrentUser();
+    // 获取supabase中用户信息
+    const supabaseUser = await authService.getCurrentUser();
 
-    if (result.error || !result.user) {
-      logger.warn({ error: result.error }, "No authenticated user found");
+    if (supabaseUser.error || !supabaseUser.user) {
+      logger.warn({ error: supabaseUser.error }, "No authenticated user found");
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
     }
 
     // 获取用户详细信息和配置
     const [userDetails, userProfile] = await Promise.all([
-      userService.getUserById(result.user.id),
-      userService.getUserProfile(result.user.id),
+      userService.getUserById(supabaseUser.user.id),
+      userService.getUserProfile(supabaseUser.user.id),
     ]);
 
     logger.info(
-      { userId: result.user.id },
+      { userId: supabaseUser.user.id },
       "Current user retrieved successfully",
     );
 
     return NextResponse.json(
       {
         user: {
-          id: result.user.id,
-          email: result.user.email,
-          emailConfirmed: result.user.email_confirmed_at !== null,
+          id: supabaseUser.user.id,
+          email: supabaseUser.user.email,
+          emailConfirmed: supabaseUser.user.email_confirmed_at !== null,
           fullName: userDetails?.fullName || null,
           avatarUrl: userDetails?.avatarUrl || null,
           role: userDetails?.role || "user",
