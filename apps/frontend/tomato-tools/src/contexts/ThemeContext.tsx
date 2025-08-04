@@ -22,14 +22,12 @@ interface ThemeProviderProps {
 
 const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("isDarkMode");
     const isDark = savedTheme ? JSON.parse(savedTheme) : false;
     setIsDarkMode(isDark);
     document.documentElement.classList.toggle("dark", isDark);
-    setMounted(true);
   }, []);
 
   const toggleTheme = () => {

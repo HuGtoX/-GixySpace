@@ -18,7 +18,6 @@ const PdfMerger = () => {
 
   // 处理文件上传
   const handleUpload = (files: any[]) => {
-    console.log("-- [ files ] --", files);
     setFileList((prev) => [...prev, ...files]);
   };
 

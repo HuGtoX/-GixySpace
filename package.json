@@ -42,6 +42,7 @@
 		"vitest": "^3.2.3"
 	},
 	"dependencies": {
+		"@gixy/utils": "workspace:^",
 		"@netlify/sdk": "^2.26.3",
 		"@sinclair/typebox": "^0.34.33",
 		"ahooks": "3.0.0-alpha.18",
