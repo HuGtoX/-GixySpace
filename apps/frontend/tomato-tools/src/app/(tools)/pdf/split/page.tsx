@@ -2,7 +2,11 @@
 
 import React from "react";
 import { Card, Typography, Button, Space } from "antd";
-import { ArrowLeftOutlined, ScissorOutlined } from "@ant-design/icons";
+import {
+  FileTextOutlined,
+  ArrowLeftOutlined,
+  ScissorOutlined,
+} from "@ant-design/icons";
 import Link from "next/link";
 
 const { Title, Paragraph } = Typography;

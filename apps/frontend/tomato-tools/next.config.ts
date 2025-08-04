@@ -2,15 +2,16 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
+  reactStrictMode: false,
   experimental: {
-    optimizePackageImports: ['antd'],
+    optimizePackageImports: ["antd"],
   },
-  transpilePackages: ['antd'],
+  transpilePackages: ["antd"],
   async rewrites() {
     return [
       {
-        source: '/api/:path*',
-        destination: 'https://tools-service.netlify.app/api/:path*',
+        source: "/api/:path*",
+        destination: "https://tools-service.netlify.app/api/:path*",
       },
     ];
   },
