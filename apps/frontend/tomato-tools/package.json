@@ -30,6 +30,7 @@
     "drizzle-orm": "^0.44.2",
     "file-saver": "^2.0.5",
     "framer-motion": "^12.23.2",
+    "jszip": "^3.10.1",
     "next": "15.4.4",
     "next-logger": "^5.0.1",
     "pdf-lib": "^1.17.1",
@@ -47,6 +48,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@types/file-saver": "^2.0.7",
+    "@types/jszip": "^3.4.1",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
