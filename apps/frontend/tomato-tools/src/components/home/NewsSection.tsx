@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import NewsCard from './News/NewsCard';
 import { FaWeibo, FaZhihu } from 'react-icons/fa';
 
@@ -22,7 +23,7 @@ const NewsSection = () => {
 		title: '掘金热搜榜',
 		color: 'text-juejin',
 		bg: 'bg-juejin-60',
-		icon: <img src='/icon/juejin.svg' alt='掘金' />
+		icon: <Image src='/icon/juejin.svg' alt='掘金' width={20} height={20} />
 	};
 
 	const douyinItems = {
@@ -30,14 +31,14 @@ const NewsSection = () => {
 		title: '抖音热搜榜',
 		color: 'text-douyin',
 		bg: 'bg-douyin-60',
-		icon: <img src='/icon/douyin.png' alt='抖音' />
+		icon: <Image src='/icon/douyin.png' alt='抖音' width={20} height={20} />
 	};
 	const xueqiuItems = {
 		id: 'xueqiu',
 		title: '雪球热搜榜',
 		color: 'text-xueqiu',
 		bg: 'bg-xueqiu-60',
-		icon: <img src='/icon/xueqiu.png' alt='雪球' />
+		icon: <Image src='/icon/xueqiu.png' alt='雪球' width={20} height={20} />
 	};
 
 	return (

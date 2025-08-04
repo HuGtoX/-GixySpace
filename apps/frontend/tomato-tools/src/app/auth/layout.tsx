@@ -1,12 +1,8 @@
-import React from "react";
-
-interface AuthLayoutProps {
+export default function AuthLayout({
+  children,
+}: {
   children: React.ReactNode;
-  params?: Promise<Record<string, string | string[]>>;
-  searchParams?: Promise<Record<string, string | string[] | undefined>>;
-}
-
-export default function AuthLayout({ children }: AuthLayoutProps) {
+}) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 transition-colors duration-200 dark:bg-gray-900 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8">

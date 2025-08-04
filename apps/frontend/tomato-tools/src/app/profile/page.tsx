@@ -80,6 +80,7 @@ export default function ProfilePage() {
         message.error(data.error || "更新失败");
       }
     } catch (error) {
+      console.log("更新失败：", error);
       message.error("更新失败，请稍后重试");
     } finally {
       setSaving(false);

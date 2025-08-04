@@ -10,6 +10,7 @@ import {
   ZoomOutOutlined,
 } from '@ant-design/icons';
 import { Button, Space, Tooltip } from 'antd';
+import Image from 'next/image';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 export interface ImageViewerItem {
@@ -367,15 +368,18 @@ const ImageViewer = ({
                 scale > 1 ? (isDragging ? 'grabbing' : 'grab') : 'default',
             }}
           >
-            <img
+            <Image
               src={currentImage.src}
-              alt={currentImage.alt || currentImage.title}
+              alt={currentImage.alt || currentImage.title || ''}
+              width={800}
+              height={600}
               className="max-w-full max-h-full object-contain select-none pointer-events-none"
               style={{
                 transform: `scale(${scale}) translate(${position.x / scale}px, ${position.y / scale}px)`,
                 transition: isDragging ? 'none' : 'transform 0.3s ease',
               }}
               onDragStart={(e) => e.preventDefault()}
+              unoptimized
             />
           </div>
         </div>
@@ -416,10 +420,13 @@ const ImageViewer = ({
                   }`}
                   onClick={() => handleIndexChange(index)}
                 >
-                  <img
+                  <Image
                     src={image.src}
-                    alt={image.alt || image.title}
+                    alt={image.alt || image.title || ''}
+                    width={80}
+                    height={60}
                     className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+                    unoptimized
                   />
                 </div>
               ))}

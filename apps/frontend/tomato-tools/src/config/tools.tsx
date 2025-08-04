@@ -3,8 +3,7 @@ import {
   FaImage,
   FaFileImport,
   FaEllipsisH,
-  FaCode,
-  FaDownload
+  FaCode
 } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa6";
 

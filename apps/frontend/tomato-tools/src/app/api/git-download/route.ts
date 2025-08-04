@@ -1,14 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import JSZip from "jszip";
 
-interface GitHubApiResponse {
-  name: string;
-  path: string;
-  type: "file" | "dir";
-  download_url?: string;
-  url: string;
-}
-
 interface GitHubRepoInfo {
   default_branch: string;
 }

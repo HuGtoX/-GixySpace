@@ -12,8 +12,6 @@ import CodeRenderer from "@/components/realtime-render/CodeRenderer";
 import FullscreenView from "@/components/realtime-render/FullscreenView";
 import { ConsoleLog } from "@/components/realtime-render/ConsolePanel";
 
-type RealTimeRenderPageProps = Record<string, never>;
-
 const defaultCode = `import React, { useState, useEffect } from 'react';
 
 function App() {
@@ -245,11 +243,12 @@ export default function RealTimeRenderPage() {
     <ToolLayout>
       <div className="h-full">
         <div className="mb-4">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+          <h1 className="mb-2 text-2xl font-bold text-gray-900 dark:text-white">
             实时代码渲染
           </h1>
           <p className="text-gray-600 dark:text-gray-400">
-            在左侧编辑 React 代码，右侧实时查看渲染效果。支持 JSX 语法和 React Hooks。
+            在左侧编辑 React 代码，右侧实时查看渲染效果。支持 JSX 语法和 React
+            Hooks。
           </p>
         </div>
 
@@ -289,7 +288,7 @@ export default function RealTimeRenderPage() {
 
         {/* 移动端提示 */}
         {isMobile && (
-          <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+          <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 p-3 dark:border-blue-800 dark:bg-blue-900/20">
             <p className="text-sm text-blue-700 dark:text-blue-300">
               💡
               提示：在移动端，代码编辑器在上方，预览区域在下方。你可以滚动查看完整内容。

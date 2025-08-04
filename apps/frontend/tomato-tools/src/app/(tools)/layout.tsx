@@ -1,8 +1,11 @@
-import React from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
-export default function ToolsLayout({ children }: any) {
+export default function ToolsLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <div className="font-inter theme-transition min-h-full bg-gray-50 pb-[50px] text-gray-800 dark:bg-gray-900 dark:text-gray-100">
       <Header />

@@ -31,7 +31,7 @@
     "file-saver": "^2.0.5",
     "framer-motion": "^12.23.2",
     "jszip": "^3.10.1",
-    "next": "15.4.4",
+    "next": "15.4.5",
     "next-logger": "^5.0.1",
     "pdf-lib": "^1.17.1",
     "pdfjs-dist": "^5.1.91",

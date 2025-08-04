@@ -129,13 +129,13 @@ if (shouldUseColorLogs) {
   });
 
   // 完全重写日志方法以支持彩色输出
-  const loggerWithColors = baseLogger as any;
-  loggerWithColors.trace = createColorLogger("trace", colors.trace);
-  loggerWithColors.debug = createColorLogger("debug", colors.debug);
-  loggerWithColors.info = createColorLogger("info", colors.info);
-  loggerWithColors.warn = createColorLogger("warn", colors.warn);
-  loggerWithColors.error = createColorLogger("error", colors.error);
-  loggerWithColors.fatal = createColorLogger("fatal", colors.fatal);
+  const logger = baseLogger as any;
+  logger.trace = createColorLogger("trace", colors.trace);
+  logger.debug = createColorLogger("debug", colors.debug);
+  logger.info = createColorLogger("info", colors.info);
+  logger.warn = createColorLogger("warn", colors.warn);
+  logger.error = createColorLogger("error", colors.error);
+  logger.fatal = createColorLogger("fatal", colors.fatal);
 } else {
   console.log(
     `\x1b[33m[Logger] 使用标准JSON格式 (Turbopack: ${isTurbopack}, NODE_ENV: ${process.env.NODE_ENV})\x1b[0m`,
