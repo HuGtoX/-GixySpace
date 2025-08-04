@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { FaSync, FaRegStar } from 'react-icons/fa';
-import { Skeleton } from 'antd';
-import Image from 'next/image';
-import ActionButton from '@/components/ActionButton';
-import axios from '@/lib/axios';
-import { useRequest } from 'ahooks';
+import React, { useState, useEffect, useCallback } from "react";
+import { FaSync, FaRegStar } from "react-icons/fa";
+import { Skeleton } from "antd";
+import Image from "next/image";
+import ActionButton from "@/components/ActionButton";
+import axios from "@/lib/axios";
+import { useRequest } from "ahooks";
 
 // 定义新闻项类型
 interface NewsItem {
@@ -29,27 +29,23 @@ interface NewsCardProps {
   type: string;
 }
 
-const NewsCard = ({
-  title,
-  icon,
-  bg,
-  type,
-  color,
-}: NewsCardProps) => {
+const NewsCard = ({ title, icon, bg, type, color }: NewsCardProps) => {
   const [items, setItems] = useState<NewsItem[]>([]);
   const { loading, runAsync: fetchNews } = useRequest(
     async () => {
       const response = await axios.get(`/api/news/${type}`);
       return response as NewsItem[];
     },
-    { manual: true }
+    { manual: true },
   );
 
   // 初始加载和刷新功能
   const loadData = useCallback(() => {
-    fetchNews().then(setItems).catch(console.error);
+    fetchNews()
+      .then(setItems)
+      .catch((error) => console.log("Faild to load news: ", error));
   }, [fetchNews, setItems]);
-  
+
   useEffect(() => {
     loadData();
   }, [loadData]);
@@ -121,7 +117,7 @@ const NewsCard = ({
                   height={16}
                   className="mr-3 h-4 w-4 flex-shrink-0"
                   style={{
-                    transform: `scale(${item.extra.icon.scale || 1})`
+                    transform: `scale(${item.extra.icon.scale || 1})`,
                   }}
                   unoptimized
                 />
