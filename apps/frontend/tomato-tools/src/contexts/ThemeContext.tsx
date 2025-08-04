@@ -22,14 +22,12 @@ interface ThemeProviderProps {
 
 const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("isDarkMode");
     const isDark = savedTheme ? JSON.parse(savedTheme) : false;
     setIsDarkMode(isDark);
     document.documentElement.classList.toggle("dark", isDark);
-    setMounted(true);
   }, []);
 
   const toggleTheme = () => {
@@ -39,14 +37,10 @@ const ThemeProvider = ({ children }: ThemeProviderProps) => {
     document.documentElement.classList.toggle("dark", newTheme);
   };
 
-  // 避免服务端渲染和客户端渲染不一致 - 改进版本
-  if (!mounted) {
-    return (
-      <div className="min-h-screen bg-gray-50 transition-colors duration-200 dark:bg-gray-900">
-        {children}
-      </div>
-    );
-  }
+  // 避免服务端渲染和客户端渲染不一致
+  // if (!mounted) {
+  //   return <div>{children}</div>;
+  // }
 
   return (
     <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>

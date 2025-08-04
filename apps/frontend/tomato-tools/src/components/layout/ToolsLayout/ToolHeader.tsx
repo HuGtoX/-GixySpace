@@ -16,7 +16,7 @@ function ToolHeader({ title }: HeaderProps) {
   return (
     <AntHeader
       className={
-        "!dark:border-gray-700 !dark:bg-gray-800 mb-2.5 flex h-14 items-center overflow-hidden rounded-md border-b border-solid !border-gray-200 !bg-white px-3"
+        "mb-2.5 flex items-center rounded-md border-b border-gray-200 dark:border-gray-700"
       }
     >
       <Button
