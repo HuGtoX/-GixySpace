@@ -5,6 +5,7 @@ import {
   FaEllipsisH,
   FaCode
 } from "react-icons/fa";
+import { FaGithub } from "react-icons/fa6";
 
 // 工具选项数据
 export const toolsMenu = [
@@ -33,6 +34,14 @@ export const toolsMenu = [
   },
   {
     id: 4,
+    name: "Git仓库下载",
+    url: "/git/download",
+    background: "bg-green-500/10 dark:bg-green-500/10",
+    icon: <FaGithub className="text-green-500 dark:text-green-400" />,
+    description: "下载GitHub仓库代码",
+  },
+  {
+    id: 5,
     name: "实时编辑渲染",
     url: "/dev/realtime-render",
     background: "bg-blue-500/10 dark:bg-blue-500/10",
@@ -40,7 +49,7 @@ export const toolsMenu = [
     description: "React编辑器实现实时编辑渲染",
   },
   {
-    id: 5,
+    id: 6,
     name: "其他",
     url: "",
     background: "bg-gray-500/10 dark:bg-gray-500/10",

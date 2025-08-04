@@ -6,6 +6,7 @@ import {
 } from "@/lib/imageProcessing";
 import { InboxOutlined } from "@ant-design/icons";
 import { Alert, message, Typography, Upload } from "antd";
+import type { UploadProps } from "antd";
 import React, { useCallback, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { ImageFile } from "../types";
@@ -90,7 +91,7 @@ const FileUploader = ({ onFilesAdded }: FileUploaderProps) => {
 
   // 处理文件选择
   const handleFileUpload = useCallback(
-    (options: any) => {
+    (options: Parameters<NonNullable<UploadProps['customRequest']>>[0]) => {
       const { file, onSuccess } = options;
 
       // 单个文件上传处理
@@ -117,12 +118,12 @@ const FileUploader = ({ onFilesAdded }: FileUploaderProps) => {
 
   // 处理多文件选择
   const handleMultipleFiles = useCallback(
-    (info: any) => {
+    (info: { fileList: Array<{ originFileObj?: File }> }) => {
       const { fileList } = info;
       if (fileList && fileList.length > 0) {
         const files = fileList
-          .map((item: any) => item.originFileObj)
-          .filter((file: any): file is File => file instanceof File);
+          .map((item) => item.originFileObj)
+          .filter((file): file is File => file instanceof File);
         processFiles(files);
       }
     },

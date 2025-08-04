@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { Layout, Button } from 'antd';
-import { useRouter } from 'next/navigation';
+import React from "react";
+import { Layout, Button } from "antd";
+import { useRouter } from "next/navigation";
 
 const { Header: AntHeader } = Layout;
 
@@ -10,13 +10,13 @@ type HeaderProps = {
   title: string;
 };
 
-function Header({ title }: HeaderProps) {
+function ToolHeader({ title }: HeaderProps) {
   const router = useRouter();
-  
+
   return (
     <AntHeader
       className={
-        "overflow-hidden rounded-md h-14 flex items-center px-3 border-solid border-b border-gray-200 dark:border-gray-700 mb-2.5 bg-white dark:bg-gray-800"
+        "!dark:border-gray-700 !dark:bg-gray-800 mb-2.5 flex h-14 items-center overflow-hidden rounded-md border-b border-solid !border-gray-200 !bg-white px-3"
       }
     >
       <Button
@@ -31,4 +31,4 @@ function Header({ title }: HeaderProps) {
   );
 }
 
-export default Header;
+export default ToolHeader;

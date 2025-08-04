@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { FaSync, FaRegStar } from 'react-icons/fa';
 import { Skeleton } from 'antd';
+import Image from 'next/image';
 import ActionButton from '@/components/ActionButton';
 import axios from '@/lib/axios';
 import { useRequest } from 'ahooks';
@@ -45,10 +46,13 @@ const NewsCard = ({
   );
 
   // 初始加载和刷新功能
-  const loadData = () => fetchNews().then(setItems).catch(console.error);
+  const loadData = useCallback(() => {
+    fetchNews().then(setItems).catch(console.error);
+  }, [fetchNews, setItems]);
+  
   useEffect(() => {
     loadData();
-  }, [fetchNews]);
+  }, [loadData]);
 
   return (
     <div className="overflow-hidden rounded-xl bg-white shadow-md transition-all duration-300 hover:shadow-lg dark:bg-gray-800">
@@ -110,13 +114,16 @@ const NewsCard = ({
                 {index + 1}
               </div>
               {item.extra?.icon && (
-                <img
+                <Image
                   src={item.extra.icon.url}
                   alt="hot"
+                  width={16}
+                  height={16}
                   className="mr-3 h-4 w-4 flex-shrink-0"
                   style={{
                     transform: `scale(${item.extra.icon.scale || 1})`
                   }}
+                  unoptimized
                 />
               )}
               <a

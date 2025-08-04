@@ -3,7 +3,7 @@ import { Layout } from "antd";
 import Instructions, { InstructionsProps } from "../Instructions";
 import History from "../History";
 import RelateTools from "../RelateTools";
-import Header from "./ToolHeader";
+import ToolHeader from "./ToolHeader";
 import styles from "./style.module.scss";
 
 const { Content } = Layout;
@@ -28,7 +28,7 @@ function Container({
       {/* 左侧主操作区 */}
       <Content className="custom-scrollbar lg:flex-1 lg:overflow-y-auto lg:pr-3">
         <div className={styles.container}>
-          {title && <Header title={title} />}
+          {title && <ToolHeader title={title} />}
           {header}
 
           <div className={`${styles.content} bg-white dark:bg-gray-800`}>
