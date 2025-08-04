@@ -2,7 +2,6 @@
 
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import { message } from "antd";
-import ToolLayout from "@/components/layout/ToolLayout";
 import { useDeviceDetect } from "@/hooks/useDeviceDetect";
 import CodeEditor from "@/components/realtime-render/CodeEditor";
 import PreviewPanel, {
@@ -240,63 +239,61 @@ export default function RealTimeRenderPage() {
 
   // 桌面端布局
   return (
-    <ToolLayout>
-      <div className="h-full">
-        <div className="mb-4">
-          <h1 className="mb-2 text-2xl font-bold text-gray-900 dark:text-white">
-            实时代码渲染
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            在左侧编辑 React 代码，右侧实时查看渲染效果。支持 JSX 语法和 React
-            Hooks。
+    <div className="h-full">
+      <div className="mb-4">
+        <h1 className="mb-2 text-2xl font-bold text-gray-900 dark:text-white">
+          实时代码渲染
+        </h1>
+        <p className="text-gray-600 dark:text-gray-400">
+          在左侧编辑 React 代码，右侧实时查看渲染效果。支持 JSX 语法和 React
+          Hooks。
+        </p>
+      </div>
+
+      <div
+        className={`h-[calc(100vh-200px)] ${
+          isMobile ? "flex flex-col gap-4" : "grid grid-cols-2 gap-4"
+        }`}
+      >
+        {/* 代码编辑区 */}
+        <CodeEditor
+          code={code}
+          onChange={setCode}
+          onRun={handleRunRefresh}
+          onCopy={handleCopyCode}
+          onRefresh={handleRunRefresh}
+          onToggleFullscreen={handleToggleFullscreen}
+          onToggleShortcutHelp={handleToggleShortcutHelp}
+          isFullscreen={false}
+          showShortcutHelp={showShortcutHelp}
+        />
+
+        {/* 预览区 */}
+        <PreviewPanel
+          iframeRef={iframeRef}
+          status={renderStatus}
+          logs={logs}
+          onClearLogs={handleClearLogs}
+          onIframeLoad={handleIframeLoad}
+        />
+        <CodeRenderer
+          code={code}
+          iframeRef={iframeRef}
+          renderKey={renderKey}
+          onConsoleLog={handleConsoleLog}
+        />
+      </div>
+
+      {/* 移动端提示 */}
+      {isMobile && (
+        <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 p-3 dark:border-blue-800 dark:bg-blue-900/20">
+          <p className="text-sm text-blue-700 dark:text-blue-300">
+            💡
+            提示：在移动端，代码编辑器在上方，预览区域在下方。你可以滚动查看完整内容。
           </p>
         </div>
-
-        <div
-          className={`h-[calc(100vh-200px)] ${
-            isMobile ? "flex flex-col gap-4" : "grid grid-cols-2 gap-4"
-          }`}
-        >
-          {/* 代码编辑区 */}
-          <CodeEditor
-            code={code}
-            onChange={setCode}
-            onRun={handleRunRefresh}
-            onCopy={handleCopyCode}
-            onRefresh={handleRunRefresh}
-            onToggleFullscreen={handleToggleFullscreen}
-            onToggleShortcutHelp={handleToggleShortcutHelp}
-            isFullscreen={false}
-            showShortcutHelp={showShortcutHelp}
-          />
-
-          {/* 预览区 */}
-          <PreviewPanel
-            iframeRef={iframeRef}
-            status={renderStatus}
-            logs={logs}
-            onClearLogs={handleClearLogs}
-            onIframeLoad={handleIframeLoad}
-          />
-          <CodeRenderer
-            code={code}
-            iframeRef={iframeRef}
-            renderKey={renderKey}
-            onConsoleLog={handleConsoleLog}
-          />
-        </div>
-
-        {/* 移动端提示 */}
-        {isMobile && (
-          <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 p-3 dark:border-blue-800 dark:bg-blue-900/20">
-            <p className="text-sm text-blue-700 dark:text-blue-300">
-              💡
-              提示：在移动端，代码编辑器在上方，预览区域在下方。你可以滚动查看完整内容。
-            </p>
-          </div>
-        )}
-      </div>
-    </ToolLayout>
+      )}
+    </div>
   );
 }
 

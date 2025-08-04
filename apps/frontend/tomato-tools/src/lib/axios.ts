@@ -53,7 +53,7 @@ instance.interceptors.response.use(
   function (error) {
     // 在浏览器环境中显示错误消息
     if (typeof window !== "undefined") {
-      console.error("API Error:", error.message);
+      // console.warn("API Error:", error.message);
       // 可以在这里添加其他错误处理逻辑
     }
     return Promise.reject(error);
