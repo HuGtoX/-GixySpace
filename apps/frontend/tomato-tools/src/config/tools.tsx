@@ -3,7 +3,8 @@ import {
   FaImage,
   FaFileImport,
   FaEllipsisH,
-  FaCode
+  FaCode,
+  FaDownload
 } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa6";
 
@@ -50,6 +51,14 @@ export const toolsMenu = [
   },
   {
     id: 6,
+    name: "URL图标下载",
+    url: "/icon/download",
+    background: "bg-purple-500/10 dark:bg-purple-500/10",
+    icon: <FaDownload className="text-purple-500 dark:text-purple-400" />,
+    description: "获取网站图标并下载",
+  },
+  {
+    id: 7,
     name: "其他",
     url: "",
     background: "bg-gray-500/10 dark:bg-gray-500/10",
