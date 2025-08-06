@@ -1,11 +1,4 @@
-import {
-  FaFileExport,
-  FaImage,
-  FaFileImport,
-  FaEllipsisH,
-  FaCode,
-  FaDownload
-} from "react-icons/fa";
+import { FaFileExport, FaImage, FaFileImport, FaCode } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa6";
 
 // 工具选项数据
@@ -48,21 +41,5 @@ export const toolsMenu = [
     background: "bg-blue-500/10 dark:bg-blue-500/10",
     icon: <FaCode className="text-teal-500 dark:text-teal-400" />,
     description: "React编辑器实现实时编辑渲染",
-  },
-  {
-    id: 6,
-    name: "URL图标下载",
-    url: "/icon/download",
-    background: "bg-purple-500/10 dark:bg-purple-500/10",
-    icon: <FaDownload className="text-purple-500 dark:text-purple-400" />,
-    description: "获取网站图标并下载",
-  },
-  {
-    id: 7,
-    name: "其他",
-    url: "",
-    background: "bg-gray-500/10 dark:bg-gray-500/10",
-    icon: <FaEllipsisH className="text-gray-500 dark:text-gray-400" />,
-    description: "其他实用工具",
   },
 ];

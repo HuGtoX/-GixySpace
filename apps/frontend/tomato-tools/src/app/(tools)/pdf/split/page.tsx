@@ -1,8 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { Layout, message, Button } from "antd";
-import { ScissorOutlined } from "@ant-design/icons";
+import {
+  ScissorOutlined,
+  ZoomInOutlined,
+  ZoomOutOutlined,
+  PlusOutlined,
+  UndoOutlined,
+} from "@ant-design/icons";
 import Container from "@/components/layout/ToolsLayout/Container";
 import { downloadFile } from "@gixy/utils";
 import FileUploader from "@/components/FileUploader";
@@ -10,18 +16,92 @@ import * as pdfjsLib from "pdfjs-dist";
 import { PDFDocument } from "pdf-lib";
 
 const { Content } = Layout;
-
-type Pages = Array<{
+if (typeof window !== "undefined") {
+  pdfjsLib.GlobalWorkerOptions.workerSrc = `/pdf.worker.min.mjs`;
+}
+type Page = {
   id: number;
   canvas: string;
   selected: boolean;
   pageNumber: number;
-}>;
+  partitionId: number | null;
+};
+
+type Pages = Page[];
+
+type Partition = {
+  id: number;
+  name: string;
+  color: string;
+};
+
+const generateRandomColor = () => {
+  const colors = [
+    "#1677ff",
+    "#52c41a",
+    "#faad14",
+    "#f5222d",
+    "#722ed1",
+    "#1890ff",
+  ];
+  return colors[Math.floor(Math.random() * colors.length)];
+};
 
 const PdfSplitPage = () => {
   const [pages, setPages] = useState<Pages>([]);
   const [pdfDoc, setPdfDoc] = useState<PDFDocument>();
   const [selectedPages, setSelectedPages] = useState<number[]>([]);
+  const [scale, setScale] = useState<number>(1);
+  const [pdfBytes, setPdfBytes] = useState<ArrayBuffer>();
+  const [partitions, setPartitions] = useState<Partition[]>([
+    { id: 1, name: "分区1", color: "#1677ff" },
+  ]);
+  const [activePartitionId, setActivePartitionId] = useState<number>(1);
+
+  const addPartition = () => {
+    const newId = Math.max(...partitions.map((p) => p.id), 0) + 1;
+    setPartitions([
+      ...partitions,
+      { id: newId, name: `分区${newId}`, color: generateRandomColor() },
+    ]);
+    setActivePartitionId(newId);
+  };
+
+  const deletePartition = (id: number) => {
+    if (partitions.length <= 1) {
+      message.info("至少需要保留一个分区");
+      return;
+    }
+
+    // 更新页面，移除被删除分区的关联
+    setPages(
+      pages.map((page) =>
+        page.partitionId === id
+          ? { ...page, partitionId: null, selected: false }
+          : page,
+      ),
+    );
+
+    // 删除分区
+    setPartitions(partitions.filter((p) => p.id !== id));
+
+    // 设置新的活动分区
+    setActivePartitionId(partitions[0].id);
+  };
+
+  const handlePartitionChange = (id: number) => {
+    setActivePartitionId(id);
+  };
+
+  // 重置分区选择
+  const resetPartitions = () => {
+    setPartitions([{ id: 1, name: "分区1", color: "#1677ff" }]);
+    setActivePartitionId(1);
+    setPages(
+      pages.map((page) => ({ ...page, partitionId: null, selected: false })),
+    );
+    setSelectedPages([]);
+  };
 
   const handlePageSplit = async () => {
     try {
@@ -29,23 +109,30 @@ const PdfSplitPage = () => {
         message.error("请先上传PDF文档");
         return;
       }
-      if (selectedPages.length === 0) {
-        message.error("请选择要拆分的页面");
-        return;
-      }
-      const newPdfDoc = await PDFDocument.create();
-      const sortedPages = selectedPages.sort((a, b) => a - b);
-      for (let i = 0; i < selectedPages.length; i++) {
-        const [copiedPage] = await newPdfDoc.copyPages(pdfDoc, [
-          sortedPages[i],
-        ]);
-        newPdfDoc.addPage(copiedPage);
-      }
-      const newPdfBytes = await newPdfDoc.save();
-      const newPdfBlob = new Blob([newPdfBytes], { type: "application/pdf" });
-      const newPdfUrl = URL.createObjectURL(newPdfBlob);
-      downloadFile(newPdfUrl, "split.pdf");
 
+      // 按分区拆分PDF
+      for (const partition of partitions) {
+        const partitionPages = pages
+          .filter((page) => page.partitionId === partition.id)
+          .map((page) => page.pageNumber - 1);
+
+        if (partitionPages.length === 0) continue;
+
+        const newPdfDoc = await PDFDocument.create();
+        const sortedPages = partitionPages.sort((a, b) => a - b);
+        for (let i = 0; i < sortedPages.length; i++) {
+          const [copiedPage] = await newPdfDoc.copyPages(pdfDoc, [
+            sortedPages[i],
+          ]);
+          newPdfDoc.addPage(copiedPage);
+        }
+        const newPdfBytes = await newPdfDoc.save();
+        const newPdfBlob = new Blob([newPdfBytes], { type: "application/pdf" });
+        const newPdfUrl = URL.createObjectURL(newPdfBlob);
+        downloadFile(newPdfUrl, `${partition.name}.pdf`);
+      }
+
+      message.success("所有分区已成功拆分并下载");
       return;
     } catch (error) {
       console.error("拆分PDF失败:", error);
@@ -54,58 +141,112 @@ const PdfSplitPage = () => {
   };
 
   const handlePageClick = (pageNumber: number) => {
-    setSelectedPages((prev) => {
-      if (prev.includes(pageNumber)) {
-        return prev.filter((num) => num !== pageNumber);
-      }
-      return [...prev, pageNumber];
-    });
+    setPages(
+      pages.map((page) => {
+        if (page.pageNumber === pageNumber + 1) {
+          // 如果页面已经属于当前分区，则取消选择
+          if (page.partitionId === activePartitionId) {
+            return { ...page, selected: false, partitionId: null };
+          } else {
+            // 否则将其添加到当前分区
+            return { ...page, selected: true, partitionId: activePartitionId };
+          }
+        }
+        return page;
+      }),
+    );
+
+    // 更新选中页面列表
+    setSelectedPages(
+      pages
+        .filter((page) => page.partitionId === activePartitionId)
+        .map((page) => page.pageNumber - 1),
+    );
   };
+
+  const renderPages = useCallback(async () => {
+    if (!pdfBytes) return;
+
+    // 1. 使用 pdfjs-dist 加载并渲染页面（用于预览）
+    const pdf = await pdfjsLib.getDocument({ data: pdfBytes }).promise;
+    const pageCount = pdf.numPages;
+    const newPages: Pages = [];
+    for (let i = 1; i <= pageCount; i++) {
+      const page = await pdf.getPage(i);
+      const viewport = page.getViewport({ scale });
+
+      const canvas = document.createElement("canvas");
+      const context = canvas.getContext("2d");
+      if (!context) {
+        message.error(`第${i}页渲染失败：无法获取canvas上下文`);
+        continue;
+      }
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+
+      await page.render({ canvasContext: context, viewport }).promise;
+
+      const canvasDataURL = canvas.toDataURL("image/png");
+
+      // 保留现有页面的分区信息
+      const existingPage = pages.find((p) => p.pageNumber === i);
+
+      newPages.push({
+        id: Date.now() + i + Math.random(), // 增加随机数确保id唯一
+        pageNumber: i,
+        canvas: canvasDataURL,
+        selected: existingPage?.selected ?? false,
+        partitionId: existingPage?.partitionId ?? null,
+      });
+    }
+    setPages(newPages);
+  }, [pdfBytes, scale, pages]);
 
   const handleUpload = async (files: any[]) => {
     for (const { file } of files) {
       const reader = new FileReader();
       reader.onload = async (e) => {
-        const pdfBytes = e.target.result as ArrayBuffer;
+        const pdfBytes = e?.target?.result as ArrayBuffer;
+        setPdfBytes(pdfBytes);
 
         // 2. 使用 pdf-lib 加载 PDF 文档
         const pdfDoc = await PDFDocument.load(pdfBytes);
         setPdfDoc(pdfDoc);
 
-        // 1. 使用 pdfjs-dist 加载并渲染页面（用于预览）
-        const pdf = await pdfjsLib.getDocument({ data: pdfBytes }).promise;
-        const pageCount = pdf.numPages;
-        for (let i = 1; i <= pageCount; i++) {
-          const page = await pdf.getPage(i);
-          const scale = 1;
-          const viewport = page.getViewport({ scale });
-
-          const canvas = document.createElement("canvas");
-          const context = canvas.getContext("2d");
-          if (!context) {
-            message.error(`第${i}页渲染失败：无法获取canvas上下文`);
-            continue;
-          }
-          canvas.width = viewport.width;
-          canvas.height = viewport.height;
-
-          await page.render({ canvasContext: context, viewport }).promise;
-
-          const canvasDataURL = canvas.toDataURL("image/png");
-          setPages((prev) => [
-            ...prev,
-            {
-              id: Date.now() + i,
-              pageNumber: i,
-              canvas: canvasDataURL,
-              selected: false,
-            },
-          ]);
-        }
+        // 渲染页面
+        await renderPages();
       };
       reader.readAsArrayBuffer(file);
     }
   };
+
+  const handleZoomIn = () => {
+    if (scale < 3) {
+      setScale((prev) => Math.min(prev + 0.1, 3));
+    } else {
+      message.info("已达到最大缩放比例");
+    }
+  };
+
+  const handleZoomOut = () => {
+    if (scale > 0.5) {
+      setScale((prev) => Math.max(prev - 0.1, 0.5));
+    } else {
+      message.info("已达到最小缩放比例");
+    }
+  };
+
+  // 监听scale变化，重新渲染页面
+  React.useEffect(() => {
+    if (pdfBytes) {
+      // 添加延迟确保scale更新完成
+      const timer = setTimeout(() => {
+        renderPages();
+      }, 100);
+
+      return () => clearTimeout(timer);
+    }
+  }, [scale, renderPages, pdfBytes]);
 
   // 工具说明内容
   const instructions = {
@@ -123,49 +264,151 @@ const PdfSplitPage = () => {
     <Container
       title="PDF拆分"
       header={
-        <div className="flex justify-end p-4">
-          <Button
-            type="primary"
-            icon={<ScissorOutlined />}
-            onClick={handlePageSplit}
-          >
-            完成拆分
-          </Button>
+        <div className="flex flex-wrap justify-between gap-2 p-4">
+          <div className="flex flex-wrap gap-2">
+            {partitions.map((partition) => (
+              <Button
+                key={partition.id}
+                style={{ backgroundColor: partition.color, color: "#fff" }}
+                onClick={() => handlePartitionChange(partition.id)}
+                className={
+                  activePartitionId === partition.id
+                    ? "ring-2 ring-white ring-offset-2"
+                    : ""
+                }
+              >
+                {partition.name}
+                {partitions.length > 1 && (
+                  <span
+                    className="ml-1 cursor-pointer"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      deletePartition(partition.id);
+                    }}
+                  >
+                    ×
+                  </span>
+                )}
+              </Button>
+            ))}
+            <Button icon={<PlusOutlined />} onClick={addPartition}>
+              添加分区
+            </Button>
+            <Button icon={<UndoOutlined />} onClick={resetPartitions}>
+              重置分区
+            </Button>
+          </div>
+          <div className="flex gap-2">
+            <Button icon={<ZoomOutOutlined />} onClick={handleZoomOut}>
+              缩小
+            </Button>
+            <Button icon={<ZoomInOutlined />} onClick={handleZoomIn}>
+              放大
+            </Button>
+            <span className="flex items-center px-2 py-1 text-sm text-gray-600">
+              缩放比例: {scale.toFixed(1)}x
+            </span>
+            <Button
+              type="primary"
+              icon={<ScissorOutlined />}
+              onClick={handlePageSplit}
+            >
+              完成拆分
+            </Button>
+          </div>
         </div>
       }
-      instructions={instructions}
+      instructions={{
+        ...instructions,
+        content: [
+          "上传PDF文件：点击下方的文件上传按钮，选择需要拆分的PDF文档（仅支持PDF格式）。",
+          "创建分区：点击'添加分区'按钮可以创建多个拆分区域。",
+          "选择页面：先选择要添加页面的分区，然后点击PDF页面缩略图将其添加到该分区。",
+          "执行拆分：确认选择后，点击顶部的'完成拆分'按钮，系统将为每个分区生成并自动下载对应的PDF文件。",
+        ],
+      }}
     >
       <Content>
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-4 p-4">
+        <div
+          className={`grid ${scale > 2 ? "grid-cols-3" : "grid-cols-[repeat(auto-fill,minmax(180px,1fr))]"} gap-4 p-4`}
+        >
           {pages.map((page) => (
             <div
               key={page.id}
-              className="relative rounded-lg border border-solid border-gray-200 p-1 transition-colors hover:cursor-pointer"
+              className="relative rounded-lg border border-solid border-gray-200 p-1 transition-all duration-300 hover:cursor-pointer hover:shadow-md"
               onClick={() => handlePageClick(page.pageNumber - 1)}
               style={{
-                borderColor: selectedPages.includes(page.pageNumber - 1)
-                  ? "#1677ff"
+                borderColor: page.partitionId
+                  ? partitions.find((p) => p.id === page.partitionId)?.color ||
+                    "#1677ff"
                   : "#e8e8e8",
-                backgroundColor: selectedPages.includes(page.pageNumber - 1)
-                  ? "#f0f5ff"
+                backgroundColor: page.partitionId
+                  ? `${partitions.find((p) => p.id === page.partitionId)?.color || "#1677ff"}10`
                   : "white",
+                boxShadow: page.partitionId
+                  ? `0 0 0 2px ${partitions.find((p) => p.id === page.partitionId)?.color || "#1677ff"}`
+                  : "none",
               }}
             >
+              {/* 分区颜色标识条 */}
+              {page.partitionId && (
+                <div
+                  className="absolute left-0 right-0 top-0 h-1"
+                  style={{
+                    backgroundColor:
+                      partitions.find((p) => p.id === page.partitionId)
+                        ?.color || "#1677ff",
+                    borderTopLeftRadius: "4px",
+                    borderTopRightRadius: "4px",
+                  }}
+                />
+              )}
+
+              {/* 剪切线样式 - 对角线 */}
+              {page.partitionId && (
+                <div className="pointer-events-none absolute inset-0 z-10 overflow-hidden">
+                  <div
+                    className="absolute -right-12 top-0 h-0.5 w-32 rotate-45"
+                    style={{
+                      transformOrigin: "left top",
+                      backgroundColor:
+                        partitions.find((p) => p.id === page.partitionId)
+                          ?.color || "#1677ff",
+                      opacity: 0.6,
+                      boxShadow: "0 0 2px rgba(0,0,0,0.2)",
+                    }}
+                  />
+                </div>
+              )}
+
               <img
                 src={page.canvas}
                 alt="PDF页面"
-                className="h-[150px] w-full object-cover"
+                className="w-full object-cover"
+                style={{ height: `${150 * scale}px` }}
               />
-              <div className="absolute left-1 top-1 rounded bg-black/60 px-2 py-1 text-white">
+              <div className="absolute left-1 top-1 rounded bg-black/60 px-2 py-1 text-xs text-white">
                 第{page.pageNumber}页
               </div>
+              {page.partitionId && (
+                <div
+                  className="absolute right-1 top-1 rounded px-1 py-0.5 text-xs text-white"
+                  style={{
+                    backgroundColor:
+                      partitions.find((p) => p.id === page.partitionId)
+                        ?.color || "#1677ff",
+                  }}
+                >
+                  {partitions.find((p) => p.id === page.partitionId)?.name}
+                </div>
+              )}
             </div>
           ))}
         </div>
         <FileUploader
-          accept={["pdf"]}
+          accept={["application/pdf"]}
           onUploadSuccess={handleUpload}
-          buttonText="上传PDF文件"
+          multiple
         />
       </Content>
     </Container>

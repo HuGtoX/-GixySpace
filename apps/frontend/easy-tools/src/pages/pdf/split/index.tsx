@@ -122,7 +122,7 @@ const SplitDocumentInterface = () => {
           {pages.map((page, index) => (
             <div
               key={page.id}
-              className="relative border p-1 border-solid border-gray-200 rounded-lg  hover:cursor-pointer transition-colors"
+              className="relative rounded-lg border border-solid border-gray-200 p-1 transition-colors hover:cursor-pointer"
               onClick={() => handlePageClick(index)}
               style={{
                 borderColor: selectedPages.includes(index)
@@ -136,9 +136,9 @@ const SplitDocumentInterface = () => {
               <img
                 src={page.canvas}
                 alt="PDF页面"
-                className="w-full h-[150px] object-cover"
+                className="h-[150px] w-full object-cover"
               />
-              <div className="absolute top-1 left-1 text-white bg-black/60 px-2 py-1 rounded">
+              <div className="absolute left-1 top-1 rounded bg-black/60 px-2 py-1 text-white">
                 第{page.pageNumber}页
               </div>
             </div>

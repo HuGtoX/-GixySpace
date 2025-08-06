@@ -87,6 +87,41 @@ body::-webkit-scrollbar-thumb:hover {
     text-wrap: balance;
   }
 
+  /* MacOS风格弹窗 */
+  .macos-modal .ant-modal-content {
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .macos-modal.dark .ant-modal-content {
+    background-color: #1f2937;
+    border-color: #374151;
+  }
+
+  /* MacOS窗口控制按钮 */
+  .macos-modal .window-controls {
+    display: flex;
+    gap: 6px;
+  }
+
+  .macos-modal .window-control {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+
+  .macos-modal .window-control.close {
+    background-color: #ff5f56;
+  }
+
+  .macos-modal .window-control.minimize {
+    background-color: #ffbd2e;
+  }
+
+  .macos-modal .window-control.maximize {
+    background-color: #27c93f;
+  }
+
   .item-hover {
     @apply cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-800;
   }
