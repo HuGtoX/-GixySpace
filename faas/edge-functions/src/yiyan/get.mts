@@ -3,6 +3,7 @@ import { eq, sql } from 'drizzle-orm';
 import postgres from 'postgres';
 import { dailySentences } from '../../common/schema.ts';
 import { drizzle } from 'drizzle-orm/postgres-js';
+import { getEnv } from '../../utils/getEnv.mts';
 
 /**
  * https://developer.hitokoto.cn/sentence/
@@ -11,7 +12,7 @@ import { drizzle } from 'drizzle-orm/postgres-js';
  * @returns DayliSentence
  */
 async function getDailySentence(_: Request) {
-	const queryClient = postgres(Netlify.env.get('DATABASE_URL')!);
+	const queryClient = postgres(getEnv('DATABASE_URL')!);
 	const db = drizzle({ client: queryClient, schema: { dailySentences } });
 
 	// 获取今天的日期
@@ -20,7 +21,14 @@ async function getDailySentence(_: Request) {
 
 	// 查询今天是否已经有一言
 	const existingSentence = await db.query.dailySentences.findFirst({
-		where: eq(dailySentences.fetchDate, sql`CURRENT_DATE`)
+		where: eq(dailySentences.fetchDate, sql`CURRENT_DATE`),
+		columns: {
+			id: true,
+			content: true,
+			from: true,
+			fetchData: true,
+			fetchDate: true
+		}
 	});
 
 	if (existingSentence) {

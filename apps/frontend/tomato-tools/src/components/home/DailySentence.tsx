@@ -2,53 +2,30 @@ import { useState, useEffect } from "react";
 import { FaSync } from "react-icons/fa";
 import SectionCard from "@/components/SectionCard";
 import { Button } from "antd";
-
-interface SentenceData {
-  content: string;
-  author?: string;
-  source?: string;
-}
+import axios from "@/lib/axios";
+import { DailySentence as Reuslt, ResOrNull } from "@gixy/types";
+import dayjs from "dayjs";
 
 export default function DailySentence() {
-  const [sentence, setSentence] = useState<SentenceData | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [yiyan, setYiyan] = useState<ResOrNull<Reuslt>>();
+  const [loading, setLoading] = useState(true);
 
-  const fetchSentence = async () => {
+  const fetchYiyan = async () => {
     try {
-      setIsLoading(true);
-      // 模拟API调用延迟
-      await new Promise(resolve => setTimeout(resolve, 800));
-      
-      // 模拟每日一句数据
-      const sentences = [
-        {
-          content: "生活不是等待暴风雨过去，而是要学会在雨中跳舞。",
-          author: "维维安·格林"
-        },
-        {
-          content: "成功不是终点，失败不是末日，继续前进的勇气才最可贵。",
-          author: "温斯顿·丘吉尔"
-        },
-        {
-          content: "今天的努力，是为了明天的美好。",
-        },
-        {
-          content: "每一个不曾起舞的日子，都是对生命的辜负。",
-          author: "尼采"
-        }
-      ];
-      
-      const randomSentence = sentences[Math.floor(Math.random() * sentences.length)];
-      setSentence(randomSentence);
-    } catch (err) {
-      console.error('获取每日一句失败:', err);
+      setLoading(true);
+      const data = await axios.get<Reuslt>("/api/yiyan/get");
+      setYiyan(data);
+      const date = dayjs().format("YYYY-MM-DD");
+      localStorage.setItem("yiyan", JSON.stringify({ ...data, date }));
+    } catch (error) {
+      console.error("获取每日一言失败:", error);
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchSentence();
+    fetchYiyan();
   }, []);
 
   return (
@@ -59,24 +36,23 @@ export default function DailySentence() {
           type="text"
           size="small"
           icon={<FaSync />}
-          loading={isLoading}
-          onClick={fetchSentence}
+          loading={loading}
+          onClick={fetchYiyan}
         />
       }
     >
       <div className="text-center">
-        {sentence ? (
+        {yiyan ? (
           <>
-            <blockquote className="text-sm text-gray-700 dark:text-gray-300 mb-2 italic leading-relaxed">
-              &ldquo;{sentence.content}&rdquo;
+            <blockquote className="mb-2 text-sm italic leading-relaxed text-gray-700 dark:text-gray-300">
+              &ldquo;{yiyan.hitokoto}&rdquo;
             </blockquote>
-            {sentence.author && (
-              <cite className="text-xs text-gray-500 dark:text-gray-400">
-                —— {sentence.author}
-              </cite>
-            )}
+
+            <cite className="text-xs text-gray-500 dark:text-gray-400">
+              —— {yiyan.from_who} 《{yiyan.from}》
+            </cite>
           </>
-        ) : isLoading ? (
+        ) : loading ? (
           <div className="text-gray-500">加载中...</div>
         ) : (
           <div className="text-gray-500">暂无内容</div>

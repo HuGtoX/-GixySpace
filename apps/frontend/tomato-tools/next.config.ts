@@ -11,7 +11,8 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/api/:path*",
-        destination: "https://tools-service.netlify.app/api/:path*",
+        // destination: "https://tools-service.netlify.app/api/:path*",
+        destination: "https://tools.sofun.fun/api/:path*",
       },
     ];
   },
