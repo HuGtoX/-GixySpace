@@ -19,16 +19,8 @@ async function getDailySentence(_: Request) {
 	const today = new Date();
 	today.setHours(0, 0, 0, 0);
 
-	// 查询今天是否已经有一言
 	const existingSentence = await db.query.dailySentences.findFirst({
-		where: eq(dailySentences.fetchDate, sql`CURRENT_DATE`),
-		columns: {
-			id: true,
-			content: true,
-			from: true,
-			fetchData: true,
-			fetchDate: true
-		}
+		where: eq(dailySentences.fetchDate, sql`CURRENT_DATE`)
 	});
 
 	if (existingSentence) {
@@ -49,7 +41,7 @@ async function getDailySentence(_: Request) {
 	await db.insert(dailySentences).values({
 		content: result.hitokoto,
 		fetchData: JSON.stringify(result),
-		from: result.from
+		source: result.from
 	});
 
 	return {

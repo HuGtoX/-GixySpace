@@ -1,19 +1,38 @@
-import { sql } from 'drizzle-orm';
 import {
 	pgTable,
-	unique,
+	index,
 	serial,
 	text,
-	integer,
-	index,
+	date,
 	timestamp,
+	unique,
+	integer,
 	foreignKey,
 	bigserial,
-	primaryKey,
-	date,
+	jsonb,
 	boolean,
-	jsonb
+	uuid,
+	primaryKey,
+	pgEnum
 } from 'drizzle-orm/pg-core';
+import { sql } from 'drizzle-orm';
+
+export const userRole = pgEnum('user_role', ['user', 'admin']);
+
+export const dailySentences = pgTable(
+	'daily_sentences',
+	{
+		id: serial().primaryKey().notNull(),
+		content: text().notNull(),
+		source: text(),
+		fetchData: text('fetch_data'),
+		fetchDate: date('fetch_date')
+			.default(sql`CURRENT_DATE`)
+			.notNull(),
+		createdAt: timestamp('created_at').defaultNow().notNull()
+	},
+	(table) => [index('idx_daily_sentences_date').on(table.fetchDate)]
+);
 
 export const usersTable = pgTable(
 	'users_table',
@@ -24,82 +43,6 @@ export const usersTable = pgTable(
 		email: text().notNull()
 	},
 	(table) => [unique('users_table_email_unique').on(table.email)]
-);
-
-export const eventTrackings = pgTable(
-	'event_trackings',
-	{
-		id: bigserial({ mode: 'bigint' }).primaryKey().notNull(),
-		// 事件名称，如 'page_view', 'button_click' 等
-		eventName: text('event_name').notNull(),
-		// 事件类别，如 'user_action', 'system_event' 等
-		eventCategory: text('event_category'),
-		// 访客ID，关联到guests表
-		guestId: text('guest_id').notNull(),
-		// 事件属性，可以存储任意JSON数据
-		properties: jsonb('properties').default('{}'),
-		// 事件发生时间
-		occurredAt: timestamp('occurred_at', {
-			withTimezone: true,
-			mode: 'string'
-		}).defaultNow(),
-		// 用户当前页面路径
-		path: text('path'),
-		// 来源页面
-		referrer: text('referrer'),
-		// 设备信息
-		userAgent: text('user_agent'),
-		// IP 地址哈希
-		ipHash: text('ip_hash')
-	},
-	(table) => [
-		// 按时间降序索引，用于查询最近的事件
-		index('idx_event_trackings_occurred_at').using(
-			'btree',
-			table.occurredAt.desc().nullsLast().op('timestamptz_ops')
-		),
-		// 联合索引，用于按访客和事件类型查询
-		index('idx_event_trackings_guest_event').using(
-			'btree',
-			table.guestId.asc().nullsLast().op('text_ops'),
-			table.eventName.asc().nullsLast().op('text_ops')
-		),
-		// 外键约束
-		foreignKey({
-			columns: [table.guestId],
-			foreignColumns: [guests.id],
-			name: 'event_trackings_guest_id_fkey'
-		}).onDelete('cascade')
-	]
-);
-
-export const guests = pgTable(
-	'guests',
-	{
-		id: text('id').primaryKey().notNull(),
-		createdAt: timestamp('created_at', {
-			withTimezone: true,
-			mode: 'string'
-		}).defaultNow(),
-		lastSeen: timestamp('last_seen', {
-			withTimezone: true,
-			mode: 'string'
-		}).defaultNow(),
-		userAgent: text('user_agent'),
-		ipHash: text('ip_hash'),
-		fingerprint: text(),
-		avatarUrl: text('avatar_url').default('/avatar/a1.svg')
-	},
-	(table) => [
-		index('idx_guests_fingerprint').using(
-			'btree',
-			table.fingerprint.asc().nullsLast().op('text_ops')
-		),
-		index('idx_guests_last_seen').using(
-			'btree',
-			table.lastSeen.asc().nullsLast().op('timestamptz_ops')
-		)
-	]
 );
 
 export const guestData = pgTable(
@@ -128,41 +71,42 @@ export const guestData = pgTable(
 	]
 );
 
-export const guestUserMapping = pgTable(
-	'guest_user_mapping',
+export const guests = pgTable(
+	'guests',
 	{
-		guestId: text('guest_id').notNull(),
-		userId: integer('user_id').notNull(),
-		migratedAt: timestamp('migrated_at', {
+		id: text().primaryKey().notNull(),
+		createdAt: timestamp('created_at', {
 			withTimezone: true,
 			mode: 'string'
-		}).defaultNow()
+		}).defaultNow(),
+		lastSeen: timestamp('last_seen', {
+			withTimezone: true,
+			mode: 'string'
+		}).defaultNow(),
+		userAgent: text('user_agent'),
+		ipHash: text('ip_hash'),
+		fingerprint: text(),
+		avatarUrl: text('avatar_url').default('/avatar/a1.svg')
 	},
 	(table) => [
-		// 添加复合主键约束，确保映射关系唯一
-		primaryKey({ columns: [table.guestId, table.userId] }),
-
-		foreignKey({
-			columns: [table.guestId],
-			foreignColumns: [guests.id],
-			name: 'guest_user_mapping_guest_id_fkey'
-		}),
-		foreignKey({
-			columns: [table.userId],
-			foreignColumns: [usersTable.id],
-			name: 'guest_user_mapping_user_id_fkey'
-		}).onDelete('cascade')
+		index('idx_guests_fingerprint').using(
+			'btree',
+			table.fingerprint.asc().nullsLast().op('text_ops')
+		),
+		index('idx_guests_last_seen').using(
+			'btree',
+			table.lastSeen.asc().nullsLast().op('timestamptz_ops')
+		)
 	]
 );
 
-// 待办事项表
 export const todos = pgTable(
 	'todos',
 	{
-		id: serial('id').primaryKey(),
-		text: text('text').notNull(),
-		completed: boolean('completed').default(false).notNull(),
-		archived: boolean('archived').default(false).notNull(),
+		id: serial().primaryKey().notNull(),
+		text: text().notNull(),
+		completed: boolean().default(false).notNull(),
+		archived: boolean().default(false).notNull(),
 		createdAt: timestamp('created_at', {
 			withTimezone: true,
 			mode: 'string'
@@ -175,33 +119,194 @@ export const todos = pgTable(
 		})
 			.defaultNow()
 			.notNull(),
-		guestId: text('guest_id').references(() => guests.id, {
-			onDelete: 'cascade'
-		})
+		guestId: text('guest_id')
 	},
 	(table) => [
-		index('idx_todos_guest_id').on(table.guestId),
-		index('idx_todos_archived').on(table.archived)
+		index('idx_todos_archived').using(
+			'btree',
+			table.archived.asc().nullsLast().op('bool_ops')
+		),
+		index('idx_todos_guest_id').using(
+			'btree',
+			table.guestId.asc().nullsLast().op('text_ops')
+		),
+		foreignKey({
+			columns: [table.guestId],
+			foreignColumns: [guests.id],
+			name: 'todos_guest_id_guests_id_fk'
+		}).onDelete('cascade')
 	]
 );
 
-export type Todo = typeof todos.$inferSelect;
-export type NewTodo = typeof todos.$inferInsert;
-
-export const dailySentences = pgTable(
-	'daily_sentences',
+export const passwordResetToken = pgTable(
+	'password_reset_token',
 	{
-		id: serial('id').primaryKey(),
-		content: text('content').notNull(),
-		from: text('from'),
-		fetchData: text('fetch_data'),
-		fetchDate: date('fetch_date')
+		id: uuid().defaultRandom().primaryKey().notNull(),
+		userId: uuid('user_id').notNull(),
+		token: text().notNull(),
+		expiresAt: timestamp('expires_at', {
+			withTimezone: true,
+			mode: 'string'
+		}).notNull(),
+		usedAt: timestamp('used_at', { withTimezone: true, mode: 'string' }),
+		createdAt: timestamp('created_at', {
+			withTimezone: true,
+			mode: 'string'
+		})
+			.defaultNow()
 			.notNull()
-			.default(sql`CURRENT_DATE`),
-		createdAt: timestamp('created_at').notNull().defaultNow()
 	},
 	(table) => [
-		// 确保每天只有一条记录
-		index('idx_daily_sentences_date').on(table.fetchDate)
+		foreignKey({
+			columns: [table.userId],
+			foreignColumns: [user.id],
+			name: 'password_reset_token_user_id_user_id_fk'
+		}).onDelete('cascade'),
+		unique('password_reset_token_token_unique').on(table.token)
+	]
+);
+
+export const user = pgTable(
+	'user',
+	{
+		id: uuid().primaryKey().notNull(),
+		email: text().notNull(),
+		fullName: text('full_name'),
+		avatarUrl: text('avatar_url'),
+		role: userRole().default('user').notNull(),
+		isActive: boolean('is_active').default(true).notNull(),
+		createdAt: timestamp('created_at', {
+			withTimezone: true,
+			mode: 'string'
+		})
+			.defaultNow()
+			.notNull(),
+		updatedAt: timestamp('updated_at', {
+			withTimezone: true,
+			mode: 'string'
+		})
+			.defaultNow()
+			.notNull()
+	},
+	(table) => [unique('user_email_unique').on(table.email)]
+);
+
+export const userProfile = pgTable(
+	'user_profile',
+	{
+		id: uuid().defaultRandom().primaryKey().notNull(),
+		userId: uuid('user_id').notNull(),
+		bio: text(),
+		website: text(),
+		location: text(),
+		preferences: text(),
+		createdAt: timestamp('created_at', {
+			withTimezone: true,
+			mode: 'string'
+		})
+			.defaultNow()
+			.notNull(),
+		updatedAt: timestamp('updated_at', {
+			withTimezone: true,
+			mode: 'string'
+		})
+			.defaultNow()
+			.notNull()
+	},
+	(table) => [
+		foreignKey({
+			columns: [table.userId],
+			foreignColumns: [user.id],
+			name: 'user_profile_user_id_user_id_fk'
+		}).onDelete('cascade')
+	]
+);
+
+export const userSession = pgTable(
+	'user_session',
+	{
+		id: uuid().defaultRandom().primaryKey().notNull(),
+		userId: uuid('user_id').notNull(),
+		sessionId: text('session_id').notNull(),
+		ipAddress: text('ip_address'),
+		userAgent: text('user_agent'),
+		loginAt: timestamp('login_at', { withTimezone: true, mode: 'string' })
+			.defaultNow()
+			.notNull(),
+		logoutAt: timestamp('logout_at', {
+			withTimezone: true,
+			mode: 'string'
+		}),
+		isActive: boolean('is_active').default(true).notNull()
+	},
+	(table) => [
+		foreignKey({
+			columns: [table.userId],
+			foreignColumns: [user.id],
+			name: 'user_session_user_id_user_id_fk'
+		}).onDelete('cascade')
+	]
+);
+
+export const eventTrackings = pgTable(
+	'event_trackings',
+	{
+		id: bigserial({ mode: 'bigint' }).primaryKey().notNull(),
+		eventName: text('event_name').notNull(),
+		eventCategory: text('event_category'),
+		guestId: text('guest_id').notNull(),
+		properties: jsonb().default({}),
+		occurredAt: timestamp('occurred_at', {
+			withTimezone: true,
+			mode: 'string'
+		}).defaultNow(),
+		path: text(),
+		referrer: text(),
+		userAgent: text('user_agent'),
+		ipHash: text('ip_hash')
+	},
+	(table) => [
+		index('idx_event_trackings_guest_event').using(
+			'btree',
+			table.guestId.asc().nullsLast().op('text_ops'),
+			table.eventName.asc().nullsLast().op('text_ops')
+		),
+		index('idx_event_trackings_occurred_at').using(
+			'btree',
+			table.occurredAt.asc().nullsLast().op('timestamptz_ops')
+		),
+		foreignKey({
+			columns: [table.guestId],
+			foreignColumns: [guests.id],
+			name: 'event_trackings_guest_id_fkey'
+		}).onDelete('cascade')
+	]
+);
+
+export const guestUserMapping = pgTable(
+	'guest_user_mapping',
+	{
+		guestId: text('guest_id').notNull(),
+		userId: integer('user_id').notNull(),
+		migratedAt: timestamp('migrated_at', {
+			withTimezone: true,
+			mode: 'string'
+		}).defaultNow()
+	},
+	(table) => [
+		foreignKey({
+			columns: [table.guestId],
+			foreignColumns: [guests.id],
+			name: 'guest_user_mapping_guest_id_fkey'
+		}),
+		foreignKey({
+			columns: [table.userId],
+			foreignColumns: [usersTable.id],
+			name: 'guest_user_mapping_user_id_fkey'
+		}).onDelete('cascade'),
+		primaryKey({
+			columns: [table.guestId, table.userId],
+			name: 'guest_user_mapping_guest_id_user_id_pk'
+		})
 	]
 );
