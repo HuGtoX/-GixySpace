@@ -2,7 +2,7 @@
 
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import NewsSection from "@/components/home/NewsSection";
+import NewsSection from "@/components/home/News";
 import Tools from "@/components/home/Tools";
 import Aside from "@/components/home/Aside";
 import Container from "@/components/layout/Container";
@@ -15,10 +15,10 @@ const HomePage = () => {
         <section className="space-y-6 lg:col-span-7">
           <NewsSection />
         </section>
-        <section className="space-y-6 lg:col-span-3">
+        <section className="space-y-6 lg:col-span-5 xl:col-span-3">
           <Tools />
         </section>
-        <aside className="space-y-6 lg:col-span-2">
+        <aside className="space-y-6 lg:col-span-12 xl:col-span-2">
           <Aside />
         </aside>
       </main>
